@@ -28,7 +28,7 @@ export class UploadService {
       Key: fileKey,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: 'public-read', // URL로 접근 가능하게
+      // ACL: 'public-read',
     };
 
     await this.s3.upload(params).promise();
