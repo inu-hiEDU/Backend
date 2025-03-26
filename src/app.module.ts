@@ -4,13 +4,8 @@ import { AppService } from './app.service';
 import { UploadModule } from './upload/upload.module';
 import { ConfigModule } from '@nestjs/config';
 
-
-
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    UploadModule
-  ],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), UploadModule],
   controllers: [AppController],
   providers: [AppService],
 })
