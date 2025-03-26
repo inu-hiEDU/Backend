@@ -1,25 +1,34 @@
-[ Commit convention ] 앞에 소문자로~
+## Commit Convention
 
-feat : 새로운 기능을 추가할 경우
-fix : 버그를 고친 경우
-!HOTFIX : 급하게 치명적인 버그를 고쳐야할 경우
-design : CSS등 사용자 UI 디자인 변경
-style : 코드 포맷변경, 세미콜론 누락 -> 코드 수정이 없는 경우
-refactor : 코드 리팩토링
-comment : 필요한 주석 추가 및 변경
-docs : Readme.md와 같은 문서 수정의 경우
-test : 테스트 추가, 테스트 리팩토링 (프로덕션코드 수정x)
-rename : 파일, 폴더명 변경
-remove : 파일, 폴더 삭제
-chore : 기타
-set : 세팅 관련
+- `feat`: 새로운 기능을 추가할 경우
+- `fix`: 버그를 고친 경우
+- `!hotfix`: 급하게 치명적인 버그를 고쳐야 할 경우
+- `design`: CSS 등 사용자 UI 디자인 변경
+- `style`: 코드 포맷 변경, 세미콜론 누락 등 코드 수정이 없는 경우
+- `refactor`: 코드 리팩토링
+- `comment`: 필요한 주석 추가 및 변경
+- `docs`: Readme.md와 같은 문서 수정의 경우
+- `test`: 테스트 추가, 테스트 리팩토링 (프로덕션 코드 수정 X)
+- `rename`: 파일, 폴더명 변경
+- `remove`: 파일, 폴더 삭제
+- `chore`: 기타
+- `set`: 세팅 관련
 
-브랜치
-feat/#이슈번호
-ex. feat/#17
+---
 
-PR 제목
-[feat/#이슈번호] 구현한 기능
+## 브랜치 규칙
+
+`feat/#이슈번호` 형식을 따릅니다.  
+예시: `feat/#17`
+
+---
+
+## PR 제목 규칙
+
+PR 제목은 다음과 같은 형식을 따릅니다:
+
+`[feat/#이슈번호] 구현한 기능`
+
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
