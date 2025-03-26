@@ -37,7 +37,7 @@ export class UploadService {
 
     return { url };
   }
-  
+
   private mustGetEnv(key: string): string {
     const value = this.configService.get<string>(key);
     if (!value) {
