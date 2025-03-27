@@ -3,6 +3,7 @@ import { UploadModule } from './upload/upload.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfigService } from './config/database.config';
+import { StudentModule } from './students/student.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { DatabaseConfigService } from './config/database.config';
       useClass: DatabaseConfigService,
     }),
     UploadModule,
+    StudentModule,
   ],
   controllers: [],
   providers: [],

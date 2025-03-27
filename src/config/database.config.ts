@@ -1,6 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
+import { Student } from 'src/students/student.entity';
 
 @Injectable()
 export class DatabaseConfigService {
@@ -16,7 +17,7 @@ export class DatabaseConfigService {
       database: this.configService.get<string>('DB_DATABASE'),
       synchronize: true, // 개발 환경에서만 true로 설정
       logging: true, // 로그 확인용
-      entities: [],
+      entities: [Student],
     };
   }
 }
