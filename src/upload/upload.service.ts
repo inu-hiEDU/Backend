@@ -1,19 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UploadService {
-  private s3: AWS.S3;
+  private s3: S3Client;
   private bucket: string;
   private region: string;
 
   constructor(private readonly configService: ConfigService) {
-    this.s3 = new AWS.S3({
-      accessKeyId: configService.get<string>('AWS_ACCESS_KEY_ID'),
-      secretAccessKey: configService.get<string>('AWS_SECRET_ACCESS_KEY'),
-      region: configService.get<string>('AWS_REGION'),
+    this.s3 = new S3Client({
+      region: this.mustGetEnv('AWS_REGION'),
+      credentials: {
+        accessKeyId: this.mustGetEnv('AWS_ACCESS_KEY_ID'),
+        secretAccessKey: this.mustGetEnv('AWS_SECRET_ACCESS_KEY'),
+      },
     });
 
     this.bucket = this.mustGetEnv('AWS_S3_BUCKET_NAME');
@@ -23,15 +25,14 @@ export class UploadService {
   async uploadFileToS3(file: Express.Multer.File) {
     const fileKey = `images/${uuidv4()}-${file.originalname}`;
 
-    const params: AWS.S3.PutObjectRequest = {
+    const params = {
       Bucket: this.bucket,
       Key: fileKey,
       Body: file.buffer,
       ContentType: file.mimetype,
-      // ACL: 'public-read',
     };
 
-    await this.s3.upload(params).promise();
+    await this.s3.send(new PutObjectCommand(params));
 
     const url = `https://${this.bucket}.s3.${this.region}.amazonaws.com/${fileKey}`;
 
