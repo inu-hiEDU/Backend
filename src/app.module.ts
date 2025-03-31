@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { UploadModule } from './upload/upload.module';
 import { ConfigModule } from '@nestjs/config';
-// import { UsersModule } from './users/users.module';
-import { typeOrmConfig } from './\bconfig/typeOrm.config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseConfigService } from './config/database.config';
+import { StudentModule } from './students/student.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), // .env 파일 로드
-    TypeOrmModule.forRoot(typeOrmConfig),
-    // UsersModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      useClass: DatabaseConfigService,
+    }),
+    UploadModule,
+    StudentModule,
   ],
   controllers: [],
   providers: [],
