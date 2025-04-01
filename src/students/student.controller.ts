@@ -23,6 +23,10 @@ export class StudentController {
   async getAllStudents(): Promise<Student[]> {
     return this.studentService.getAllStudents();
   }
+}
+@Controller('students/info')
+export class StudentInfoController {
+  constructor(private readonly studentService: StudentService) {}
   @Get(':id')
   async getStudent(@Param('id', ParseIntPipe) id: number) {
     return this.studentService.getStudentById(id);
