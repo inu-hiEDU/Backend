@@ -34,7 +34,10 @@ export class StudentController {
   }
 
   @Patch(':id')
-  async updateStudent(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateStudentDto) {
+  async updateStudent(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateStudentDto,
+  ) {
     return this.studentService.updateStudent(id, dto);
   }
 
