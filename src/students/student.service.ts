@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { StudentRepository } from './student.repository';
+import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
 
 @Injectable()
@@ -8,5 +10,21 @@ export class StudentService {
 
   async getAllStudents(): Promise<Student[]> {
     return this.studentRepository.findAll();
+  }
+
+  async getStudentById(id: number): Promise<Student> {
+    return this.studentRepository.findOneById(id);
+  }
+
+  async createStudent(dto: CreateStudentDto): Promise<Student> {
+    return this.studentRepository.createStudent(dto);
+  }
+
+  async updateStudent(id: number, dto: UpdateStudentDto): Promise<Student> {
+    return this.studentRepository.updateStudent(id, dto);
+  }
+
+  async deleteStudent(id: number): Promise<void> {
+    return this.studentRepository.deleteStudent(id);
   }
 }
