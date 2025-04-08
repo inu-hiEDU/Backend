@@ -8,6 +8,7 @@ import {
   Body,
   ParseIntPipe,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 
 import { StudentService } from './student.service';
@@ -23,7 +24,16 @@ export class StudentController {
   async getAllStudents(): Promise<Student[]> {
     return this.studentService.getAllStudents();
   }
+  @Get('list')
+  async getStudentsByGradeAndClass(
+    @Query('grade') grade: number,
+    @Query('class') classroom: number,
+  ) {
+    return this.studentService.getStudentIdsByGradeAndClassroom(grade, classroom);
+  }
+
 }
+
 @Controller('students/info')
 export class StudentInfoController {
   constructor(private readonly studentService: StudentService) {}
