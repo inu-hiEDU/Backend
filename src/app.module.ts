@@ -6,6 +6,7 @@ import { DatabaseConfigService } from './config/database.config';
 import { StudentModule } from './students/student.module';
 import { LoginModule } from './login/login.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { CounselModule } from './counsel/counsel.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AttendanceModule } from './attendance/attendance.module';
     UploadModule,
     StudentModule,
     AttendanceModule,
+    CounselModule,
   ],
   controllers: [],
   providers: [],

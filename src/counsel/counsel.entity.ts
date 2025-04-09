@@ -9,7 +9,7 @@ export class Counsel {
   @ManyToOne(() => Student)
   student: Student;  // 단방향 관계로 Student 참조
 
-  @Column({ name: 'counselDate', type: 'date' })  // 'consultationDate' -> 'counselDate'로 변경
+  @Column({ name: 'counselDate', type: 'date' })
   counselDate: Date;  // 상담일자 (YYYY-MM-DD)
 
   @Column('text')
