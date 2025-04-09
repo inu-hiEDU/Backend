@@ -11,7 +11,7 @@ import { AttendanceStatus } from '../attendance.entity';
 export class CreateAttendanceDto {
   @IsInt()
   @IsNotEmpty()
-  studentId: number; // 엔티티의 'student' 대신 사용하는 참조용 필드
+  studentId: number;
 
   @IsDateString()
   @IsNotEmpty()
