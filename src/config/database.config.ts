@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import { Student } from 'src/students/student.entity';
 import { Login } from 'src/login/login.entity';
+import { Attendance } from 'src/attendance/attendance.entity';
 
 
 @Injectable()
@@ -19,7 +20,7 @@ export class DatabaseConfigService {
       database: this.configService.get<string>('DB_DATABASE'),
       synchronize: true, // 개발 환경에서만 true로 설정
       logging: true, // 로그 확인용
-      entities: [Student, Login],
+      entities: [Student, Login, Attendance],
     };
   }
 }

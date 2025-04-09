@@ -24,4 +24,3 @@ export class UpdateAttendanceDto {
   @IsOptional()
   note?: string;
 }
-  

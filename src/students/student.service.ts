@@ -27,7 +27,8 @@ export class StudentService {
   async deleteStudent(id: number): Promise<void> {
     return this.studentRepository.deleteStudent(id);
   }
-  async getStudentIdsByGradeAndClassroom(grade: number, classroom: number): Promise<number[]> {
+
+  async getStudentIdsByGradeAndClassroom(grade: number, classroom: number): Promise<{ id: number, name: string }[]> {
     return this.studentRepository.findByGradeAndClassroom(grade, classroom);
   }
   
