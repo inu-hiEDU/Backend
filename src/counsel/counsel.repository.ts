@@ -1,8 +1,13 @@
-import { Repository, Between } from 'typeorm';
+import { DataSource, Repository, Between } from 'typeorm';
 import { Counsel } from './counsel.entity';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class CounselRepository extends Repository<Counsel> {
-  // 상담 내역 생성
+  constructor(private dataSource: DataSource) {
+    super(Counsel, dataSource.createEntityManager());
+  }
+    // 상담 내역 생성
   async createCounsel(data: Partial<Counsel>) {
     const counsel = this.create(data);
     return this.save(counsel);

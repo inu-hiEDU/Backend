@@ -7,8 +7,15 @@ import { Counsel } from './counsel.entity';
 import { Student } from '../students/student.entity';  // Student 엔티티 가져오기
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Counsel, CounselRepository, Student])],
+  imports: [TypeOrmModule.forFeature([Counsel])],
+  providers: [
+    CounselService,
+    {
+      provide: CounselRepository,
+      useClass: CounselRepository,
+    },
+  ],
   controllers: [CounselController],
-  providers: [CounselService],
+  exports: [CounselRepository],
 })
 export class CounselModule {}
