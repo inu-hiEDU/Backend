@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfigService } from './config/database.config';
 import { StudentModule } from './students/student.module';
 import { LoginModule } from './login/login.module';
-
+import { ScoresModule } from './scores/score.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -15,6 +15,7 @@ import { LoginModule } from './login/login.module';
     LoginModule,
     UploadModule,
     StudentModule,
+    ScoresModule,
   ],
   controllers: [],
   providers: [],

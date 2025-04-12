@@ -1,4 +1,4 @@
-export class CreateOrUpdateScoreDto {
+export class CreateScoreDto {
   studentId: number;
   grade: number;
   semester: number;

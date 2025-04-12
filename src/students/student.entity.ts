@@ -6,16 +6,19 @@ export class Student {
   id: number;
 
   @Column()
-  studentId: number;
+  studentNum: number;
 
   @Column()
   name: string;
 
   @Column()
-  phoneNum: string;
+  grade: number;
 
   @Column()
-  avgScore: number;
+  class: number;
+
+  @Column()
+  phoneNum: string;
 
   @Column()
   birthday: string;

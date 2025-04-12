@@ -51,10 +51,10 @@ export class Scores {
   @Column({ nullable: true })
   subject8: number;
 
-  @Column({ nullable: true })
+  @Column({ default: 0 })
   totalScore: number;
 
-  @Column('float', { nullable: true })
+  @Column('float', { default: 0 })
   averageScore: number;
 
   @CreateDateColumn()
