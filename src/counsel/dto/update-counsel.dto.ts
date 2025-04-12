@@ -1,4 +1,21 @@
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  IsDateString,
+  IsInt,
+} from 'class-validator';
+
 export class UpdateCounselDto {
-  counselDate?: Date;  // 상담일자 (YYYY-MM-DD)
-  content?: string;  // 상담 내용
+  @IsInt()
+  @IsOptional()
+  studentId?: number;
+
+  @IsDateString()
+  @IsOptional()
+  date?: string;
+
+  @IsString()
+  @IsOptional()
+  note?: string;
 }
