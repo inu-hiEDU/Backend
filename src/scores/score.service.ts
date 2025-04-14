@@ -101,7 +101,7 @@ export class ScoresService {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
 
-    const score = await this.scoresRepository.find({ 
+    const score = await this.scoresRepository.find({
       where: {
         student: { id: studentId },
       },
@@ -205,8 +205,8 @@ export class ScoresService {
     };
   }
 
-  async deleteScore(studentId: number) {
-    const deletedScore = await this.scoresRepository.delete(studentId);
+  async deleteScore(studentId: number, grade: number, semester: number) {
+    const deletedScore = await this.scoresRepository.delete({ student: { id: studentId }, grade, semester });
 
     if (deletedScore.affected === 0) {
       throw new NotFoundException('해당 성적 정보를 찾을 수 없습니다.');
