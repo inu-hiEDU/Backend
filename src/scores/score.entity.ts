@@ -15,11 +15,8 @@ export class Scores {
   id: number;
 
   @ManyToOne(() => Student)
-  @JoinColumn({ name: 'studentId' })
+  @JoinColumn()
   student: Student;
-
-  @Column()
-  studentId: number;
 
   @Column()
   grade: number;
