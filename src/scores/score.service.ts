@@ -4,29 +4,8 @@ import { Repository } from 'typeorm';
 import { Scores } from './score.entity';
 import { Student } from '../students/student.entity';
 import { CreateScoreDto } from './dto/create-score.dto';
-import { UpdateScoreByIdDto } from './dto/update-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
-
-interface ClassScoreResult {
-  studentId: number;
-  name: string;
-  grade: number;
-  class: number;
-  semester: number;
-  subjects: {
-    subject1: number;
-    subject2: number;
-    subject3: number;
-    subject4: number;
-    subject5: number;
-    subject6: number;
-    subject7: number;
-    subject8: number;
-  };
-  totalScore: number;
-  averageScore: number;
-}
 
 @Injectable()
 export class ScoresService {
@@ -74,7 +53,7 @@ export class ScoresService {
 
     if (!score) {
       score = this.scoresRepository.create({
-        id: studentId,
+        student,
         grade,
         semester,
         createdAt: now,
@@ -110,51 +89,6 @@ export class ScoresService {
         },
         total,
         average,
-      },
-    };
-  }
-
-  async updateScore(scoreId: number, updateDto: UpdateScoreByIdDto) {
-    const score = await this.scoresRepository.findOne({ 
-      where: {
-        student: {
-          id: scoreId,
-        },
-      },
-      relations: ['student'],
-    });
-    if (!score) {
-      throw new NotFoundException('해당 성적 정보를 찾을 수 없습니다.');
-    }
-
-    Object.assign(score, updateDto);
-    score.updatedAt = new Date();
-
-    const { total, average } = this.calculateTotalAndAverage(score);
-    score.totalScore = total;
-    score.averageScore = average;
-
-    const updatedScore = await this.scoresRepository.save(score);
-
-    return {
-      message: '성적 정보가 성공적으로 업데이트되었습니다.',
-      updatedScore: {
-        id: updatedScore.id,
-        studentId: updatedScore.student.id,
-        grade: updatedScore.grade,
-        semester: updatedScore.semester,
-        subjects: {
-          subject1: updatedScore.subject1,
-          subject2: updatedScore.subject2,
-          subject3: updatedScore.subject3,
-          subject4: updatedScore.subject4,
-          subject5: updatedScore.subject5,
-          subject6: updatedScore.subject6,
-          subject7: updatedScore.subject7,
-          subject8: updatedScore.subject8,
-        },
-        totalScore: updatedScore.totalScore,
-        averageScore: updatedScore.averageScore,
       },
     };
   }
@@ -211,10 +145,28 @@ export class ScoresService {
 
     const students = await this.studentRepository.find({ where: { grade, class: classNum } });
 
-    const result: ClassScoreResult[] = [];
+    const result: {
+      studentId: number;
+      name: string;
+      grade: number;
+      class: number;
+      semester: number;
+      subjects: {
+        subject1: number;
+        subject2: number;
+        subject3: number;
+        subject4: number;
+        subject5: number;
+        subject6: number;
+        subject7: number;
+        subject8: number;
+      };
+      totalScore: number;
+      averageScore: number;
+    }[] = [];
 
     for (const student of students) {
-      const score = await this.scoresRepository.findOne({ 
+      const score = await this.scoresRepository.findOne({
         where: {
           student: {
             id: student.id,
@@ -254,8 +206,8 @@ export class ScoresService {
     };
   }
 
-  async deleteScore(scoreId: number) {
-    const deletedScore = await this.scoresRepository.delete(scoreId);
+  async deleteScore(studentId: number) {
+    const deletedScore = await this.scoresRepository.delete(studentId);
 
     if (deletedScore.affected === 0) {
       throw new NotFoundException('해당 성적 정보를 찾을 수 없습니다.');

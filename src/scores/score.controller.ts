@@ -4,13 +4,11 @@ import {
   Body,
   Get,
   Query,
-  Param,
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
 import { ScoresService } from './score.service';
 import { CreateScoreDto } from './dto/create-score.dto';
-import { UpdateScoreByIdDto } from './dto/update-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 
@@ -21,16 +19,8 @@ export class ScoresController {
   // 과목별 성적 입력 (처음 생성 또는 업데이트)
   @Patch()
   async createScore(@Body() dto: CreateScoreDto) {
+    console.log(dto);
     return this.scoresService.createScore(dto);
-  }
-
-  // 성적 수정 (ID 기준)
-  @Patch(':id')
-  async updateById(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateScoreByIdDto,
-  ) {
-    return this.scoresService.updateScore(id, dto);
   }
 
   // 개별 학생 성적 조회
