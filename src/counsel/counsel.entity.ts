@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Student } from '../students/student.entity';
 
 @Entity()
@@ -11,14 +6,12 @@ export class Counsel {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Student, {
-      onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => Student, { onDelete: 'CASCADE' })
   student: Student;
 
   @Column({ type: 'date' })
-  date: string;
+  date: Date;
 
-  @Column({ type: 'text', nullable: true })
-  note?: string;
+  @Column({ type: 'text' })
+  content: string;
 }

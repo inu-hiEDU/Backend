@@ -1,10 +1,4 @@
-import {
-  IsEnum,
-  IsOptional,
-  IsString,
-  IsDateString,
-  IsInt,
-} from 'class-validator';
+import { IsOptional, IsDateString, IsInt, IsString } from 'class-validator';
 
 export class UpdateCounselDto {
   @IsInt()
@@ -17,5 +11,5 @@ export class UpdateCounselDto {
 
   @IsString()
   @IsOptional()
-  note?: string;
+  content?: string;
 }

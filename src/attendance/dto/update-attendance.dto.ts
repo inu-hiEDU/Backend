@@ -1,10 +1,4 @@
-import {
-    IsEnum,
-    IsOptional,
-    IsString,
-    IsDateString,
-    IsInt,
-} from 'class-validator';
+import { IsEnum, IsOptional, IsDateString, IsInt } from 'class-validator';
 import { AttendanceStatus } from '../attendance.entity';
 
 export class UpdateAttendanceDto {
@@ -20,7 +14,6 @@ export class UpdateAttendanceDto {
   @IsOptional()
   status?: AttendanceStatus;
 
-  @IsString()
   @IsOptional()
   note?: string;
 }

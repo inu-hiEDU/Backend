@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Counsel } from './counsel.entity';
 
 @Injectable()
@@ -15,8 +15,23 @@ export class CounselRepository {
     return this.repo.save(counsel);
   }
 
-  async findAll() {
-    return this.repo.find({ relations: ['student'] });
+  async findByFilter(studentId?: number, startDate?: string, endDate?: string) {
+    const qb = this.repo.createQueryBuilder('counsel')
+      .leftJoinAndSelect('counsel.student', 'student');
+
+    if (studentId) {
+      qb.andWhere('student.id = :studentId', { studentId });
+    }
+
+    if (startDate && endDate) {
+      qb.andWhere('counsel.date BETWEEN :startDate AND :endDate', { startDate, endDate });
+    } else if (startDate) {
+      qb.andWhere('counsel.date >= :startDate', { startDate });
+    } else if (endDate) {
+      qb.andWhere('counsel.date <= :endDate', { endDate });
+    }
+
+    return qb.getMany();
   }
 
   async findById(id: number) {
@@ -30,15 +45,5 @@ export class CounselRepository {
 
   async deleteCounsel(id: number) {
     return this.repo.delete(id);
-  }
-
-  async findByStudentAndDateRange(studentId: number, startDate: string, endDate: string) {
-    return this.repo.find({
-      where: {
-        student: { id: studentId },
-        date: Between(startDate, endDate),
-      },
-      relations: ['student'],
-    });
   }
 }

@@ -1,11 +1,4 @@
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsString,
-  IsDateString,
-  IsOptional,
-  IsInt,
-} from 'class-validator';
+import { IsNotEmpty, IsDateString, IsInt, IsString } from 'class-validator';
 
 export class CreateCounselDto {
   @IsInt()
@@ -17,6 +10,6 @@ export class CreateCounselDto {
   date: string;
 
   @IsString()
-  @IsOptional()
-  note?: string;
+  @IsNotEmpty()
+  content: string;
 }

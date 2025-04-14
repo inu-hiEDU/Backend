@@ -11,11 +11,12 @@ export class CounselService {
     return this.counselRepository.createCounsel({
       ...dto,
       student: { id: dto.studentId } as any,
+      date: new Date(dto.date),
     });
   }
 
-  findAll() {
-    return this.counselRepository.findAll();
+  findAll(studentId?: number, startDate?: string, endDate?: string) {
+    return this.counselRepository.findByFilter(studentId, startDate, endDate);
   }
 
   findOne(id: number) {
@@ -24,6 +25,9 @@ export class CounselService {
 
   update(id: number, dto: UpdateCounselDto) {
     const data: any = { ...dto };
+    if (dto.date) {
+      data.date = new Date(dto.date);
+    }
     if (dto.studentId) {
       data.student = { id: dto.studentId } as any;
       delete data.studentId;
@@ -33,9 +37,5 @@ export class CounselService {
 
   remove(id: number) {
     return this.counselRepository.deleteCounsel(id);
-  }
-
-  findByStudentAndRange(studentId: number, startDate: string, endDate: string) {
-    return this.counselRepository.findByStudentAndDateRange(studentId, startDate, endDate);
   }
 }

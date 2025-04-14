@@ -9,13 +9,16 @@ export class AttendanceService {
 
   create(dto: CreateAttendanceDto) {
     return this.attendanceRepository.createAttendance({
-      ...dto,
-      student: { id: dto.studentId } as any, // 👈 타입 오류 방지용 처리
+      student: { id: dto.studentId } as any,
+      date: new Date(dto.date), // ← 여기!
+      status: dto.status,
+      note: dto.note,
     });
+    
   }
 
-  findAll() {
-    return this.attendanceRepository.findAll();
+  findAll(studentId?: number, startDate?: string, endDate?: string) {
+    return this.attendanceRepository.findByFilter(studentId, startDate, endDate);
   }
 
   findOne(id: number) {
@@ -24,20 +27,17 @@ export class AttendanceService {
 
   update(id: number, dto: UpdateAttendanceDto) {
     const data: any = { ...dto };
-
+    if (dto.date) {
+      data.date = new Date(dto.date);
+    }
     if (dto.studentId) {
-      data.student = { id: dto.studentId } as any; // 👈 마찬가지로 처리
+      data.student = { id: dto.studentId } as any;
       delete data.studentId;
     }
-
     return this.attendanceRepository.updateAttendance(id, data);
   }
 
   remove(id: number) {
     return this.attendanceRepository.deleteAttendance(id);
-  }
-
-  findByStudentAndRange(studentId: number, startDate: string, endDate: string) {
-    return this.attendanceRepository.findByStudentAndDateRange(studentId, startDate, endDate);
   }
 }
