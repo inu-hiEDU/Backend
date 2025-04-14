@@ -94,7 +94,7 @@ export class ScoresService {
   }
 
   async getStudentScore(query: GetScoreDto) {
-    const { studentId, semester } = query;
+    const { studentId } = query;
 
     const student = await this.studentRepository.findOne({ where: { id: studentId } });
     if (!student) {
@@ -102,9 +102,8 @@ export class ScoresService {
     }
 
     const score = await this.scoresRepository.find({ 
-      where: { 
+      where: {
         student: { id: studentId },
-        semester,
       },
       relations: ['student'],
     });
