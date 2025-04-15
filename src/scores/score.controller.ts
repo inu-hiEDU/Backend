@@ -37,7 +37,11 @@ export class ScoresController {
 
   // 성적 삭제
   @Delete()
-  async deleteScores(@Query('studentId', ParseIntPipe) studentId: number) {
-    return this.scoresService.deleteScore(studentId);
+  async deleteScores(
+    @Query('studentId', ParseIntPipe) studentId: number,
+    @Query('grade', ParseIntPipe) grade: number,
+    @Query('semester', ParseIntPipe) semester: number,
+  ) {
+    return this.scoresService.deleteScore(studentId, grade, semester);
   }
 }
