@@ -142,7 +142,9 @@ export class ScoresService {
   async getClassScore(query: GetClassScoreDto) {
     const { grade, semester, class: classNum } = query;
 
-    const students = await this.studentRepository.find({ where: { grade, class: classNum } });
+    const students = await this.studentRepository.find({
+      where: { grade, classroom: classNum },
+    });
 
     const result: {
       studentId: number;
@@ -182,7 +184,7 @@ export class ScoresService {
         studentId: student.id,
         name: student.name,
         grade: student.grade,
-        class: student.class,
+        class: student.classroom,
         semester: score.semester,
         subjects: {
           subject1: score.subject1,
