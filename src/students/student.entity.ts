@@ -12,14 +12,14 @@ export class Student {
   name: string;
 
   @Column()
+  grade: number;
+
+  @Column({ name: 'class' }) // DB 필드는 class, 코드에서는 classroom
+  classroom: number;
+
+  @Column()
   phoneNum: string;
 
   @Column()
-  avgScore: number;
-
-  @Column()
   birthday: string;
-
-  @Column()
-  avgGrade: string;
 }

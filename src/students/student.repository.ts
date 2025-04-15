@@ -31,4 +31,15 @@ export class StudentRepository {
   async deleteStudent(id: number): Promise<void> {
     await this.studentRepo.delete(id);
   }
+
+  async findByGradeAndClassroom(grade: number, classroom: number): Promise<{ id: number, name: string }[]> {
+    const students = await this.studentRepo
+      .createQueryBuilder('student')
+      .select(['student.id', 'student.name'])
+      .where('student.grade = :grade', { grade })
+      .andWhere('student.classroom = :classroom', { classroom })
+      .getMany();
+  
+    return students.map(student => ({ id: student.id, name: student.name }));
+  }
 }
