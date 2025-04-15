@@ -31,7 +31,6 @@ export class StudentController {
   ) {
     return this.studentService.getStudentIdsByGradeAndClassroom(grade, classroom);
   }
-
 }
 
 @Controller('students/info')

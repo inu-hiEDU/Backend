@@ -1,8 +1,8 @@
 export class CreateStudentDto {
-  studentId: number;
+  studentNum: number;
   name: string;
+  grade: number;
+  classroom: number;
   phoneNum: string;
-  avgScore: number;
   birthday: string;
-  avgGrade: string;
 }

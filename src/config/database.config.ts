@@ -5,7 +5,7 @@ import { Student } from 'src/students/student.entity';
 import { Login } from 'src/login/login.entity';
 import { Attendance } from 'src/attendance/attendance.entity';
 import { Counsel } from 'src/counsel/counsel.entity';
-
+import { Scores } from 'src/scores/score.entity';
 
 @Injectable()
 export class DatabaseConfigService {
@@ -21,7 +21,7 @@ export class DatabaseConfigService {
       database: this.configService.get<string>('DB_DATABASE'),
       synchronize: true, // 개발 환경에서만 true로 설정
       logging: true, // 로그 확인용
-      entities: [Student, Login, Attendance, Counsel],
+      entities: [Student, Login, Attendance, Counsel, Scores],
     };
   }
 }
