@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Scores } from './score.entity';
 import { Student } from '../students/student.entity';
 import { CreateScoreDto } from './dto/create-score.dto';
-import { GetScoreDto } from './dto/get-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
+import { GetScoreDto } from './dto/get-score.dto';
+import { Scores } from './score.entity';
 
 @Injectable()
 export class ScoresService {
@@ -29,7 +29,9 @@ export class ScoresService {
       score.subject8,
     ];
 
-    const validScores = subjects.filter((subject) => subject !== undefined && subject !== null);
+    const validScores = subjects.filter(
+      (subject) => subject !== undefined && subject !== null,
+    );
     const total = validScores.reduce((sum, subject) => sum + subject, 0);
     const average = validScores.length > 0 ? total / validScores.length : 0;
 
@@ -39,7 +41,9 @@ export class ScoresService {
   async createScore(dto: CreateScoreDto) {
     const { studentId, grade, semester, ...subjects } = dto;
 
-    const student = await this.studentRepository.findOne({ where: { id: studentId } });
+    const student = await this.studentRepository.findOne({
+      where: { id: studentId },
+    });
     if (!student) {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
@@ -72,7 +76,10 @@ export class ScoresService {
     await this.scoresRepository.save(score);
 
     return {
-      message: score.createdAt === now ? '성적 정보가 성공적으로 생성되었습니다.' : '성적 정보가 성공적으로 업데이트되었습니다.',
+      message:
+        score.createdAt === now
+          ? '성적 정보가 성공적으로 생성되었습니다.'
+          : '성적 정보가 성공적으로 업데이트되었습니다.',
       updatedScore: {
         studentId,
         grade,
@@ -96,7 +103,9 @@ export class ScoresService {
   async getStudentScore(query: GetScoreDto) {
     const { studentId } = query;
 
-    const student = await this.studentRepository.findOne({ where: { id: studentId } });
+    const student = await this.studentRepository.findOne({
+      where: { id: studentId },
+    });
     if (!student) {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
@@ -208,7 +217,11 @@ export class ScoresService {
   }
 
   async deleteScore(studentId: number, grade: number, semester: number) {
-    const deletedScore = await this.scoresRepository.delete({ student: { id: studentId }, grade, semester });
+    const deletedScore = await this.scoresRepository.delete({
+      student: { id: studentId },
+      grade,
+      semester,
+    });
 
     if (deletedScore.affected === 0) {
       throw new NotFoundException('해당 성적 정보를 찾을 수 없습니다.');

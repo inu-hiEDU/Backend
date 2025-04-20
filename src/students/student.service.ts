@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { StudentRepository } from './student.repository';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
+import { StudentRepository } from './student.repository';
 
 @Injectable()
 export class StudentService {
@@ -28,8 +28,10 @@ export class StudentService {
     return this.studentRepository.deleteStudent(id);
   }
 
-  async getStudentIdsByGradeAndClassroom(grade: number, classroom: number): Promise<{ id: number, name: string }[]> {
+  async getStudentIdsByGradeAndClassroom(
+    grade: number,
+    classroom: number,
+  ): Promise<{ id: number; name: string }[]> {
     return this.studentRepository.findByGradeAndClassroom(grade, classroom);
   }
-  
 }

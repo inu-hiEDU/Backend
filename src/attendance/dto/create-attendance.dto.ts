@@ -1,4 +1,10 @@
-import { IsEnum, IsNotEmpty, IsDateString, IsOptional, IsInt } from 'class-validator';
+import {
+  IsDateString,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+} from 'class-validator';
 import { AttendanceStatus } from '../attendance.entity';
 
 export class CreateAttendanceDto {

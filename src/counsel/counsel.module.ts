@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Counsel } from './counsel.entity';
-import { CounselService } from './counsel.service';
-import { CounselController } from './counsel.controller';
-import { CounselRepository } from './counsel.repository';
 import { Student } from '../students/student.entity';
+import { CounselController } from './counsel.controller';
+import { Counsel } from './counsel.entity';
+import { CounselRepository } from './counsel.repository';
+import { CounselService } from './counsel.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Counsel, Student])],

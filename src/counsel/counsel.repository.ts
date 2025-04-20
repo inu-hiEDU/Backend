@@ -16,7 +16,8 @@ export class CounselRepository {
   }
 
   async findByFilter(studentId?: number, startDate?: string, endDate?: string) {
-    const qb = this.repo.createQueryBuilder('counsel')
+    const qb = this.repo
+      .createQueryBuilder('counsel')
       .leftJoinAndSelect('counsel.student', 'student');
 
     if (studentId) {
@@ -24,7 +25,10 @@ export class CounselRepository {
     }
 
     if (startDate && endDate) {
-      qb.andWhere('counsel.date BETWEEN :startDate AND :endDate', { startDate, endDate });
+      qb.andWhere('counsel.date BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      });
     } else if (startDate) {
       qb.andWhere('counsel.date >= :startDate', { startDate });
     } else if (endDate) {

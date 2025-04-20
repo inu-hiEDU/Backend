@@ -14,11 +14,14 @@ export class AttendanceService {
       status: dto.status,
       note: dto.note,
     });
-    
   }
 
   findAll(studentId?: number, startDate?: string, endDate?: string) {
-    return this.attendanceRepository.findByFilter(studentId, startDate, endDate);
+    return this.attendanceRepository.findByFilter(
+      studentId,
+      startDate,
+      endDate,
+    );
   }
 
   findOne(id: number) {

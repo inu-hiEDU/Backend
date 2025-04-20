@@ -1,16 +1,16 @@
 import {
-  Controller,
-  Patch,
   Body,
-  Get,
-  Query,
+  Controller,
   Delete,
+  Get,
   ParseIntPipe,
+  Patch,
+  Query,
 } from '@nestjs/common';
-import { ScoresService } from './score.service';
 import { CreateScoreDto } from './dto/create-score.dto';
-import { GetScoreDto } from './dto/get-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
+import { GetScoreDto } from './dto/get-score.dto';
+import { ScoresService } from './score.service';
 
 @Controller('scores')
 export class ScoresController {

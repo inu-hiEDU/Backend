@@ -1,20 +1,20 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Param,
   Body,
-  ParseIntPipe,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
 
-import { StudentService } from './student.service';
-import { Student } from './student.entity';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { Student } from './student.entity';
+import { StudentService } from './student.service';
 
 @Controller('students')
 export class StudentController {
@@ -29,7 +29,10 @@ export class StudentController {
     @Query('grade') grade: number,
     @Query('class') classroom: number,
   ) {
-    return this.studentService.getStudentIdsByGradeAndClassroom(grade, classroom);
+    return this.studentService.getStudentIdsByGradeAndClassroom(
+      grade,
+      classroom,
+    );
   }
 }
 

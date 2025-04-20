@@ -16,7 +16,8 @@ export class AttendanceRepository {
   }
 
   async findByFilter(studentId?: number, startDate?: string, endDate?: string) {
-    const qb = this.repo.createQueryBuilder('attendance')
+    const qb = this.repo
+      .createQueryBuilder('attendance')
       .leftJoinAndSelect('attendance.student', 'student');
 
     if (studentId) {
@@ -24,7 +25,10 @@ export class AttendanceRepository {
     }
 
     if (startDate && endDate) {
-      qb.andWhere('attendance.date BETWEEN :startDate AND :endDate', { startDate, endDate });
+      qb.andWhere('attendance.date BETWEEN :startDate AND :endDate', {
+        startDate,
+        endDate,
+      });
     } else if (startDate) {
       qb.andWhere('attendance.date >= :startDate', { startDate });
     } else if (endDate) {

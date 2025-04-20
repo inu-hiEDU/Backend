@@ -1,11 +1,11 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import { Student } from 'src/students/student.entity';
-import { Login } from 'src/login/login.entity';
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Attendance } from 'src/attendance/attendance.entity';
 import { Counsel } from 'src/counsel/counsel.entity';
+import { Login } from 'src/login/login.entity';
 import { Scores } from 'src/scores/score.entity';
+import { Student } from 'src/students/student.entity';
 
 @Injectable()
 export class DatabaseConfigService {
