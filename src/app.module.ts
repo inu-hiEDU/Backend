@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { UploadModule } from './upload/upload.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseConfigService } from './config/database.config';
-import { StudentModule } from './students/student.module';
-import { LoginModule } from './login/login.module';
+import { AppController } from './app.controller';
 import { AttendanceModule } from './attendance/attendance.module';
+import { DatabaseConfigService } from './config/database.config';
 import { CounselModule } from './counsel/counsel.module';
+import { LoginModule } from './login/login.module';
 import { ScoresModule } from './scores/score.module';
+import { StudentModule } from './students/student.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { ScoresModule } from './scores/score.module';
     CounselModule,
     ScoresModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
