@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  HttpCode
 } from '@nestjs/common';
 import { CounselService } from './counsel.service';
 import { CreateCounselDto } from './dto/create-counsel.dto';
@@ -42,6 +43,7 @@ export class CounselController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.counselService.remove(id);
   }
