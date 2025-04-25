@@ -15,21 +15,37 @@ import { StudentService } from './student.service';
 import { Student } from './student.entity';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../user/user-role.enum';
 
 @Controller('students')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Get()
+  @Roles(UserRole.TEACHER)
   async getAllStudents(): Promise<Student[]> {
     return this.studentService.getAllStudents();
   }
+
   @Get('list')
   async getStudentsByGradeAndClass(
     @Query('grade') grade: number,
     @Query('class') classroom: number,
   ) {
     return this.studentService.getStudentIdsByGradeAndClassroom(grade, classroom);
+  }
+
+  @Get('my-grade')
+  @Roles(UserRole.STUDENT)
+  async getMyGrade(@Query('studentId') studentId: number) {
+    return this.studentService.getStudentById(studentId);
+  }
+
+  @Get('child-grade')
+  @Roles(UserRole.PARENT)
+  async getChildGrade(@Query('childId') childId: number) {
+    return this.studentService.getStudentById(childId);
   }
 }
 
