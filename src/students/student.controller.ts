@@ -23,7 +23,7 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Get()
-  @Roles(UserRole.TEACHER)
+  // @Roles(UserRole.TEACHER)
   async getAllStudents(): Promise<Student[]> {
     return this.studentService.getAllStudents();
   }

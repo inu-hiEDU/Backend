@@ -29,7 +29,7 @@ import { AuthModule } from './auth/auth.module';
     CounselModule,
     ScoresModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,

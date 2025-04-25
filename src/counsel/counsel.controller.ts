@@ -13,21 +13,21 @@ import {
 import { CounselService } from './counsel.service';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
-import { Roles } from '../auth/roles.decorator';
-import { UserRole } from '../user/user-role.enum';
+// import { Roles } from '../auth/roles.decorator';
+// import { UserRole } from '../user/user-role.enum';
 
 @Controller('counsels')
 export class CounselController {
   constructor(private readonly counselService: CounselService) {}
 
   @Post()
-  @Roles(UserRole.TEACHER)
+  // @Roles(UserRole.TEACHER)
   create(@Body() dto: CreateCounselDto) {
     return this.counselService.create(dto);
   }
 
   @Get()
-  @Roles(UserRole.TEACHER)
+  // @Roles(UserRole.TEACHER)
   findAll(
     @Query('studentId') studentId?: number,
     @Query('startDate') startDate?: string,
