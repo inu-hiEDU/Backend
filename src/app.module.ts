@@ -22,6 +22,12 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    LoginModule,
+    UploadModule,
+    StudentModule,
+    AttendanceModule,
+    CounselModule,
+    ScoresModule,
   ],
   controllers: [],
   providers: [
