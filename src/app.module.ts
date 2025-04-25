@@ -9,6 +9,10 @@ import { LoginModule } from './login/login.module';
 import { ScoresModule } from './scores/score.module';
 import { StudentModule } from './students/student.module';
 import { UploadModule } from './upload/upload.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/roles.guard';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,14 +20,15 @@ import { UploadModule } from './upload/upload.module';
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConfigService,
     }),
-    LoginModule,
-    UploadModule,
-    StudentModule,
-    AttendanceModule,
-    CounselModule,
-    ScoresModule,
+    UserModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [],
+  controllers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
