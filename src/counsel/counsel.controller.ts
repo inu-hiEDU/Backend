@@ -52,7 +52,7 @@ export class CounselController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: '상담 정보 개별 조회' })
+  @ApiOperation({ summary: '상담 정보 수정' })
   @ApiResponse({ status: 200, description: '성공' })
   @ApiParam({ name: 'id', type: String, description: '출석정보 id' })
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCounselDto) {
@@ -60,8 +60,8 @@ export class CounselController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '상담 정보 개별 조회' })
-  @ApiResponse({ status: 200, description: '성공' })
+  @ApiOperation({ summary: '상담 정보 삭제' })
+  @ApiResponse({ status: 204, description: '성공' })
   @ApiParam({ name: 'id', type: String, description: '출석정보 id' })
   @HttpCode(204)
   remove(@Param('id', ParseIntPipe) id: number) {
