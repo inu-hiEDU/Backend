@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  HttpCode
 } from '@nestjs/common';
 
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
@@ -23,6 +24,7 @@ export class AttendanceController {
   @Post()
   @ApiOperation({ summary: '출석 정보 생성' })
   @ApiResponse({ status: 201, description: '성공' })
+  @ApiBody({ type: CreateAttendanceDto })
   create(@Body() dto: CreateAttendanceDto) {
     return this.attendanceService.create(dto);
   }
@@ -64,6 +66,7 @@ export class AttendanceController {
   @ApiOperation({ summary: '출석 정보 삭제' })
   @ApiResponse({ status: 204, description: '성공' })
   @ApiParam({ name: 'id', type: String, description: '출석정보 id' })
+  @HttpCode(204)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.attendanceService.remove(id);
   }

@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Patch,
   Query,
+  HttpCode
 } from '@nestjs/common';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
@@ -37,6 +38,7 @@ export class ScoresController {
 
   // 성적 삭제
   @Delete()
+  @HttpCode(204)
   async deleteScores(
     @Query('studentId', ParseIntPipe) studentId: number,
     @Query('grade', ParseIntPipe) grade: number,
