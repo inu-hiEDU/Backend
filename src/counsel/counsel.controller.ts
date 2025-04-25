@@ -30,7 +30,7 @@ export class CounselController {
   }
 
   @Get()
-  @ApiOperation({ summary: '상담 정보 핉터링' })
+  @ApiOperation({ summary: '상담 정보 필터링' })
   @ApiResponse({ status: 200, description: '성공' })
   @ApiQuery({ name: 'studenId', type: String, description: '학생 id' })
   @ApiQuery({ name: 'startDate', type: String, description: '시작 날짜' })
