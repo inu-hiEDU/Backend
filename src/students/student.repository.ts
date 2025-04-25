@@ -35,14 +35,13 @@ export class StudentRepository {
   async findByGradeAndClassroom(
     grade: number,
     classroom: number,
-  ): Promise<{ id: number; name: string }[]> {
+  ): Promise<Student[]> {
     const students = await this.studentRepo
       .createQueryBuilder('student')
-      .select(['student.id', 'student.name'])
       .where('student.grade = :grade', { grade })
       .andWhere('student.classroom = :classroom', { classroom })
       .getMany();
-
-    return students.map((student) => ({ id: student.id, name: student.name }));
+  
+    return students;
   }
 }

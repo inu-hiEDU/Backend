@@ -31,7 +31,8 @@ export class StudentService {
   async getStudentIdsByGradeAndClassroom(
     grade: number,
     classroom: number,
-  ): Promise<{ id: number; name: string }[]> {
+  ): Promise<Student[]> {
     return this.studentRepository.findByGradeAndClassroom(grade, classroom);
   }
+  
 }
