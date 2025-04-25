@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  HttpCode
 } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
@@ -45,6 +46,7 @@ export class AttendanceController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.attendanceService.remove(id);
   }
