@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import { CreateUserDto } from './create-user.dto';
 import { LoginDto } from './login.dto';
 import { LoginService } from './login.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('로그인')
 @Controller('auth')
