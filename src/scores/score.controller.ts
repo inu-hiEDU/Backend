@@ -12,7 +12,7 @@ import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { ScoresService } from './score.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiQuery } from '@nestjs/swagger';
 
 @ApiTags('성적')
 @Controller('scores')
