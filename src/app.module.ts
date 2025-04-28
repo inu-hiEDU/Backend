@@ -13,6 +13,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/roles.guard';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { MainController } from './main.controller'; // 추가
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { AuthModule } from './auth/auth.module';
     CounselModule,
     ScoresModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, MainController], // MainController 추가
   providers: [
     {
       provide: APP_GUARD,
