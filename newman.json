@@ -45,13 +45,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/students/info",
+							"raw": "{{baseurl}}/students",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
-								"students",
-								"info"
+								"students"
 							]
 						}
 					},
@@ -138,13 +137,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/students/list?grade=1&class=2",
+							"raw": "{{baseurl}}/students/?grade=1&class=2",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
-								"students",
-								"list"
+								"students"
 							],
 							"query": [
 								{
@@ -192,13 +190,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/students/info/{{student_id}}",
+							"raw": "{{baseurl}}/students/{{student_id}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"students",
-								"info",
 								"{{student_id}}"
 							]
 						}
