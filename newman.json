@@ -142,8 +142,7 @@
 								"{{baseurl}}"
 							],
 							"path": [
-								"students",
-								""
+								"students"
 							],
 							"query": [
 								{

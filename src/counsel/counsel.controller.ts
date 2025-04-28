@@ -15,6 +15,8 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery } from 
 import { CounselService } from './counsel.service';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
+// import { Roles } from '../auth/roles.decorator';
+// import { UserRole } from '../user/user-role.enum';
 
 @ApiTags('상담')
 @Controller('counsels')
@@ -25,6 +27,7 @@ export class CounselController {
   @ApiOperation({ summary: '상담 정보 생성' })
   @ApiResponse({ status: 201, description: '성공' })
   @ApiBody({ type: CreateCounselDto })
+  // @Roles(UserRole.TEACHER)
   create(@Body() dto: CreateCounselDto) {
     return this.counselService.create(dto);
   }
@@ -35,6 +38,7 @@ export class CounselController {
   @ApiQuery({ name: 'studenId', type: String, description: '학생 id' })
   @ApiQuery({ name: 'startDate', type: String, description: '시작 날짜' })
   @ApiQuery({ name: 'endDate', type: String, description: '마지막 날짜' })
+  // @Roles(UserRole.TEACHER)
   findAll(
     @Query('studentId') studentId?: number,
     @Query('startDate') startDate?: string,

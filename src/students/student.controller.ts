@@ -16,6 +16,8 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../user/user-role.enum';
 
 @ApiTags('학생')
 @Controller('students')
@@ -35,6 +37,7 @@ export class StudentController {
   @ApiResponse({ status: 200, description: '성공' })
   @ApiQuery({ name: 'grade', type: String, description: '학년' })
   @ApiQuery({ name: 'class', type: String, description: '반' })
+  // @Roles(UserRole.TEACHER)
   async getStudents(
     @Query('grade') grade?: number,
     @Query('class') classroom?: number,
@@ -44,6 +47,18 @@ export class StudentController {
     } else {
       return this.studentService.getAllStudents();
     }
+  }
+
+  @Get('my-grade')
+  @Roles(UserRole.STUDENT)
+  async getMyGrade(@Query('studentId') studentId: number) {
+    return this.studentService.getStudentById(studentId);
+  }
+
+  @Get('child-grade')
+  @Roles(UserRole.PARENT)
+  async getChildGrade(@Query('childId') childId: number) {
+    return this.studentService.getStudentById(childId);
   }
 
   @Get(':id')
