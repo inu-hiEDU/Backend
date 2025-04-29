@@ -29,7 +29,7 @@ export class AttendanceController {
   }
 
   @Get()
-  @ApiFind('출석 정보 핉터링')
+  @ApiFind('출석 정보 필터링')
   findAll(
     @Query('studentId') studentId?: number,
     @Query('startDate') startDate?: string,
