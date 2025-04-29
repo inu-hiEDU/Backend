@@ -3,10 +3,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import { UserService } from '../user/user.service';
 import { LoginDto } from '../login/login.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private configService: ConfigService,
+  ) {}
 
   async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
     const { email, password } = loginDto;
@@ -23,5 +27,18 @@ export class AuthService {
     const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
     return { accessToken: token };
+  }
+
+  createTestToken(): string {
+    const payload = {
+      sub: 'test-user-id',
+      email: 'test1@gmail.com',
+      name: '박기석',
+    };
+
+    const secret = this.configService.get('JWT_SECRET');
+    const options = { expiresIn: '30d' as const}; // 30일 유효기간
+
+    return jwt.sign(payload, secret, options);
   }
 }
