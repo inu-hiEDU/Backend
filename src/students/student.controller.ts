@@ -11,13 +11,15 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
 import { Roles } from '../auth/roles.decorator';
 import { UserRole } from '../user/user-role.enum';
+import { ApiCreate, ApiGet, ApiUpdate, ApiDelete } from '../swagger_config';
+import { CreateAttendanceDto } from 'src/attendance/dto/create-attendance.dto';
 
 @ApiTags('학생')
 @Controller('students')
@@ -25,9 +27,7 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Post()
-  @ApiOperation({ summary: '학생 정보 생성' })
-  @ApiResponse({ status: 201, description: '성공' })
-  @ApiBody({ type: CreateStudentDto })
+  @ApiCreate('학생 정보 생성', CreateAttendanceDto)
   async createStudent(@Body() dto: CreateStudentDto) {
     return this.studentService.createStudent(dto);
   }
@@ -35,8 +35,8 @@ export class StudentController {
   @Get()
   @ApiOperation({ summary: '학생 전체/학년반별 조회' })
   @ApiResponse({ status: 200, description: '성공' })
-  @ApiQuery({ name: 'grade', type: String, description: '학년' })
-  @ApiQuery({ name: 'class', type: String, description: '반' })
+  @ApiQuery({ name: 'grade', required: false, type: String, description: '학년' })
+  @ApiQuery({ name: 'class', required: false, type: String, description: '반' })
   // @Roles(UserRole.TEACHER)
   async getStudents(
     @Query('grade') grade?: number,
@@ -62,17 +62,13 @@ export class StudentController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '학생 정보 개별 조회' })
-  @ApiResponse({ status: 200, description: '성공' })
-  @ApiParam({ name: 'id', type: String, description: '학생 id' })
+  @ApiGet('학생 정보 개별 조회')
   async getStudent(@Param('id', ParseIntPipe) id: number) {
     return this.studentService.getStudentById(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: '학생 정보 수정' })
-  @ApiResponse({ status: 200, description: '성공' })
-  @ApiParam({ name: 'id', type: String, description: '학생 id' })
+  @ApiUpdate('학생 정보 수정', UpdateStudentDto)
   async updateStudent(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateStudentDto,
@@ -81,9 +77,7 @@ export class StudentController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '학생 정보 삭제' })
-  @ApiResponse({ status: 204, description: '성공' })
-  @ApiParam({ name: 'id', type: String, description: '학생 id' })
+  @ApiDelete('학생 정보 삭제')
   @HttpCode(204)
   async deleteStudent(@Param('id', ParseIntPipe) id: number) {
     return this.studentService.deleteStudent(id);
