@@ -35,4 +35,11 @@ export class AuthController {
   protectedResource() {
     return 'JWT is working!';
   }
+
+  // swagger newman test용 access token 발급
+  @Get('test-token')
+  getTestToken() {
+    const token = this.authService.createTestToken();
+    return { accessToken: token };
+  }
 }
