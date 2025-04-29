@@ -137,7 +137,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/students/?grade=1&class=2",
+							"raw": "{{baseurl}}/students?grade=1&class=2",
 							"host": [
 								"{{baseurl}}"
 							],

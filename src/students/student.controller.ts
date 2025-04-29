@@ -35,8 +35,8 @@ export class StudentController {
   @Get()
   @ApiOperation({ summary: '학생 전체/학년반별 조회' })
   @ApiResponse({ status: 200, description: '성공' })
-  @ApiQuery({ name: 'grade', type: String, description: '학년' })
-  @ApiQuery({ name: 'class', type: String, description: '반' })
+  @ApiQuery({ name: 'grade', required: false, type: String, description: '학년' })
+  @ApiQuery({ name: 'class', required: false, type: String, description: '반' })
   // @Roles(UserRole.TEACHER)
   async getStudents(
     @Query('grade') grade?: number,

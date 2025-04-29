@@ -2,16 +2,41 @@ import { DocumentBuilder } from '@nestjs/swagger';
 import { applyDecorators } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
 
+const TEST_TOKEN = '테스트용 토큰';
+
 // 전체 Swagger 문서 설정
 export function swaggerConfig() {
-  return new DocumentBuilder()
+  const documentConfig = new DocumentBuilder()
     .setTitle('HiEdu')
     .setDescription('swagger')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
+
+  const swaggerOptions = {
+    swaggerOptions: {
+      authAction: {
+        bearer: {
+          name: 'Authorization',
+          schema: {
+            type: 'http',
+            in: 'header',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
+          value: TEST_TOKEN, // 여기 자동 토큰
+        },
+      },
+    },
+  };
+
+  return { documentConfig, swaggerOptions };
 }
 
 // 메소드별 Swagger 데코레이터
+// @ApiBearerAuth() <- 인증토큰이 필요한 api에 추가하기
+// @ApiHideProperty() <- dto 필드 숨길 때
+// @ApiExcludeEndpoint() <- 엔드포인트 숨길 때
 
 export function ApiCreate(summary: string, dto: any) {
   return applyDecorators(
