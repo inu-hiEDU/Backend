@@ -10,7 +10,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientSecret: process.env.GOOGLE_SECRET, // by .env
       callbackURL: 'http://localhost:3000/auth/google/callback', // redirection URI
       passReqToCallback: true,
-      scope: ['profile', 'email'], // 가져올 정보(여기서 더 가져오기는 힘듬 권한 문제)
+      scope: ['profile', 'email'],
     });
   }
 
