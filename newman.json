@@ -1006,13 +1006,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseurl}}/students/info/{{student_id}}",
+					"raw": "{{baseurl}}/students/{{student_id}}",
 					"host": [
 						"{{baseurl}}"
 					],
 					"path": [
 						"students",
-						"info",
 						"{{student_id}}"
 					]
 				}

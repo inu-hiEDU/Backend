@@ -12,7 +12,8 @@ import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { ScoresService } from './score.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiGet, ApiUpdate} from '../swagger_config';
 
 @ApiTags('성적')
 @Controller('scores')
@@ -21,9 +22,7 @@ export class ScoresController {
 
   // 과목별 성적 입력 (처음 생성 또는 업데이트)
   @Patch()
-  @ApiOperation({ summary: '성적 정보 생성 및 수정' })
-  @ApiResponse({ status: 200, description: '성공' })
-  @ApiBody({ type: CreateScoreDto })
+  @ApiUpdate('성적 정보 생성 및 수정', CreateScoreDto)
   async createScore(@Body() dto: CreateScoreDto) {
     console.log(dto);
     return this.scoresService.createScore(dto);
@@ -31,9 +30,7 @@ export class ScoresController {
 
   // 개별 학생 성적 조회
   @Get()
-  @ApiOperation({ summary: '성적 학생별 조회' })
-  @ApiResponse({ status: 200, description: '성공' })
-  @ApiQuery({ name: 'studentId', type: String, description: '학생 id' })
+  @ApiGet('성적 학생별 조회')
   async getStudentScores(@Query() query: GetScoreDto) {
     return this.scoresService.getStudentScore(query);
   }
