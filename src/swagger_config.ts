@@ -15,6 +15,7 @@ export function swaggerConfig() {
 
   const swaggerOptions = {
     swaggerOptions: {
+      defaultModelsExpandDepth: -1,
       authAction: {
         bearer: {
           name: 'Authorization',
@@ -35,8 +36,6 @@ export function swaggerConfig() {
 
 // 메소드별 Swagger 데코레이터
 // @ApiBearerAuth() <- 인증토큰이 필요한 api에 추가하기
-// @ApiHideProperty() <- dto 필드 숨길 때
-// @ApiExcludeEndpoint() <- 엔드포인트 숨길 때
 
 export function ApiCreate(summary: string, dto: any) {
   return applyDecorators(
