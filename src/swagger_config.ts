@@ -54,7 +54,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'Bearer {eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTc0NTk5NjY4MSwiZXhwIjoxNzQ4NTg4NjgxfQ.5NOKU7r2WsM4efqoOgHnFM67eH0TSG3X6EE5nlkOwB8'
+          value: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTc0NTk5NjY4MSwiZXhwIjoxNzQ4NTg4NjgxfQ.5NOKU7r2WsM4efqoOgHnFM67eH0TSG3X6EE5nlkOwB8'
         },
         student: {
           name: 'Authorization',
