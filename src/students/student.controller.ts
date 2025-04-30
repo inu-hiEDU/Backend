@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
@@ -37,7 +37,8 @@ export class StudentController {
   @ApiResponse({ status: 200, description: '성공' })
   @ApiQuery({ name: 'grade', required: false, type: String, description: '학년' })
   @ApiQuery({ name: 'class', required: false, type: String, description: '반' })
-  // @Roles(UserRole.TEACHER)
+  @Roles(UserRole.TEACHER)
+  @ApiBearerAuth('teacher')
   async getStudents(
     @Query('grade') grade?: number,
     @Query('class') classroom?: number,
@@ -62,12 +63,16 @@ export class StudentController {
   }
 
   @Get(':id')
+  @Roles(UserRole.TEACHER)
+  @ApiBearerAuth('teacher')
   @ApiGet('학생 정보 개별 조회')
   async getStudent(@Param('id', ParseIntPipe) id: number) {
     return this.studentService.getStudentById(id);
   }
 
   @Patch(':id')
+  @Roles(UserRole.TEACHER)
+  @ApiBearerAuth('teacher')
   @ApiUpdate('학생 정보 수정', UpdateStudentDto)
   async updateStudent(
     @Param('id', ParseIntPipe) id: number,
@@ -77,6 +82,8 @@ export class StudentController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.TEACHER)
+  @ApiBearerAuth('teacher')
   @ApiDelete('학생 정보 삭제')
   @HttpCode(204)
   async deleteStudent(@Param('id', ParseIntPipe) id: number) {

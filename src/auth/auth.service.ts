@@ -34,6 +34,7 @@ export class AuthService {
       sub: 'test-user-id',
       email: 'test1@gmail.com',
       name: '박기석',
+      role: 'teacher'
     };
 
     const secret = this.configService.get('JWT_SECRET');
