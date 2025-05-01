@@ -54,7 +54,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTc0NTk5NjY4MSwiZXhwIjoxNzQ4NTg4NjgxfQ.5NOKU7r2WsM4efqoOgHnFM67eH0TSG3X6EE5nlkOwB8'
+          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTc0NjA5NDExOCwiZXhwIjoxNzQ4Njg2MTE4fQ.dodBCcmVND3QRpAhFxVdAP--rTzSDMwBE5Cyz_F7rb8'
         },
         student: {
           name: 'Authorization',
@@ -64,7 +64,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTc0NjA5MDAxNiwiZXhwIjoxNzQ4NjgyMDE2fQ.geJk1I48M6T8SsCziDpckhT4Lhv9YMDQsu5VeCe0aI4',
+          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTc0NjA5MDAxNiwiZXhwIjoxNzQ4NjgyMDE2fQ.geJk1I48M6T8SsCziDpckhT4Lhv9YMDQsu5VeCe0aI4',
         },
         parent: {
           name: 'Authorization',
@@ -74,7 +74,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoicGFyZW50IiwiaWF0IjoxNzQ2MDkwMDczLCJleHAiOjE3NDg2ODIwNzN9.Nfm3vRb2AzkGmrs79pgoupBhZvidXoq-ioPWU31WI8w',
+          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoicGFyZW50IiwiaWF0IjoxNzQ2MDkwMDczLCJleHAiOjE3NDg2ODIwNzN9.Nfm3vRb2AzkGmrs79pgoupBhZvidXoq-ioPWU31WI8w',
         },
       },
     },
