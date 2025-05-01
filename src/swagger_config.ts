@@ -64,7 +64,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'Bearer {student-token-value}',
+          value: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTc0NjA5MDAxNiwiZXhwIjoxNzQ4NjgyMDE2fQ.geJk1I48M6T8SsCziDpckhT4Lhv9YMDQsu5VeCe0aI4',
         },
         parent: {
           name: 'Authorization',
@@ -74,7 +74,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'Bearer {admin-token-value}',
+          value: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoicGFyZW50IiwiaWF0IjoxNzQ2MDkwMDczLCJleHAiOjE3NDg2ODIwNzN9.Nfm3vRb2AzkGmrs79pgoupBhZvidXoq-ioPWU31WI8w',
         },
       },
     },

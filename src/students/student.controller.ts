@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
@@ -18,6 +19,8 @@ import { Student } from './student.entity';
 import { StudentService } from './student.service';
 import { Roles } from '../auth/roles.decorator';
 import { UserRole } from '../user/user-role.enum';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
 import { ApiCreate, ApiGet, ApiUpdate, ApiDelete } from '../swagger_config';
 import { CreateAttendanceDto } from 'src/attendance/dto/create-attendance.dto';
 
@@ -32,6 +35,7 @@ export class StudentController {
     return this.studentService.createStudent(dto);
   }
   
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   @ApiOperation({ summary: '학생 전체/학년반별 조회' })
   @ApiResponse({ status: 200, description: '성공' })
