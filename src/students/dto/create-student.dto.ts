@@ -1,23 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStudentDto {
-
-  @ApiProperty({ description: '학번' , example: '20202' })
+  @ApiProperty({ description: '학번', example: '20202' })
   studentNum: number;
 
-  @ApiProperty({ description: '이름' , example: '홍길동' })
+  @ApiProperty({ description: '이름', example: '홍길동' })
   name: string;
 
-  @ApiProperty({ description: '학년' , example: '2' })
+  @ApiProperty({ description: '학년', example: '2' })
   grade: number;
 
-  @ApiProperty({ description: '반' , example: '2' })
+  @ApiProperty({ description: '반', example: '2' })
   classroom: number;
-  
-  @ApiProperty({ description: '전화번호' , example: '010-2020-2020' })
+
+  @ApiProperty({ description: '전화번호', example: '010-2020-2020' })
   phoneNum: string;
 
-  @ApiProperty({ description: '생일' , example: '2020-02-02' })
+  @ApiProperty({ description: '생일', example: '2020-02-02' })
   birthday: string;
-  
 }

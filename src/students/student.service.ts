@@ -34,5 +34,4 @@ export class StudentService {
   ): Promise<Student[]> {
     return this.studentRepository.findByGradeAndClassroom(grade, classroom);
   }
-  
 }

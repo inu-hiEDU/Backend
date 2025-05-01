@@ -3,17 +3,17 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   ParseIntPipe,
   Patch,
   Query,
-  HttpCode
 } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiGet, ApiUpdate } from '../swagger_config';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { ScoresService } from './score.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
-import { ApiGet, ApiUpdate} from '../swagger_config';
 
 @ApiTags('성적')
 @Controller('scores')
