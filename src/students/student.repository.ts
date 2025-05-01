@@ -41,7 +41,7 @@ export class StudentRepository {
       .where('student.grade = :grade', { grade })
       .andWhere('student.classroom = :classroom', { classroom })
       .getMany();
-  
+
     return students;
   }
 }

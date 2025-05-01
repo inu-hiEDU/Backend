@@ -11,15 +11,15 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateAttendanceDto } from 'src/attendance/dto/create-attendance.dto';
+import { Roles } from '../auth/roles.decorator';
+import { ApiCreate, ApiDelete, ApiGet, ApiUpdate } from '../swagger_config';
+import { UserRole } from '../user/user-role.enum';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
-import { Roles } from '../auth/roles.decorator';
-import { UserRole } from '../user/user-role.enum';
-import { ApiCreate, ApiGet, ApiUpdate, ApiDelete } from '../swagger_config';
-import { CreateAttendanceDto } from 'src/attendance/dto/create-attendance.dto';
 
 @ApiTags('학생')
 @Controller('students')
@@ -31,11 +31,16 @@ export class StudentController {
   async createStudent(@Body() dto: CreateStudentDto) {
     return this.studentService.createStudent(dto);
   }
-  
+
   @Get()
   @ApiOperation({ summary: '학생 전체/학년반별 조회' })
   @ApiResponse({ status: 200, description: '성공' })
-  @ApiQuery({ name: 'grade', required: false, type: String, description: '학년' })
+  @ApiQuery({
+    name: 'grade',
+    required: false,
+    type: String,
+    description: '학년',
+  })
   @ApiQuery({ name: 'class', required: false, type: String, description: '반' })
   // @Roles(UserRole.TEACHER)
   async getStudents(
@@ -43,7 +48,10 @@ export class StudentController {
     @Query('class') classroom?: number,
   ): Promise<Student[]> {
     if (grade && classroom) {
-      return this.studentService.getStudentIdsByGradeAndClassroom(grade, classroom);
+      return this.studentService.getStudentIdsByGradeAndClassroom(
+        grade,
+        classroom,
+      );
     } else {
       return this.studentService.getAllStudents();
     }

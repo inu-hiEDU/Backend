@@ -1,6 +1,12 @@
-import { DocumentBuilder } from '@nestjs/swagger';
 import { applyDecorators } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  DocumentBuilder,
+} from '@nestjs/swagger';
 
 const TEST_TOKEN = '테스트용 토큰';
 
@@ -49,9 +55,24 @@ export function ApiFind(summary: string) {
   return applyDecorators(
     ApiOperation({ summary }),
     ApiResponse({ status: 200, description: '성공' }),
-    ApiQuery({ name: 'studentId', type: String, description: '학생 id', required: false }),
-    ApiQuery({ name: 'startDate', type: String, description: '시작 날짜', required: false }),
-    ApiQuery({ name: 'endDate', type: String, description: '마지막 날짜', required: false }),
+    ApiQuery({
+      name: 'studentId',
+      type: String,
+      description: '학생 id',
+      required: false,
+    }),
+    ApiQuery({
+      name: 'startDate',
+      type: String,
+      description: '시작 날짜',
+      required: false,
+    }),
+    ApiQuery({
+      name: 'endDate',
+      type: String,
+      description: '마지막 날짜',
+      required: false,
+    }),
   );
 }
 
