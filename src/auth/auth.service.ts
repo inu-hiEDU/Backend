@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     // JWT 생성
-    const payload = { sub: user.id, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: '1h',
     });
