@@ -10,18 +10,21 @@ export class MainController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getMainData(@Req() req: AuthRequest) {
-    const user = req.user;
+    // const user = req.user;
 
-    const userInfo = await this.userService.findUserById(Number(user.userId));
+    // const userInfo = await this.userService.findUserById(Number(user.userId));
 
-    return {
-      message: `어서오세요! ${userInfo.name}`,
-      userInfo: {
-        id: userInfo.id,
-        name: userInfo.name,
-        email: userInfo.email,
-        role: userInfo.role,
-      },
-    };
+    // return {
+    //   message: `어서오세요! ${userInfo.name}`,
+    //   userInfo: {
+    //     id: userInfo.id,
+    //     name: userInfo.name,
+    //     email: userInfo.email,
+    //     role: userInfo.role,
+    //   },
+    // };
+
+    console.log(req.user); // user로 대체
+    return req.user;
   }
 }
