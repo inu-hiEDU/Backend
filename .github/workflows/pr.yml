@@ -60,6 +60,7 @@ jobs:
           export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
           export GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}
           node dist/main.js &  # 빌드된 파일 실행
+          echo "next step"
           npx wait-on http://localhost:3000
 
           newman run newman.json --reporters cli,json \
