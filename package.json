@@ -38,6 +38,7 @@
     "express-basic-auth": "^1.2.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.0",
+    "newman": "^6.2.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",

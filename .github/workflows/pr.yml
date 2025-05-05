@@ -35,11 +35,17 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Newman
+      - name: Install Dependencies
         run: |
-          npm install -g newman
+          npm install
+          npm install -g newman  # 또는 local이면 npm run test에서 실행되게 구성
 
-      - name: Run Postman Collection with Newman
+      - name: Start App (background)
+        run: |
+          npm run start &  # 서버가 실행 중이어야 newman 테스트가 성공
+          sleep 5          # 서버 부팅 대기 (필요 시 더 늘릴 수 있음)
+
+      - name: Run Postman Tests with Newman
         run: |
           newman run newman.json --reporters cli,json \
           --reporter-json-export newman-report.json
