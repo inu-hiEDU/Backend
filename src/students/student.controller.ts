@@ -35,14 +35,11 @@ export class StudentController {
     return this.studentService.createStudent(dto);
   }
   
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   @ApiOperation({ summary: '학생 전체/학년반별 조회' })
   @ApiResponse({ status: 200, description: '성공' })
   @ApiQuery({ name: 'grade', required: false, type: String, description: '학년' })
   @ApiQuery({ name: 'class', required: false, type: String, description: '반' })
-  @Roles(UserRole.TEACHER)
-  @ApiBearerAuth('teacher')
   async getStudents(
     @Query('grade') grade?: number,
     @Query('class') classroom?: number,
@@ -55,28 +52,22 @@ export class StudentController {
   }
 
   @Get('my-grade')
-  @Roles(UserRole.STUDENT)
   async getMyGrade(@Query('studentId') studentId: number) {
     return this.studentService.getStudentById(studentId);
   }
 
   @Get('child-grade')
-  @Roles(UserRole.PARENT)
   async getChildGrade(@Query('childId') childId: number) {
     return this.studentService.getStudentById(childId);
   }
 
   @Get(':id')
-  @Roles(UserRole.TEACHER)
-  @ApiBearerAuth('teacher')
   @ApiGet('학생 정보 개별 조회')
   async getStudent(@Param('id', ParseIntPipe) id: number) {
     return this.studentService.getStudentById(id);
   }
 
   @Patch(':id')
-  @Roles(UserRole.TEACHER)
-  @ApiBearerAuth('teacher')
   @ApiUpdate('학생 정보 수정', UpdateStudentDto)
   async updateStudent(
     @Param('id', ParseIntPipe) id: number,
@@ -86,8 +77,6 @@ export class StudentController {
   }
 
   @Delete(':id')
-  @Roles(UserRole.TEACHER)
-  @ApiBearerAuth('teacher')
   @ApiDelete('학생 정보 삭제')
   @HttpCode(204)
   async deleteStudent(@Param('id', ParseIntPipe) id: number) {
