@@ -64,7 +64,7 @@ jobs:
 
             PORT=${{ secrets.PORT }} node dist/main.js &
           wait-on: |
-            http://127.0.0.1:${{ secrets.PORT }}
+            http://[::1]:${{ secrets.PORT }}
           wait-for: 1m
           tail: true
           log-output-if: failure
