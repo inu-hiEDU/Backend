@@ -30,13 +30,29 @@ jobs:
       #       flags: unittests # optional
       #       name: codecov-coverage
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Newman
+        run: |
+          npm install -g newman
+
+      - name: Run Postman Collection with Newman
+        run: |
+          newman run newman.json --reporters cli,json \
+          --reporter-json-export newman-report.json
+
       - name: Show build number
         run: |
           echo "Build Number: ${{ github.run_number }}"
+
       - name: Show pull request number
         if: ${{ github.event_name == 'pull_request' }}
         run: |
           echo "PR Number: ${{ github.event.pull_request.number }}"
+
       - name: Set Docker Image Tag
         id: set_docker_image_tag
         env:
