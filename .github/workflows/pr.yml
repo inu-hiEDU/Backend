@@ -62,9 +62,9 @@ jobs:
             export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             export GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}
 
-            PORT=${{ env.PORT }} node dist/main.js &
+            PORT=${{ secrets.PORT }} node dist/main.js &
           wait-on: |
-            http://localhost:${{ env.PORT }}
+            http://127.0.0.1:${{ secrets.PORT }}
           wait-for: 20s
           tail: true
           log-output-if: failure
