@@ -59,10 +59,12 @@ jobs:
           export JWT_SECRET=${{ secrets.JWT_SECRET }}
           export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
           export GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}
-          node dist/main.js & npx wait-on http://127.0.0.1:3000
 
+          nohup node dist/main.js > app.log 2>&1 &
+          sleep 3
+          npx wait-on http://127.0.0.1:3000
           newman run newman.json --reporters cli,json \
-          --reporter-json-export newman-report.json
+            --reporter-json-export newman-report.json
 
       # - name: Run Postman Tests with Newman
       #   run: |
