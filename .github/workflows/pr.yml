@@ -63,9 +63,9 @@ jobs:
             export GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}
 
             PORT=${{ secrets.PORT }} node dist/main.js &
-          wait-on: |
-            http://[::1]:${{ secrets.PORT }}
-          wait-for: 1m
+          # wait-on: |
+          #   http://localhost:${{ secrets.PORT }}
+          wait-for: 30s
           tail: true
           log-output-if: failure
           working-directory:
