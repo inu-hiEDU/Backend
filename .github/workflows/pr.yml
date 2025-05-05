@@ -38,6 +38,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm ci
+          npm install
           npm install -g newman  # 또는 local이면 npm run test에서 실행되게 구성
 
       - name: Start App (background)
