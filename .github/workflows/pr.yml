@@ -33,17 +33,19 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install Dependencies
         run: |
           npm ci
-          npm install
-          npm install -g newman  # 또는 local이면 npm run test에서 실행되게 구성
+          npm install -g newman
+
+      - name: Build App
+        run: npm run build
 
       - name: Start App (background)
         run: |
-          npm run start &  # 서버가 실행 중이어야 newman 테스트가 성공
+          node dist/main.js &  # 빌드된 파일 실행
           npx wait-on http://localhost:3000
 
       - name: Run Postman Tests with Newman
