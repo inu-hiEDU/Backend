@@ -62,12 +62,12 @@ jobs:
             export JWT_SECRET=${{ secrets.JWT_SECRET }}
             export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             export GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}
+            node dist/main.js
           with:
-          run: node dist/main.js
-          wait-on: http://localhost:3000
-          wait-for: 60s
-          tail: true
-          log-output-if: failure
+            wait-on: http://localhost:3000
+            wait-for: 60s
+            tail: true
+            log-output-if: failure
 
       - name: Run Postman Tests with Newman
         run: |
