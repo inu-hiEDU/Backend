@@ -30,8 +30,6 @@ import { AuthRequest } from '../auth/auth-request.interface';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @ApiOperation({ summary: '학생 등록' })
-  @ApiBody({ type: CreateStudentDto })
   @Post()
   @ApiCreate('학생 정보 생성', CreateStudentDto)
   async createStudent(@Body() dto: CreateStudentDto) {
