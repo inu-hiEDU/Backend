@@ -19,7 +19,7 @@ export class TeacherController {
     @Body() data: CreateTeacherDto,
     @Req() req: AuthRequest,
   ): Promise<Teacher> {
-    const userId = Number(req.user.userId); // userId를 number로 변환
+    const userId = Number(req.user.userId);
     if (isNaN(userId)) {
       throw new Error('Invalid userId');
     }
