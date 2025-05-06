@@ -824,9 +824,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseurl}}/scores/class?grade=1&semester=1&class=5",
+              "raw": "{{baseurl}}/scores/classroom?grade=1&classroom=2&semester=1",
               "host": ["{{baseurl}}"],
-              "path": ["scores", "class"],
+              "path": ["scores", "classroom"],
               "query": [
                 {
                   "key": "grade",
@@ -837,8 +837,8 @@
                   "value": "1"
                 },
                 {
-                  "key": "class",
-                  "value": "5"
+                  "key": "classroom",
+                  "value": "2"
                 }
               ]
             }
@@ -949,7 +949,7 @@
   "variable": [
     {
       "key": "baseurl",
-      "value": "http://127.0.0.1:3000",
+      "value": "http://127.0.0.1:3000/api",
       "type": "string"
     },
     {
