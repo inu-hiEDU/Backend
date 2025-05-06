@@ -10,7 +10,7 @@ async function bootstrap() {
   // Swagger 인증을 환경변수 기반으로 처리
   if (process.env.SWAGGER_USER && process.env.SWAGGER_PASS) {
     app.use(
-      ['/swagger', '/swagger-json'],
+      ['/api/swagger', '/api/swagger-json'],
       basicAuth({
         challenge: true,
         users: {
