@@ -1,0 +1,101 @@
+name: Prod CI
+
+on:
+  push:
+    branches:
+      - main # 메인 브렌치에 브랜치 머지 시 자동으로 실행
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      #       - name: Set up Node
+      #         uses: actions/setup-node@v4
+      #         with:
+      #           node-version: '18'
+
+      #       - name: Install Dependencies
+      #         run: |
+      #           npm install
+
+      #       # - name: Run Tests and Generate Coverage
+      #       #   run: |
+      #       #       npm run test:cov
+
+      #       # - name: Upload coverage to Codecov
+      #       #   uses: codecov/codecov-action@v4
+      #       #   with:
+      #       #       token: ${{ secrets.CODECOV_TOKEN }}
+      #       #       flags: unittests # optional
+      #       #       name: codecov-coverage
+
+      # - name: Set up Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+
+      # - name: Install Dependencies
+      #   run: |
+      #     npm ci
+      #     npm install -g newman
+
+      # - name: Build App
+      #   run: npm run build
+
+      # - name: Start App (background)
+      #   run: |
+      #     node dist/main.js &  # 빌드된 파일 실행
+      #     npx wait-on http://localhost:3000
+
+      # - name: Run Postman Tests with Newman
+      #   run: |
+      #     newman run newman.json --reporters cli,json \
+      #     --reporter-json-export newman-report.json
+
+      - name: Show build number
+        run: |
+          echo "Build Number: ${{ github.run_number }}"
+
+      - name: Show pull request number
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+
+      - name: Get PR Number for Main Branch Merge
+        id: get_pr_number
+        if: github.ref == 'refs/heads/main'
+        run: |
+          PR_NUMBER=$(gh pr list --repo ${{ github.repository }} --state closed --json number,mergeCommit --jq ".[] | select(.mergeCommit.oid == \"${{ github.sha }}\") | .number")
+          echo "PR_NUMBER=${PR_NUMBER}"
+          echo "PR_NUMBER"="${PR_NUMBER}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Docker Image Tag
+        id: set_docker_image_tag
+        env:
+          PR_NUMBER: ${{ steps.get_pr_number.outputs.PR_NUMBER }}
+        run: |
+          DOCKER_IMAGE_TAG="1.1.$PR_NUMBER"
+          echo "Docker Image Tag: $DOCKER_IMAGE_TAG"
+          echo "DOCKER_IMAGE_TAG"="${DOCKER_IMAGE_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        env:
+          DOCKER_IMAGE_TAG: ${{ steps.set_docker_image_tag.outputs.DOCKER_IMAGE_TAG }}
+        run: |
+          docker buildx create --use
+          docker buildx build \
+            --platform linux/amd64 \
+            --push \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/hiedu:$DOCKER_IMAGE_TAG .

@@ -1,9 +1,9 @@
-import * as bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken';
-import { UserService } from '../user/user.service';
-import { LoginDto } from '../login/login.dto';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import { LoginDto } from '../login/login.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -19,12 +19,16 @@ export class AuthService {
     const user = await this.userService.findUserByEmail(email);
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('이메일 또는 비밀번호가 올바르지 않습니다.');
+      throw new UnauthorizedException(
+        '이메일 또는 비밀번호가 올바르지 않습니다.',
+      );
     }
 
     // JWT 생성
-    const payload = { sub: user.id, role: user.role };
-    const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    const payload = { sub: user.id, email: user.email, role: user.role };
+    const token = jwt.sign(payload, process.env.JWT_SECRET!, {
+      expiresIn: '1h',
+    });
 
     return { accessToken: token };
   }
@@ -38,7 +42,7 @@ export class AuthService {
     };
 
     const secret = this.configService.get('JWT_SECRET');
-    const options = { expiresIn: '30d' as const}; // 30일 유효기간
+    const options = { expiresIn: '30d' as const }; // 30일 유효기간
 
     return jwt.sign(payload, secret, options);
   }

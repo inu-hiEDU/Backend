@@ -3,25 +3,31 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   Query,
-  HttpCode
 } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreate,
+  ApiDelete,
+  ApiFind,
+  ApiGet,
+  ApiUpdate,
+} from '../swagger_config';
 import { CounselService } from './counsel.service';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
-import { ApiCreate, ApiFind, ApiGet, ApiUpdate, ApiDelete } from '../swagger_config';
 
 // import { Roles } from '../auth/roles.decorator';
 // import { UserRole } from '../user/user-role.enum';
 
 @ApiTags('상담')
-@Controller('counsels')
+@Controller('api/counsels')
 export class CounselController {
   constructor(private readonly counselService: CounselService) {}
 

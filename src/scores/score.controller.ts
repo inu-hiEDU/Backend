@@ -3,20 +3,20 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   ParseIntPipe,
   Patch,
   Query,
-  HttpCode
 } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiGet, ApiUpdate } from '../swagger_config';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { ScoresService } from './score.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
-import { ApiGet, ApiUpdate} from '../swagger_config';
 
 @ApiTags('성적')
-@Controller('scores')
+@Controller('api/scores')
 export class ScoresController {
   constructor(private readonly scoresService: ScoresService) {}
 
@@ -36,12 +36,12 @@ export class ScoresController {
   }
 
   // 반 전체 성적 조회
-  @Get('class')
+  @Get('classroom')
   @ApiOperation({ summary: '성적 반별 조회' })
   @ApiResponse({ status: 200, description: '성공' })
   @ApiQuery({ name: 'grade', type: String, description: '학년' })
   @ApiQuery({ name: 'semester', type: String, description: '학기' })
-  @ApiQuery({ name: 'class', type: String, description: '반' })
+  @ApiQuery({ name: 'classroom', type: String, description: '반' })
   async getClassScores(@Query() query: GetClassScoreDto) {
     return this.scoresService.getClassScore(query);
   }

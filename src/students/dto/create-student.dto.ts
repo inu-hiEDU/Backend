@@ -1,23 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 
 export class CreateStudentDto {
+  @ApiProperty({ description: '학번', example: 2025001 })
+  @IsNotEmpty()
+  @IsNumber()
+  studentNum: number; // 타입을 number로 변경
 
-  @ApiProperty({ description: '학번' , example: '20202' })
-  studentNum: number;
-
-  @ApiProperty({ description: '이름' , example: '홍길동' })
+  @ApiProperty({ description: '이름', example: '홍길동' })
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
-  @ApiProperty({ description: '학년' , example: '2' })
-  grade: number;
-
-  @ApiProperty({ description: '반' , example: '2' })
-  classroom: number;
-  
-  @ApiProperty({ description: '전화번호' , example: '010-2020-2020' })
+  @ApiProperty({ description: '전화번호', example: '010-1234-5678' })
+  @IsNotEmpty()
+  @IsString()
   phoneNum: string;
 
-  @ApiProperty({ description: '생일' , example: '2020-02-02' })
+  @ApiProperty({ description: '생년월일', example: '2000-01-01' })
+  @IsNotEmpty()
+  @IsString()
   birthday: string;
-  
 }

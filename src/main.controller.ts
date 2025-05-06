@@ -1,29 +1,30 @@
-import { Controller, Get, UseGuards, Req } from '@nestjs/common';
-import { JwtAuthGuard } from './auth/jwt.guard';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthRequest } from './auth/auth-request.interface';
+import { JwtAuthGuard } from './auth/jwt.guard';
 import { UserService } from './user/user.service';
 
 @Controller('main')
 export class MainController {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
   async getMainData(@Req() req: AuthRequest) {
-    const user = req.user;
+    // const user = req.user;
 
-    const userInfo = await this.userService.findUserById(Number(user.userId));
+    // const userInfo = await this.userService.findUserById(Number(user.userId));
 
-    return {
-      message: `어서오세요! ${userInfo.name}`,
-      userInfo: {
-        id: userInfo.id,
-        name: userInfo.name,
-        email: userInfo.email,
-        role: userInfo.role,
-      },
-    };
+    // return {
+    //   message: `어서오세요! ${userInfo.name}`,
+    //   userInfo: {
+    //     id: userInfo.id,
+    //     name: userInfo.name,
+    //     email: userInfo.email,
+    //     role: userInfo.role,
+    //   },
+    // };
+
+    console.log(req.user); // user로 대체
+    return req.user;
   }
 }
