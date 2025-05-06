@@ -1,1061 +1,966 @@
 {
-	"info": {
-		"_postman_id": "86729178-5b39-48de-a219-3880bdb96271",
-		"name": "project",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "43614315",
-		"_collection_link": "https://bymile.postman.co/workspace/efc1ba82-9753-477c-820b-777d5611f708/collection/43614315-86729178-5b39-48de-a219-3880bdb96271?action=share&source=collection_link&creator=43614315"
-	},
-	"item": [
-		{
-			"name": "student",
-			"item": [
-				{
-					"name": "학생 정보 등록",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"POST 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"student_id\", jsonData.id);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"studentNum\": 1,\r\n    \"name\": \"학생3\",\r\n    \"grade\": 1,\r\n    \"classroom\": 2,\r\n    \"phoneNum\": \"010-9876-5432\",\r\n    \"birthday\": \"2001-02-02\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/students",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"students"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "학생 전체 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/students",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"students"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "학생 학년반별 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/students?grade=1&class=2",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"students"
-							],
-							"query": [
-								{
-									"key": "grade",
-									"value": "1"
-								},
-								{
-									"key": "class",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "학생 정보 수정",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"grade\": 1,\r\n    \"classroom\": 5\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/students/{{student_id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"students",
-								"{{student_id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "attendance",
-			"item": [
-				{
-					"name": "출결 정보 등록",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"POST 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"id\", jsonData.id);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"studentId\": {{student_id}},\r\n  \"date\": \"2025-04-20\",\r\n  \"status\": \"출석\",\r\n  \"note\": \"\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/attendances",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"attendances"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "출결 전체 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/attendances",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"attendances"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "출결 학생별 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/attendances?studentId={{student_id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"attendances"
-							],
-							"query": [
-								{
-									"key": "studentId",
-									"value": "{{student_id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "출결 학생별 기간별 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/attendances?studentId={{student_id}}&startDate=2025-04-16&endDate=2025-04-18",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"attendances"
-							],
-							"query": [
-								{
-									"key": "studentId",
-									"value": "{{student_id}}"
-								},
-								{
-									"key": "startDate",
-									"value": "2025-04-16"
-								},
-								{
-									"key": "endDate",
-									"value": "2025-04-18"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "출결 정보 수정",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/attendances/{{id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"attendances",
-								"{{id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "출결 정보 삭제",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(204);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/attendances/{{id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"attendances",
-								"{{id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "counsel",
-			"item": [
-				{
-					"name": "상담 정보 등록",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"POST 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"id\", jsonData.id);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"studentId\" : {{student_id}},\r\n    \"date\" : \"2025-04-15\",\r\n    \"content\" : \"진로 상담\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/counsels",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"counsels"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "상담 전체 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/counsels",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"counsels"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "상담 힉생별 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/counsels?studentId={{student_id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"counsels"
-							],
-							"query": [
-								{
-									"key": "studentId",
-									"value": "{{student_id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "상담 힉생별 기간별 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/counsels?studentId={{student_id}}&startDate=2025-04-16&endDate=2025-04-18",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"counsels"
-							],
-							"query": [
-								{
-									"key": "studentId",
-									"value": "{{student_id}}"
-								},
-								{
-									"key": "startDate",
-									"value": "2025-04-16"
-								},
-								{
-									"key": "endDate",
-									"value": "2025-04-18"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "상담 정보 수정",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/counsels/{{id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"counsels",
-								"{{id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "상담 정보 삭제",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(204);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/counsels/{{id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"counsels",
-								"{{id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "score",
-			"item": [
-				{
-					"name": "성적 등록 및 수정",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"id\", jsonData.id);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"studentId\": {{student_id}},\n  \"grade\": 1,\n  \"semester\": 1,\n  \"subject1\": 98\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseurl}}/scores",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"scores"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "학생 성적 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/scores?studentId={{student_id}}",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"scores"
-							],
-							"query": [
-								{
-									"key": "studentId",
-									"value": "{{student_id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "반 전체 성적 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/scores/class?grade=1&semester=1&class=5",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"scores",
-								"class"
-							],
-							"query": [
-								{
-									"key": "grade",
-									"value": "1"
-								},
-								{
-									"key": "semester",
-									"value": "1"
-								},
-								{
-									"key": "class",
-									"value": "5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "성적 삭제",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
-									"    pm.response.to.have.status(204);\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseurl}}/scores?studentId={{student_id}}&grade=1&semester=1",
-							"host": [
-								"{{baseurl}}"
-							],
-							"path": [
-								"scores"
-							],
-							"query": [
-								{
-									"key": "studentId",
-									"value": "{{student_id}}"
-								},
-								{
-									"key": "grade",
-									"value": "1"
-								},
-								{
-									"key": "semester",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "학생 정보 삭제",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
-							"    pm.response.to.have.status(204);\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/students/{{student_id}}",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"students",
-						"{{student_id}}"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseurl",
-			"value": "http://localhost:3000",
-			"type": "string"
-		},
-		{
-			"key": "student_id",
-			"value": "0",
-			"type": "default"
-		},
-		{
-			"key": "id",
-			"value": "0",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "86729178-5b39-48de-a219-3880bdb96271",
+    "name": "project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43614315",
+    "_collection_link": "https://bymile.postman.co/workspace/efc1ba82-9753-477c-820b-777d5611f708/collection/43614315-86729178-5b39-48de-a219-3880bdb96271?action=share&source=collection_link&creator=43614315"
+  },
+  "item": [
+    {
+      "name": "student",
+      "item": [
+        {
+          "name": "학생 정보 등록",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"POST 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "var jsonData = pm.response.json();\r",
+                  "pm.collectionVariables.set(\"student_id\", jsonData.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"studentNum\": 1,\r\n    \"name\": \"학생3\",\r\n    \"grade\": 1,\r\n    \"classroom\": 2,\r\n    \"phoneNum\": \"010-9876-5432\",\r\n    \"birthday\": \"2001-02-02\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/students",
+              "host": ["{{baseurl}}"],
+              "path": ["students"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "학생 전체 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/students",
+              "host": ["{{baseurl}}"],
+              "path": ["students"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "학생 학년반별 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/students?grade=1&class=2",
+              "host": ["{{baseurl}}"],
+              "path": ["students"],
+              "query": [
+                {
+                  "key": "grade",
+                  "value": "1"
+                },
+                {
+                  "key": "class",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "학생 정보 수정",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"grade\": 1,\r\n    \"classroom\": 5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/students/{{student_id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["students", "{{student_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "attendance",
+      "item": [
+        {
+          "name": "출결 정보 등록",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"POST 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "var jsonData = pm.response.json();\r",
+                  "pm.collectionVariables.set(\"id\", jsonData.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"studentId\": {{student_id}},\r\n  \"date\": \"2025-04-20\",\r\n  \"status\": \"출석\",\r\n  \"note\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/attendances",
+              "host": ["{{baseurl}}"],
+              "path": ["attendances"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "출결 전체 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/attendances",
+              "host": ["{{baseurl}}"],
+              "path": ["attendances"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "출결 학생별 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/attendances?studentId={{student_id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["attendances"],
+              "query": [
+                {
+                  "key": "studentId",
+                  "value": "{{student_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "출결 학생별 기간별 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/attendances?studentId={{student_id}}&startDate=2025-04-16&endDate=2025-04-18",
+              "host": ["{{baseurl}}"],
+              "path": ["attendances"],
+              "query": [
+                {
+                  "key": "studentId",
+                  "value": "{{student_id}}"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2025-04-16"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-04-18"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "출결 정보 수정",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/attendances/{{id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["attendances", "{{id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "출결 정보 삭제",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"결석\",\r\n  \"note\": \"병결\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/attendances/{{id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["attendances", "{{id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "counsel",
+      "item": [
+        {
+          "name": "상담 정보 등록",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"POST 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "var jsonData = pm.response.json();\r",
+                  "pm.collectionVariables.set(\"id\", jsonData.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"studentId\" : {{student_id}},\r\n    \"date\" : \"2025-04-15\",\r\n    \"content\" : \"진로 상담\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/counsels",
+              "host": ["{{baseurl}}"],
+              "path": ["counsels"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "상담 전체 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/counsels",
+              "host": ["{{baseurl}}"],
+              "path": ["counsels"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "상담 힉생별 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/counsels?studentId={{student_id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["counsels"],
+              "query": [
+                {
+                  "key": "studentId",
+                  "value": "{{student_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "상담 힉생별 기간별 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/counsels?studentId={{student_id}}&startDate=2025-04-16&endDate=2025-04-18",
+              "host": ["{{baseurl}}"],
+              "path": ["counsels"],
+              "query": [
+                {
+                  "key": "studentId",
+                  "value": "{{student_id}}"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2025-04-16"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-04-18"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "상담 정보 수정",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/counsels/{{id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["counsels", "{{id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "상담 정보 삭제",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"studentId\" : 7,\r\n    \"date\" : \"2025-04-21\",\r\n    \"content\" : \"진로 상담\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/counsels/{{id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["counsels", "{{id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "score",
+      "item": [
+        {
+          "name": "성적 등록 및 수정",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"PATCH 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "var jsonData = pm.response.json();\r",
+                  "pm.collectionVariables.set(\"id\", jsonData.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": {{student_id}},\n  \"grade\": 1,\n  \"semester\": 1,\n  \"subject1\": 98\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseurl}}/scores",
+              "host": ["{{baseurl}}"],
+              "path": ["scores"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "학생 성적 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseurl}}/scores?studentId={{student_id}}",
+              "host": ["{{baseurl}}"],
+              "path": ["scores"],
+              "query": [
+                {
+                  "key": "studentId",
+                  "value": "{{student_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "반 전체 성적 조회",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"GET 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseurl}}/scores/class?grade=1&semester=1&class=5",
+              "host": ["{{baseurl}}"],
+              "path": ["scores", "class"],
+              "query": [
+                {
+                  "key": "grade",
+                  "value": "1"
+                },
+                {
+                  "key": "semester",
+                  "value": "1"
+                },
+                {
+                  "key": "class",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "성적 삭제",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseurl}}/scores?studentId={{student_id}}&grade=1&semester=1",
+              "host": ["{{baseurl}}"],
+              "path": ["scores"],
+              "query": [
+                {
+                  "key": "studentId",
+                  "value": "{{student_id}}"
+                },
+                {
+                  "key": "grade",
+                  "value": "1"
+                },
+                {
+                  "key": "semester",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "학생 정보 삭제",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"DELETE 요청이 성공적으로 완료되었습니다.\", function () {\r",
+              "    pm.response.to.have.status(204);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/students/{{student_id}}",
+          "host": ["{{baseurl}}"],
+          "path": ["students", "{{student_id}}"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseurl",
+      "value": "http://127.0.0.1:3000",
+      "type": "string"
+    },
+    {
+      "key": "student_id",
+      "value": "0",
+      "type": "default"
+    },
+    {
+      "key": "id",
+      "value": "0",
+      "type": "string"
+    }
+  ]
 }

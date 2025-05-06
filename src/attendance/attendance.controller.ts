@@ -24,7 +24,7 @@ import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 
 @ApiTags('출석')
-@Controller('attendances')
+@Controller('api/attendances')
 export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceService) {}
 
