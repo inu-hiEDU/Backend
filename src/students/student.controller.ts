@@ -96,13 +96,11 @@ export class StudentController {
   }
 
   @Get('my-grade')
-  @Roles(UserRole.STUDENT)
   async getMyGrade(@Query('studentId') studentId: number) {
     return this.studentService.getStudentById(studentId);
   }
 
   @Get('child-grade')
-  @Roles(UserRole.PARENT)
   async getChildGrade(@Query('childId') childId: number) {
     return this.studentService.getStudentById(childId);
   }
