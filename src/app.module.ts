@@ -9,11 +9,13 @@ import { RolesGuard } from './auth/roles.guard';
 import { DatabaseConfigService } from './config/database.config';
 import { CounselModule } from './counsel/counsel.module';
 import { LoginModule } from './login/login.module';
-import { MainController } from './main.controller'; // 추가
+import { MainController } from './main.controller';
 import { ScoresModule } from './scores/score.module';
 import { StudentModule } from './students/student.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
+import { ParentModule } from './parents/parent.module';
+import { TeacherModule } from './teachers/teacher.module';
 
 @Module({
   imports: [
@@ -29,8 +31,10 @@ import { UserModule } from './user/user.module';
     AttendanceModule,
     CounselModule,
     ScoresModule,
+    ParentModule,
+    TeacherModule,
   ],
-  controllers: [AppController, MainController], // MainController 추가
+  controllers: [AppController, MainController],
   providers: [
     {
       provide: APP_GUARD,
