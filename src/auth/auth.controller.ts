@@ -12,7 +12,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { LoginDto } from '../login/login.dto';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,

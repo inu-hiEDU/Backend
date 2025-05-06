@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UploadService } from './upload.service';
 
 @ApiTags('업로드')
-@Controller('upload')
+@Controller('api/upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
