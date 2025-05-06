@@ -41,7 +41,7 @@ export class ScoresController {
   @ApiResponse({ status: 200, description: '성공' })
   @ApiQuery({ name: 'grade', type: String, description: '학년' })
   @ApiQuery({ name: 'semester', type: String, description: '학기' })
-  @ApiQuery({ name: 'class', type: String, description: '반' })
+  @ApiQuery({ name: 'classroom', type: String, description: '반' })
   async getClassScores(@Query() query: GetClassScoreDto) {
     return this.scoresService.getClassScore(query);
   }

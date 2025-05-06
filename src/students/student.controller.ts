@@ -41,11 +41,16 @@ export class StudentController {
     type: String,
     description: '학년',
   })
-  @ApiQuery({ name: 'class', required: false, type: String, description: '반' })
+  @ApiQuery({
+    name: 'classroom',
+    required: false,
+    type: String,
+    description: '반',
+  })
   // @Roles(UserRole.TEACHER)
   async getStudents(
     @Query('grade') grade?: number,
-    @Query('class') classroom?: number,
+    @Query('classroom') classroom?: number,
   ): Promise<Student[]> {
     if (grade && classroom) {
       return this.studentService.getStudentIdsByGradeAndClassroom(
