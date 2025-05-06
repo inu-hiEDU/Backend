@@ -32,9 +32,10 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleLoginCallback(@Req() req, @Res() res): Promise<void> {
     const redirectUrl = this.configService.get('GOOGLE_REDIRECT');
+    const failUrl = this.configService.get('GOOGLE_FAIL'); 
     const jwt: string = req.user.jwt;
     if (jwt) res.redirect(redirectUrl);
-    else res.redirect('http://localhost:3000/login/failure');
+    else res.redirect(failUrl);
   }
 
   @Get('protected')
