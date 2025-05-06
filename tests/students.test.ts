@@ -52,8 +52,7 @@ describe('StudentService', () => {
           birthday: '2020-02-02',
           user: {
             id: 1,
-            email: 'test@example.com',  // 필수 속성 추가
-            password: 'password',      // 필수 속성 추가
+            email: 'test@example.com',    // 필수 속성 추가
             role: UserRole.STUDENT,    // 필수 속성 추가
             name: '홍길동',
           },
@@ -82,8 +81,7 @@ describe('StudentService', () => {
         ...createDto,
         user: {
           id: 1,
-          email: 'test@example.com',  // user 속성 필수 속성 추가
-          password: 'password',       // user 속성 필수 속성 추가
+          email: 'test@example.com',     // user 속성 필수 속성 추가
           role: UserRole.STUDENT,     // user 속성 필수 속성 추가
           name: '홍길동',
         },
@@ -116,7 +114,6 @@ describe('StudentService', () => {
         user: {
           id: 1,
           email: 'test@example.com',
-          password: 'password',
           role: UserRole.STUDENT,
           name: '홍길동',
         },
