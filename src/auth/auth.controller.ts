@@ -32,10 +32,13 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleLoginCallback(@Req() req, @Res() res): Promise<void> {
     const redirectUrl = this.configService.get('GOOGLE_REDIRECT');
-    const failUrl = this.configService.get('GOOGLE_FAIL'); 
-    const jwt: string = req.user.jwt;
-    if (jwt) res.redirect(redirectUrl);
-    else res.redirect(failUrl);
+    const failUrl = this.configService.get('GOOGLE_FAIL');
+    const jwt: string = req.user.jwt; // JWT 확인
+    if (jwt) {
+      res.redirect(`${redirectUrl}?token=${jwt}`); // JWT를 쿼리 파라미터로 전달
+    } else {
+      res.redirect(failUrl);
+    }
   }
 
   @Get('protected')

@@ -17,10 +17,10 @@ export class AuthService {
 
     // 사용자 확인
     const user = await this.userService.findUserByEmail(email);
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password);
     if (!isPasswordValid) {
       throw new UnauthorizedException(
-        '이메일 또는 비밀번호가 올바르지 않습니다.',
+        '이메일이 올바르지 않습니다.',
       );
     }
 

@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
+import { UserRole } from './user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -43,8 +44,8 @@ export class UserService {
     if (!user) {
       user = this.userRepository.create({
         email,
-        name: name || 'default', // 구글 소셜 로그인에서 가져온 이름 사용, 없으면 기본값
-        role: undefined, // role을 undefined로 설정하여 기본값 사용
+        name: name || 'default', // 구글 소셜 로그인에서 가져온 이름 사용
+        role: UserRole.STUDENT, // 기본 역할 설정
       });
       user = await this.userRepository.save(user);
     }
