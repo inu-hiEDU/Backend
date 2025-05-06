@@ -18,6 +18,10 @@ async function bootstrap() {
     );
   }
 
+  app.enableCors({
+    origin: 'http://localhost:3012', // 프론트 포트와 맞게!
+  });
+
   const { documentConfig, swaggerOptions } = swaggerConfig();
   const document = SwaggerModule.createDocument(app, documentConfig);
   SwaggerModule.setup('swagger', app, document, swaggerOptions);
