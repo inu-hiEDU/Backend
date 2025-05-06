@@ -22,7 +22,7 @@ import { Student } from './student.entity';
 import { StudentService } from './student.service';
 
 @ApiTags('학생')
-@Controller('students')
+@Controller('api/students')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
