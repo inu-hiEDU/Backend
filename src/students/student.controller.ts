@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateAttendanceDto } from 'src/attendance/dto/create-attendance.dto';
 import { Roles } from '../auth/roles.decorator';
 import { ApiCreate, ApiDelete, ApiGet, ApiUpdate } from '../swagger_config';
 import { UserRole } from '../user/user-role.enum';
