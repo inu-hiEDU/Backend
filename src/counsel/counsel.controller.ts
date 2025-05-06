@@ -27,7 +27,7 @@ import { UpdateCounselDto } from './dto/update-counsel.dto';
 // import { UserRole } from '../user/user-role.enum';
 
 @ApiTags('상담')
-@Controller('counsels')
+@Controller('api/counsels')
 export class CounselController {
   constructor(private readonly counselService: CounselService) {}
 
