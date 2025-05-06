@@ -26,6 +26,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, documentConfig);
   SwaggerModule.setup('swagger', app, document, swaggerOptions);
 
+  app.enableCors({
+    origin: 'http://localhost:3012', // 프론트 포트와 맞게!
+  });
+
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
   console.log('Servcer is running on http://localhost:3000');
 }
