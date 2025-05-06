@@ -6,17 +6,17 @@ import { swaggerConfig } from './swagger_config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  if (process.env.NODE_ENV === 'production') {
-    app.use(
-      ['/swagger', '/swagger-json'],
-      basicAuth({
-        challenge: true,
-        users: {
-          admin: '1234', // <-- 원하는 ID/PW 설정
-        },
-      }),
-    );
-  }
+//  if (process.env.NODE_ENV === 'production') {
+//    app.use(
+//      ['/swagger', '/swagger-json'],
+//      basicAuth({
+//        challenge: true,
+//        users: {
+//          admin: '1234', // <-- 원하는 ID/PW 설정
+//        },
+//      }),
+//    );
+//  }
 
   app.enableCors({
     origin: ['http://localhost:3012', 'https://hiedu-259eujhfe-seunggons-projects.vercel.app/'], // 프론트 포트와 맞게!
