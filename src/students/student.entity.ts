@@ -25,5 +25,5 @@ export class Student {
   birthday: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
-  user: User; // User 테이블의 외래 키 test
+  user: User;
 }

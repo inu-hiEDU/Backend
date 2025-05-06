@@ -33,36 +33,9 @@ export class StudentController {
   @ApiOperation({ summary: '학생 등록' })
   @ApiBody({ type: CreateStudentDto })
   @Post()
-  async createStudent(
-    @Body() data: CreateStudentDto,
-    @Req() req: AuthRequest,
-  ): Promise<Student> {
-    const userId = Number(req.user.userId); // userId를 accesstoken에서 추출
-    if (isNaN(userId)) {
-      throw new Error('Invalid userId');
-    }
-
-    // studentNum을 숫자로 변환
-    const studentNum = Number(data.studentNum);
-    if (isNaN(studentNum)) {
-      throw new Error('Invalid studentNum');
-    }
-
-    return this.studentService.createStudent({ ...data, studentNum, userId });
-  }
-
-  @Post('create-from-hakbeon')
-  async createStudentFromHakbeon(
-    @Body()
-    data: {
-      hakbeon: string;
-      name: string;
-      phoneNum: string;
-      birthday: string;
-      userId: number; // User_id
-    },
-  ): Promise<Student> {
-    return this.studentService.createStudentFromHakbeon(data);
+  @ApiCreate('학생 정보 생성', CreateStudentDto)
+  async createStudent(@Body() dto: CreateStudentDto) {
+    return this.studentService.createStudent(dto);
   }
 
   @Get()
