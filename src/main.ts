@@ -7,18 +7,18 @@ import { swaggerConfig } from './swagger_config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 배포 환경에서도 Swagger 접근 허용 + 기본 인증 적용
-  app.use(
-    ['/swagger', '/swagger-json'],
-    basicAuth({
-      challenge: true,
-      users: {
-        admin: process.env.SWAGGER_USER || 'admin',
-        [process.env.SWAGGER_USER || 'admin']:
-          process.env.SWAGGER_PASS || '1234',
-      },
-    }),
-  );
+  // Swagger 인증을 환경변수 기반으로 처리
+  if (process.env.SWAGGER_USER && process.env.SWAGGER_PASS) {
+    app.use(
+      ['/swagger', '/swagger-json'],
+      basicAuth({
+        challenge: true,
+        users: {
+          [process.env.SWAGGER_USER]: process.env.SWAGGER_PASS,
+        },
+      }),
+    );
+  }
 
   app.enableCors({
     origin: [
@@ -32,7 +32,7 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document, swaggerOptions);
 
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
-  console.log('Server is running on http://localhost:3000');
+  console.log('Swagger is running on http://localhost:3000');
 }
 
 bootstrap();
