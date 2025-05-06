@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Student } from './student.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class StudentRepository {
@@ -43,5 +44,39 @@ export class StudentRepository {
       .getMany();
 
     return students;
+  }
+
+  async createStudentFromHakbeon(data: {
+    hakbeon: string;
+    name: string;
+    phoneNum: string;
+    birthday: string;
+    userId: number; // User_id
+  }): Promise<Student> {
+    const { hakbeon, name, phoneNum, birthday, userId } = data;
+
+    // 학번(hakbeon)에서 grade, classroom, studentNum 추출
+    const grade = parseInt(hakbeon[0], 10);
+    const classroom = parseInt(hakbeon.slice(1, 3), 10);
+    const studentNum = parseInt(hakbeon.slice(3), 10);
+
+    // User 엔티티
+    const user = await this.studentRepo.manager.findOne(User, { where: { id: userId } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // 새로운 학생 생성
+    const student = this.studentRepo.create({
+      grade,
+      classroom,
+      studentNum,
+      name,
+      phoneNum,
+      birthday,
+      user,
+    });
+
+    return this.studentRepo.save(student);
   }
 }
