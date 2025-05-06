@@ -1,5 +1,5 @@
 export class GetClassScoreDto {
   grade: number;
   semester: number;
-  class: number;
+  classroom: number;
 }
