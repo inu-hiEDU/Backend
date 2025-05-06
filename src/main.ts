@@ -27,7 +27,7 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document, swaggerOptions);
 
   app.enableCors({
-    origin: 'http://localhost:3012', // 프론트 포트와 맞게!
+    origin: 'https://hiedu-259eujhfe-seunggons-projects.vercel.app/', // 프론트 포트와 맞게!
   });
 
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
