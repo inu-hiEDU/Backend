@@ -9,9 +9,11 @@ import {
   Patch,
   Post,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { CreateAttendanceDto } from 'src/attendance/dto/create-attendance.dto';
 import { Roles } from '../auth/roles.decorator';
 import { ApiCreate, ApiDelete, ApiGet, ApiUpdate } from '../swagger_config';
@@ -20,6 +22,8 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
+import { JwtAuthGuard } from '../auth/jwt.guard';
+import { AuthRequest } from '../auth/auth-request.interface';
 
 @ApiTags('학생')
 @Controller('api/students')

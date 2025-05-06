@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { UserRole } from './user-role.enum'; // 올바른 경로로 가져오기
+import { UserRole } from './user-role.enum';
 
 @Entity()
 export class User {

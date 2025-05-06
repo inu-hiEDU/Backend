@@ -1,22 +1,14 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.entity';
+import { Student } from '../students/student.entity';
 
 @Entity()
-export class Student {
+export class Parent {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  studentNum: number;
-
-  @Column()
   name: string;
-
-  @Column()
-  grade: number;
-
-  @Column({ name: 'class' }) // DB 필드는 class, 코드에서는 classroom
-  classroom: number;
 
   @Column()
   phoneNum: string;
@@ -25,5 +17,8 @@ export class Student {
   birthday: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
-  user: User;
+  user: User; // User 테이블의 외래 키
+
+  @ManyToOne(() => Student, { onDelete: 'CASCADE', eager: true })
+  student: Student; // Student 테이블의 외래 키
 }
