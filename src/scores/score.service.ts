@@ -54,6 +54,7 @@ export class ScoresService {
     });
 
     const now = new Date();
+    const isNew = !score;
 
     if (!score) {
       score = this.scoresRepository.create({
@@ -73,29 +74,29 @@ export class ScoresService {
     score.totalScore = total;
     score.averageScore = average;
 
-    await this.scoresRepository.save(score);
+    const saved = await this.scoresRepository.save(score);
 
     return {
-      message:
-        score.createdAt === now
-          ? '성적 정보가 성공적으로 생성되었습니다.'
-          : '성적 정보가 성공적으로 업데이트되었습니다.',
+      message: isNew
+        ? '성적 정보가 성공적으로 생성되었습니다.'
+        : '성적 정보가 성공적으로 업데이트되었습니다.',
       updatedScore: {
+        id: saved.id, // ← 성적 ID 포함
         studentId,
         grade,
         semester,
         subjects: {
-          subject1: score.subject1,
-          subject2: score.subject2,
-          subject3: score.subject3,
-          subject4: score.subject4,
-          subject5: score.subject5,
-          subject6: score.subject6,
-          subject7: score.subject7,
-          subject8: score.subject8,
+          subject1: saved.subject1,
+          subject2: saved.subject2,
+          subject3: saved.subject3,
+          subject4: saved.subject4,
+          subject5: saved.subject5,
+          subject6: saved.subject6,
+          subject7: saved.subject7,
+          subject8: saved.subject8,
         },
-        total,
-        average,
+        total: saved.totalScore,
+        average: saved.averageScore,
       },
     };
   }
