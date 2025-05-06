@@ -27,7 +27,7 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Post()
-  @ApiCreate('학생 정보 생성', CreateAttendanceDto)
+  @ApiCreate('학생 정보 생성', CreateStudentDto)
   async createStudent(@Body() dto: CreateStudentDto) {
     return this.studentService.createStudent(dto);
   }
