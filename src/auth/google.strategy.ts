@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
+import { UserService } from '../user/user.service';
+import { User } from '../user/user.entity';
+import { UserRole } from '../user/user-role.enum';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor() {
+  constructor(private readonly userService: UserService) {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID, // by .env
-      clientSecret: process.env.GOOGLE_SECRET, // by .env
-      callbackURL: 'http://localhost:3000/auth/google/callback', // redirection URI
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+      callbackURL: 'http://localhost:3000/auth/google/callback',
       passReqToCallback: true,
       scope: ['profile', 'email'],
     });
@@ -18,17 +21,27 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     request: any,
     accessToken: string,
     refreshToken: string,
-    profile,
+    profile: any,
     done: any,
-  ) {
+  ): Promise<any> {
     try {
-      console.log(profile);
+      const { emails, displayName } = profile;
+      const email = emails[0].value;
+      const name = displayName;
 
-      const jwt = 'placeholderJWT';
-      const user = {
-        jwt,
-      };
-      done(null, user);
+      // User 테이블에 사용자 저장 또는 업데이트
+      let user: User = await this.userService.findUserByEmail(email);
+      if (!user) {
+        user = await this.userService.createUser({
+          email,
+          name,
+          password: '', // 소셜 로그인 사용자는 비밀번호가 필요 없음
+          role: UserRole.TEACHER, // 기본 역할 설정
+        });
+      }
+
+      const payload = { userId: user.id, email: user.email, role: user.role };
+      done(null, payload);
     } catch (err) {
       console.error(err);
       done(err, false);
