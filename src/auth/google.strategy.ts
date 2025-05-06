@@ -26,18 +26,21 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ): Promise<any> {
     try {
       const { emails, displayName } = profile;
-      const email = emails[0].value;
-      const name = displayName;
+      const email = emails[0].value; // 구글 이메일
+      const name = displayName; // 구글 이름
 
       // User 테이블에 사용자 저장 또는 업데이트
-      let user: User = await this.userService.findUserByEmail(email);
+      let user: User = await this.userService.findUserByEmail(email, name);
       if (!user) {
         user = await this.userService.createUser({
           email,
           name,
-          password: '', // 소셜 로그인 사용자는 비밀번호가 필요 없음
-          role: UserRole.TEACHER, // 기본 역할 설정
+          role: UserRole.STUDENT,
         });
+      } else {
+        // 기존 사용자 이름 업데이트 (필요 시)
+        user.name = name;
+        await this.userService.updateUser(user);
       }
 
       const payload = { userId: user.id, email: user.email, role: user.role };
