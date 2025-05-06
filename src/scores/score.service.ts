@@ -150,10 +150,10 @@ export class ScoresService {
   }
 
   async getClassScore(query: GetClassScoreDto) {
-    const { grade, semester, class: classNum } = query;
+    const { grade, semester, classroom } = query;
 
     const students = await this.studentRepository.find({
-      where: { grade, classroom: classNum },
+      where: { grade, classroom },
     });
 
     const result: {
@@ -212,7 +212,10 @@ export class ScoresService {
     }
 
     return {
-      message: '학생의 성적 정보를 조회하였습니다.',
+      message:
+        result.length > 0
+          ? '학생의 성적 정보를 조회하였습니다.'
+          : '해당 조건에 맞는 성적 정보가 없습니다.',
       students: result,
     };
   }
