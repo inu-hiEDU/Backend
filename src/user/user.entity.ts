@@ -12,9 +12,9 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ nullable: true }) // 비밀번호를 선택적 속성으로 설정
+  password?: string;
 
-  @Column({ type: 'enum', enum: UserRole })
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
   role: UserRole;
 }
