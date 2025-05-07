@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { UserRole } from './user-role.enum';
+import { Teacher } from '../teachers/teacher.entity';
+
 
 @Entity()
 export class User {
@@ -14,4 +16,7 @@ export class User {
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
   role: UserRole;
+  
+  @OneToMany(() => Teacher, (teacher) => teacher.user)
+  teachers: Teacher[];
 }

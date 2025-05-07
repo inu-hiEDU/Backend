@@ -18,17 +18,16 @@ async function bootstrap() {
     );
   }
 
+  // CORS 설정
   app.enableCors({
-    origin: 'http://localhost:3012', // 프론트 포트와 맞게!
+    origin: ['http://localhost:3012', 'https://hiedu.site'], // 허용할 도메인
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // 쿠키를 포함한 요청 허용
   });
 
   const { documentConfig, swaggerOptions } = swaggerConfig();
   const document = SwaggerModule.createDocument(app, documentConfig);
   SwaggerModule.setup('swagger', app, document, swaggerOptions);
-
-  app.enableCors({
-    origin: 'https://hiedu-259eujhfe-seunggons-projects.vercel.app/', // 프론트 포트와 맞게!
-  });
 
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
   console.log('Servcer is running on http://localhost:3000');
