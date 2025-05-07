@@ -6,16 +6,16 @@ import { swaggerConfig } from './swagger_config';
 import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'warn', 'log'],
-  });
-  if (process.env.NODE_ENV === 'production') {
+  const app = await NestFactory.create(AppModule);
+
+  // Swagger 인증을 환경변수 기반으로 처리
+  if (process.env.SWAGGER_USER && process.env.SWAGGER_PASS) {
     app.use(
-      ['/swagger', '/swagger-json'],
+      ['/api/swagger', '/api/swagger-json'],
       basicAuth({
         challenge: true,
         users: {
-          admin: '1234', // <-- 원하는 ID/PW 설정
+          [process.env.SWAGGER_USER]: process.env.SWAGGER_PASS,
         },
       }),
     );
@@ -23,17 +23,28 @@ async function bootstrap() {
 
   // CORS 설정
   app.enableCors({
+<<<<<<< HEAD
     origin: ['http://localhost:3012', 'https://hiedu.site'], // 허용할 도메인
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // 쿠키를 포함한 요청 허용
+=======
+    origin: [
+      'http://localhost:3012',
+      'https://hiedu-259eujhfe-seunggons-projects.vercel.app/',
+    ],
+>>>>>>> 1682829381bfebd6500a9e4e6a46aeae03a07285
   });
 
   const { documentConfig, swaggerOptions } = swaggerConfig();
   const document = SwaggerModule.createDocument(app, documentConfig);
+<<<<<<< HEAD
   SwaggerModule.setup('swagger', app, document, swaggerOptions);
+=======
+  SwaggerModule.setup('api/swagger', app, document, swaggerOptions);
+>>>>>>> 1682829381bfebd6500a9e4e6a46aeae03a07285
 
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
-  console.log('Servcer is running on http://localhost:3000');
+  console.log('Swagger is running on http://localhost:3000');
 }
 
 bootstrap();
