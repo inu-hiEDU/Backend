@@ -17,6 +17,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from './jwt.guard';
 import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth-request.interface';
+import { error } from 'console';
 
 @Controller('api/auth')
 export class AuthController {
@@ -66,42 +67,38 @@ export class AuthController {
   }
 
   @Get('check-user')
-  async checkUser(@Req() req: Request, @Res() res: Response): Promise<void> {
+  async checkUser(@Req() req: Request): Promise<{ exists: boolean }> {
     const token = req.query.token as string;
     if (!token) {
-      return res.redirect(this.configService.get<string>('GOOGLE_FAIL')!);
+      throw new Error('토큰 없음');
     }
 
     let payload: any;
     try {
-      payload = this.jwtService.verify(token); // JWT 검증
+      payload = this.jwtService.verify(token);
+      console.log('✅ 토큰 payload:', payload);
     } catch (e) {
-      console.error('JWT 검증 실패:', e);
-      return res.redirect(this.configService.get<string>('GOOGLE_FAIL')!);
+      console.error('❌ JWT 검증 실패:', e);
+      throw new Error('토큰 오류');
     }
 
-    const userId = payload.userId;
+    const userId = payload.sub; // ✅ 여기 바뀜
     const role = payload.role;
-    console.log('🔐 토큰 payload:', payload);
 
     if (!userId || !role) {
-      return res.redirect(this.configService.get<string>('GOOGLE_FAIL')!);
+      throw new Error('유효하지 않은 토큰');
     }
 
     let exists = false;
 
     if (role === 'student') {
-      exists = await this.userService.isUserInStudentsTable(Number(userId));
+      exists = await this.userService.isUserInStudentsTable(userId);
     } else if (role === 'teacher') {
-      exists = await this.userService.isUserInTeachersTable(Number(userId));
+      exists = await this.userService.isUserInTeachersTable(userId);
     } else if (role === 'parent') {
-      exists = await this.userService.isUserInParentsTable(Number(userId));
+      exists = await this.userService.isUserInParentsTable(userId);
     }
 
-   if (exists) {
-      return res.redirect(this.configService.get<string>('GOOGLE_REDIRECT')!);
-    } else {
-      return res.redirect(this.configService.get<string>('GOOGLE_REDIRECT_ADDINFO')!);
-    }
+    return { exists };
   }
 }

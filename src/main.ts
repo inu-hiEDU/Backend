@@ -3,9 +3,12 @@ import { SwaggerModule } from '@nestjs/swagger';
 import * as basicAuth from 'express-basic-auth';
 import { AppModule } from './app.module';
 import { swaggerConfig } from './swagger_config';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log'],
+  });
   if (process.env.NODE_ENV === 'production') {
     app.use(
       ['/swagger', '/swagger-json'],
