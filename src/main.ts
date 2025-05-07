@@ -23,25 +23,15 @@ async function bootstrap() {
 
   // CORS 설정
   app.enableCors({
-<<<<<<< HEAD
     origin: ['http://localhost:3012', 'https://hiedu.site'], // 허용할 도메인
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // 쿠키를 포함한 요청 허용
-=======
-    origin: [
-      'http://localhost:3012',
-      'https://hiedu-259eujhfe-seunggons-projects.vercel.app/',
-    ],
->>>>>>> 1682829381bfebd6500a9e4e6a46aeae03a07285
   });
 
   const { documentConfig, swaggerOptions } = swaggerConfig();
   const document = SwaggerModule.createDocument(app, documentConfig);
-<<<<<<< HEAD
-  SwaggerModule.setup('swagger', app, document, swaggerOptions);
-=======
+
   SwaggerModule.setup('api/swagger', app, document, swaggerOptions);
->>>>>>> 1682829381bfebd6500a9e4e6a46aeae03a07285
 
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
   console.log('Swagger is running on http://localhost:3000');
