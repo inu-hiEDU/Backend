@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -15,6 +15,10 @@ export class Teacher {
   @Column()
   birthday: string;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
-  user: User; // User 테이블의 외래 키
+  @ManyToOne(() => User, (user) => user.teachers, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
+  @Column({ nullable: true })
+  userId: number;
 }

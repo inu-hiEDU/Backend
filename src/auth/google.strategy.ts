@@ -4,6 +4,7 @@ import { Strategy } from 'passport-google-oauth20';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
 import { UserRole } from '../user/user-role.enum';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -43,8 +44,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         await this.userService.updateUser(user);
       }
 
-      const payload = { userId: user.id, email: user.email, role: user.role };
-      done(null, payload);
+      // JWT 생성
+      const payload = { sub: user.id, email: user.email, role: user.role };
+      const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
+
+      done(null, { ...payload, jwt: token }); // JWT를 포함하여 반환
     } catch (err) {
       console.error(err);
       done(err, false);

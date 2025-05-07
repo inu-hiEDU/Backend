@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTeacherDto {
@@ -16,4 +16,9 @@ export class CreateTeacherDto {
   @IsNotEmpty()
   @IsString()
   birthday: string;
+
+  @ApiProperty({ description: '사용자 ID (user 테이블의 FK)' })
+  @IsNotEmpty()
+  @IsNumber()
+  userId: number; // user 테이블의 외래 키
 }

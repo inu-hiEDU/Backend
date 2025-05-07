@@ -3,12 +3,10 @@ import { ParentService } from './parent.service';
 import { Parent } from './parent.entity';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { CreateParentDto } from './dto/create-parent.dto';
-import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AuthRequest } from '../auth/auth-request.interface';
 
 @ApiTags('학부모')
-@Controller('parents')
-@UseGuards(JwtAuthGuard)
+@Controller('api/parents')
 export class ParentController {
   constructor(private readonly parentService: ParentService) {}
 
