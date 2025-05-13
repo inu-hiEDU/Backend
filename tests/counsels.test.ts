@@ -1,11 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CounselService } from '../src/counsel/counsel.service';
-import { CounselRepository } from '../src/counsel/counsel.repository';
 import { Counsel } from '../src/counsel/counsel.entity';
-import { CreateCounselDto } from '../src/counsel/dto/create-counsel.dto';
+import { CounselRepository } from '../src/counsel/counsel.repository';
+import { CounselService } from '../src/counsel/counsel.service';
 import { UpdateCounselDto } from '../src/counsel/dto/update-counsel.dto';
-import { UserRole } from '../src/user/user-role.enum';
-import { Student } from '../src/students/student.entity';
 
 describe('CounselService', () => {
   let service: CounselService;
@@ -119,7 +116,10 @@ describe('CounselService', () => {
       mockCounselRepository.updateCounsel.mockResolvedValue(result);
 
       expect(await service.update(1, updateDto)).toBe(result);
-      expect(mockCounselRepository.updateCounsel).toHaveBeenCalledWith(1, updateDto);
+      expect(mockCounselRepository.updateCounsel).toHaveBeenCalledWith(
+        1,
+        updateDto,
+      );
     });
   });
 
