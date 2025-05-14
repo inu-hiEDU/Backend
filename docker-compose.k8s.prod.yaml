@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  my-backend:
+    image: asia.gcr.io/core-computer-459306-v6/hiedu:0.1 # 레지스트리 리전/프로젝트ID/이름:버전 (버전은 배포할 때마다 바꿔야 클라우드가 배포 인식)
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: Dockerfile
