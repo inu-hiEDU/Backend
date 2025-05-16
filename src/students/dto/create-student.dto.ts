@@ -18,4 +18,7 @@ export class CreateStudentDto {
 
   @ApiProperty({ description: '생일', example: '2020-02-02' })
   birthday: string;
+
+  @ApiProperty({ description: '사진 URL', example: 'https://...' })
+  picture?: string;
 }
