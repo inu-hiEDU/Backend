@@ -9,6 +9,6 @@ import { StudentService } from './student.service';
   imports: [TypeOrmModule.forFeature([Student, StudentRepository])], // 하나로 묶기
   controllers: [StudentController],
   providers: [StudentService, StudentRepository],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, StudentService],
 })
 export class StudentModule {}
