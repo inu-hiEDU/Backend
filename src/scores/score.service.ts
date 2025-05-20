@@ -6,6 +6,7 @@ import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { Scores } from './score.entity';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class ScoresService {
@@ -15,6 +16,8 @@ export class ScoresService {
 
     @InjectRepository(Student)
     private studentRepository: Repository<Student>,
+
+    private readonly notificationService: NotificationService,
   ) {}
 
   private calculateTotalAndAverage(score: Partial<Scores>) {
@@ -75,6 +78,14 @@ export class ScoresService {
     score.averageScore = average;
 
     const saved = await this.scoresRepository.save(score);
+
+    // 알림 전송: 학생의 userId가 있으면 알림
+    if (student.userId) {
+      this.notificationService.notify(
+        student.userId.toString(),
+        isNew ? '성적이 등록되었습니다.' : '성적이 수정되었습니다.'
+      );
+    }
 
     return {
       message: isNew
