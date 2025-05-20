@@ -30,7 +30,7 @@ export class ScoresService {
     ];
 
     const validScores = subjects.filter(
-      (subject) => subject !== undefined && subject !== null,
+      (subject): subject is number => typeof subject === 'number'
     );
     const total = validScores.reduce((sum, subject) => sum + subject, 0);
     const average = validScores.length > 0 ? total / validScores.length : 0;
