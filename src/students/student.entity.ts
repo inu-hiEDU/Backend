@@ -36,4 +36,7 @@ export class Student {
 
   @Column({ nullable: true })
   userId: number;
+
+  @Column()
+  picture: string;
 }
