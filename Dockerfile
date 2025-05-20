@@ -1,5 +1,5 @@
 # Node.js 베이스 이미지 (경량 버전)
-FROM node:20.11.1-alpine
+FROM node:20-alpine AS builder
 
 # 컨테이너 안의 작업 디렉토리 설정
 WORKDIR /app
@@ -18,8 +18,15 @@ COPY . .
 # TS를 JS로 빌드
 RUN npm run build
 
+FROM node:20-alpine
+
+WORKDIR /app
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+
 # 앱이 열 포트
 EXPOSE 3000
 
 # 앱 실행 명령
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main"]

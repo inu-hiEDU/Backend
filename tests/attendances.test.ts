@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AttendanceService } from '../src/attendance/attendance.service';
+import {
+  Attendance,
+  AttendanceStatus,
+} from '../src/attendance/attendance.entity';
 import { AttendanceRepository } from '../src/attendance/attendance.repository';
-import { Attendance } from '../src/attendance/attendance.entity';
+import { AttendanceService } from '../src/attendance/attendance.service';
 import { CreateAttendanceDto } from '../src/attendance/dto/create-attendance.dto';
 import { UpdateAttendanceDto } from '../src/attendance/dto/update-attendance.dto';
-import { AttendanceStatus } from '../src/attendance/attendance.entity';
 
 describe('AttendanceService', () => {
   let service: AttendanceService;
@@ -72,27 +74,27 @@ describe('AttendanceService', () => {
       const result: Attendance[] = [
         {
           id: 1,
-          student: { id: 1 } as any,  // Ensure student is properly mocked
+          student: { id: 1 } as any, // Ensure student is properly mocked
           date: new Date('2023-04-25'),
           status: AttendanceStatus.PRESENT,
           note: 'On time',
         },
       ];
-  
+
       // Mock `findByFilter` to return `result` when no filters are passed
       mockAttendanceRepository.findByFilter.mockResolvedValue(result);
-  
+
       // Simulating calling `findAll` with no parameters
-      const attendanceRecords = await service.findAll(); 
-  
+      const attendanceRecords = await service.findAll();
+
       // Debugging the output
       console.log(attendanceRecords);
-  
+
       // Deep equality check
       expect(attendanceRecords).toEqual(result);
       expect(mockAttendanceRepository.findByFilter).toHaveBeenCalled();
     });
-  
+
     it('should return filtered attendance records when studentId is provided', async () => {
       const result: Attendance[] = [
         {
@@ -103,19 +105,23 @@ describe('AttendanceService', () => {
           note: 'On time',
         },
       ];
-  
+
       const studentId = 1;
       mockAttendanceRepository.findByFilter.mockResolvedValue(result);
-  
+
       // Call findAll with a studentId
       const attendanceRecords = await service.findAll(studentId);
-  
+
       console.log(attendanceRecords);
-      
+
       expect(attendanceRecords).toEqual(result);
-      expect(mockAttendanceRepository.findByFilter).toHaveBeenCalledWith(studentId, undefined, undefined);
+      expect(mockAttendanceRepository.findByFilter).toHaveBeenCalledWith(
+        studentId,
+        undefined,
+        undefined,
+      );
     });
-  });  
+  });
 
   describe('findOneAttendance', () => {
     it('should return a single attendance record by id', async () => {
@@ -152,7 +158,10 @@ describe('AttendanceService', () => {
       mockAttendanceRepository.updateAttendance.mockResolvedValue(result);
 
       expect(await service.update(1, updateDto)).toBe(result);
-      expect(mockAttendanceRepository.updateAttendance).toHaveBeenCalledWith(1, updateDto);
+      expect(mockAttendanceRepository.updateAttendance).toHaveBeenCalledWith(
+        1,
+        updateDto,
+      );
     });
   });
 
