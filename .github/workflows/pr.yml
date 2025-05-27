@@ -114,14 +114,16 @@ jobs:
         run: |
           git clone https://github.com/inu-hiEDU/k8s-manifests.git
 
-      - name: Update deployment.yaml with new image
-        run: |
-          IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/hiedu:${{ steps.set_docker_image_tag.outputs.DOCKER_IMAGE_TAG }}
-          sed -i "s|image: .*/hiedu:.*|image: $IMAGE_NAME|" k8s-manifests/manifests/deployment.yaml
+      # - name: Update deployment.yaml with new image
+      #   run: |
+      #     IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/hiedu:${{ steps.set_docker_image_tag.outputs.DOCKER_IMAGE_TAG }}
+      #     sed -i "s|image: .*/hiedu:.*|image: $IMAGE_NAME|" k8s-manifests/manifests/deployment.yaml
 
       - name: Commit and push image update
         run: |
           cd k8s-manifests
+          IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/hiedu:${{ steps.set_docker_image_tag.outputs.DOCKER_IMAGE_TAG }}
+          sed -i "s|image: .*/hiedu:.*|image: $IMAGE_NAME|" manifests/deployment.yaml
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           git add manifests/deployment.yaml
