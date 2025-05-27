@@ -116,4 +116,4 @@ jobs:
           git config --global user.name "GitHub Actions"
           git add manifests/deployment.yaml
           git commit -m "chore: update image to ${{ steps.set_docker_image_tag.outputs.DOCKER_IMAGE_TAG }}"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@https://github.com/inu-hiEDU/k8s-manifests.git
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/inu-hiEDU/k8s-manifests.git
