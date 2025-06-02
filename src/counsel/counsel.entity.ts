@@ -18,6 +18,6 @@ export class Counsel {
   @Column({ type: 'text' })
   title: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   content: string;
 }

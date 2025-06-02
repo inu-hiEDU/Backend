@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import {
   ApiCreate,
   ApiDelete,
@@ -35,7 +35,38 @@ export class AttendanceController {
   }
 
   @Get()
-  @ApiFind('출석 정보 필터링')
+  @ApiOperation({ summary: '출석 정보 필터링' })
+  @ApiResponse({ status: 200, description: '성공' })
+  @ApiQuery({
+    name: 'studentId',
+    type: Number,
+    description: '학생 id',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'grade',
+    type: Number,
+    description: '학년',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'classroom',
+    type: Number,
+    description: '반',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'startDate',
+    type: String,
+    description: '시작 날짜 (YYYY-MM-DD)',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'endDate',
+    type: String,
+    description: '마지막 날짜 (YYYY-MM-DD)',
+    required: false,
+  })
   findAll(
     @Query('studentId') studentId?: number,
     @Query('grade') grade?: number,
