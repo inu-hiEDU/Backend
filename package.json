@@ -39,6 +39,7 @@
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.1",
     "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
     "express-basic-auth": "^1.2.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.0",
