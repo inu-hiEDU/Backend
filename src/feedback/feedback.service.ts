@@ -5,7 +5,7 @@ import { UpdateFeedbackDto } from './dto/update-feedback.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from '../teachers/teacher.entity';
 import { Repository } from 'typeorm';
-// import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class FeedbackService {
@@ -13,7 +13,7 @@ export class FeedbackService {
     private readonly feedbackRepository: FeedbackRepository,
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>,
-    // private readonly notificationService: NotificationService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(dto: CreateFeedbackDto, userId: number) {
@@ -22,9 +22,10 @@ export class FeedbackService {
       throw new NotFoundException('해당 사용자에 연결된 교사를 찾을 수 없습니다.');
     }
 
-    // this.notificationService.notifyFeedbackEntered(
-    //   dto.studentId.toString(),
-    // )
+    this.notificationService.notifyFeedbackEntered(
+      dto.studentId.toString(),
+      dto.subject.toString(),
+    )
 
     return this.feedbackRepository.createFeedback({
       ...dto,
@@ -43,6 +44,12 @@ export class FeedbackService {
   }
 
   update(id: number, dto: UpdateFeedbackDto) {
+    if (dto.studentId !== undefined) {
+      this.notificationService.notifyFeedbackUpdated(
+        dto.studentId.toString(),
+        dto.subject?.toString() ?? '',
+      );
+    }
     const data: any = { ...dto };
     if (dto.date) {
       data.date = new Date(dto.date);
