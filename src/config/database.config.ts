@@ -18,13 +18,33 @@ export class DatabaseConfigService {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'mysql',
-      host: this.configService.get<string>('DB_HOST'),
-      port: this.configService.get<number>('DB_PORT'),
-      username: this.configService.get<string>('DB_USERNAME'),
-      password: this.configService.get<string>('DB_PASSWORD'),
-      database: this.configService.get<string>('DB_DATABASE'),
-      synchronize: true, // 개발 환경에서만 true로 설정
-      logging: true, // 로그 확인용
+      replication: {
+        master: {
+          host: this.configService.get<string>('DB_HOST_PRIMARY'),
+          port: 3306,
+          username: this.configService.get<string>('DB_USERNAME'),
+          password: this.configService.get<string>('DB_PASSWORD'),
+          database: this.configService.get<string>('DB_DATABASE'),
+        },
+        slaves: [
+          {
+            host: this.configService.get<string>('DB_HOST_REPLICA1'),
+            port: 3306,
+            username: this.configService.get<string>('DB_USERNAME'),
+            password: this.configService.get<string>('DB_PASSWORD'),
+            database: this.configService.get<string>('DB_DATABASE'),
+          },
+          {
+            host: this.configService.get<string>('DB_HOST_REPLICA2'),
+            port: 3306,
+            username: this.configService.get<string>('DB_USERNAME'),
+            password: this.configService.get<string>('DB_PASSWORD'),
+            database: this.configService.get<string>('DB_DATABASE'),
+          },
+        ],
+      },
+      synchronize: false, // 운영 환경에서는 false
+      logging: true,
       entities: [
         Student,
         Login,
