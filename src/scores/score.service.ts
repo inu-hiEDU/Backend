@@ -7,6 +7,8 @@ import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { Scores } from './score.entity';
 import { NotificationService } from '../notification/notification.service';
+import * as ExcelJS from 'exceljs';
+import { Response } from 'express';
 
 @Injectable()
 export class ScoresService {
@@ -245,5 +247,98 @@ export class ScoresService {
     return {
       message: '성적 정보가 성공적으로 삭제되었습니다.',
     };
+  }
+
+  async exportStudentScores(studentId: number, res: Response) {
+    const scores = await this.scoresRepository.find({
+      where: { student: { id: studentId } },
+      relations: ['student'],
+      order: { semester: 'ASC' },
+    });
+
+    if (!scores.length) {
+      throw new NotFoundException('해당 학생의 성적 정보가 없습니다.');
+    }
+
+    const student = scores[0].student;
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('성적 보고서');
+
+    // ✅ 1. 제목
+    worksheet.mergeCells('A1:L1');
+    const titleCell = worksheet.getCell('A1');
+    titleCell.value = `학생 성적 보고서 - ${student.name}`;
+    titleCell.font = { size: 16, bold: true };
+    titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+
+    // ✅ 2. 날짜 라벨
+    worksheet.mergeCells('A2:L2');
+    const dateCell = worksheet.getCell('A2');
+    dateCell.value = `출력일: ${new Date().toLocaleDateString('ko-KR')}`;
+    dateCell.font = { size: 10, italic: true, color: { argb: '777777' } };
+    dateCell.alignment = { horizontal: 'left' };
+
+    // ✅ 3. 표 헤더 정의
+    worksheet.addRow([
+      '학년', '학기', '과목1', '과목2', '과목3', '과목4',
+      '과목5', '과목6', '과목7', '과목8', '총점', '평균'
+    ]);
+
+    const headerRow = worksheet.getRow(3);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFF' } };
+    headerRow.alignment = { horizontal: 'center' };
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: '2F5597' }, // 진한 파랑
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    // ✅ 4. 본문 데이터
+    scores.forEach((s) => {
+      worksheet.addRow([
+        s.grade, s.semester,
+        s.subject1 ?? '', s.subject2 ?? '', s.subject3 ?? '', s.subject4 ?? '',
+        s.subject5 ?? '', s.subject6 ?? '', s.subject7 ?? '', s.subject8 ?? '',
+        s.totalScore, s.averageScore,
+      ]);
+    });
+
+    // ✅ 5. 전체 테두리 및 정렬 적용
+    worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+      if (rowNumber >= 4) {
+        row.alignment = { horizontal: 'center' };
+        row.eachCell((cell) => {
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
+      }
+    });
+
+    // ✅ 6. 열 너비 자동 조절
+    worksheet.columns.forEach((col) => {
+      col.width = 10;
+    });
+
+    // ✅ 7. 다운로드 전송
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    const filename = `성적보고서_${student.name}.xlsx`;
+    const encodedFilename = encodeURIComponent(filename);
+
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodedFilename}`);
+    await workbook.xlsx.write(res);
+    res.end();
   }
 }

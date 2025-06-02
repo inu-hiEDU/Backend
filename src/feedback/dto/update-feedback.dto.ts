@@ -11,7 +11,7 @@ export class UpdateFeedbackDto {
 
   @IsString()
   @IsOptional()
-  title?: string;
+  subject?: string;
 
   @IsString()
   @IsOptional()

@@ -15,8 +15,8 @@ export class Feedback {
   @Column({ type: 'date' })
   date: Date;
 
-  @Column({ type: 'text' })
-  title: string;
+  @Column()
+  subject: Number;
 
   @Column({ type: 'text' })
   content: string;

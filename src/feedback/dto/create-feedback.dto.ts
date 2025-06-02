@@ -12,10 +12,10 @@ export class CreateFeedbackDto {
   @IsNotEmpty()
   date: string;
 
-  @ApiProperty({ description: '피드백제목', example: '제목' })
+  @ApiProperty({ description: '과목id', example: '제목' })
   @IsString()
   @IsNotEmpty()
-  title: string;
+  subject: Number;
 
   @ApiProperty({ description: '피드백내용', example: '피드백' })
   @IsString()
