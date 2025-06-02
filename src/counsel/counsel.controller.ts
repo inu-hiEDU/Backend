@@ -13,7 +13,7 @@ import {
   Req
 } from '@nestjs/common';
 
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import {
   ApiCreate,
   ApiDelete,
@@ -35,12 +35,12 @@ export class CounselController {
   constructor(private readonly counselService: CounselService) {}
 
   @Post()
+  @ApiBearerAuth()
   @ApiCreate('상담 정보 생성', CreateCounselDto)
   @UseGuards(AuthGuard('jwt'))
   // @Roles(UserRole.TEACHER)
   create(@Body() dto: CreateCounselDto, @Req() req) {
     const userId = req.user.userId;
-    console.log(req);
     return this.counselService.create(dto, userId);
   }
 
