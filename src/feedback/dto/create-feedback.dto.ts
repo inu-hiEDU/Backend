@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateCounselDto {
-  @ApiProperty({ description: '학생 id', example: '10' })
+export class CreateFeedbackDto {
+  @ApiProperty({ description: '학생 id', example: '36' })
   @IsInt()
   @IsNotEmpty()
   studentId: number;
@@ -12,12 +12,12 @@ export class CreateCounselDto {
   @IsNotEmpty()
   date: string;
 
-  @ApiProperty({ description: '상담제목', example: '진로 상담' })
+  @ApiProperty({ description: '과목id', example: '제목' })
   @IsString()
   @IsNotEmpty()
-  title: string;
+  subject: Number;
 
-  @ApiProperty({ description: '상담내용', example: '진로에 대해 상담함' })
+  @ApiProperty({ description: '피드백내용', example: '피드백' })
   @IsString()
   @IsNotEmpty()
   content: string;

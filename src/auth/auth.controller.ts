@@ -101,4 +101,11 @@ export class AuthController {
 
     return { exists };
   }
+
+  @Get('userId')
+  @UseGuards(JwtAuthGuard)
+  getCurrentUser(@Req() req: AuthRequest): { userId: string } {
+    const user = req.user;
+    return { userId: user.userId };
+  }
 }

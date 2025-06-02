@@ -15,13 +15,27 @@ export class AttendanceRepository {
     return this.repo.save(attendance);
   }
 
-  async findByFilter(studentId?: number, startDate?: string, endDate?: string) {
+  async findByFilter(
+    studentId?: number,
+    grade?: number,
+    classroom?: number,
+    startDate?: string,
+    endDate?: string
+  ) {
     const qb = this.repo
       .createQueryBuilder('attendance')
       .leftJoinAndSelect('attendance.student', 'student');
 
     if (studentId) {
       qb.andWhere('student.id = :studentId', { studentId });
+    }
+
+    if (grade) {
+      qb.andWhere('student.grade = :grade', { grade });
+    }
+
+    if (classroom) {
+      qb.andWhere('student.class = :classroom', { classroom });
     }
 
     if (startDate && endDate) {

@@ -17,6 +17,7 @@ import { UserModule } from './user/user.module';
 import { ParentModule } from './parents/parent.module';
 import { TeacherModule } from './teachers/teacher.module';
 import { NotificationModule } from './notification/notification.module';
+import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { NotificationModule } from './notification/notification.module';
     ParentModule,
     TeacherModule,
     NotificationModule,
+    FeedbackModule
   ],
   controllers: [AppController, MainController],
   providers: [

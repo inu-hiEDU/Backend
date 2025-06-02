@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Query,
+  Res
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateScoreDto } from './dto/create-score.dto';
@@ -14,6 +15,7 @@ import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { ScoresService } from './score.service';
 import { NotificationService } from '../notification/notification.service'; // 알림 서비스 import
+import { Response } from 'express';
 
 @ApiTags('성적')
 @Controller('api/scores')
@@ -67,4 +69,10 @@ export class ScoresController {
   ) {
     return this.scoresService.deleteScore(studentId, grade, semester);
   }
+
+  @Get('export')
+  async exportStudentScores(@Query('studentId') studentId: number, @Res() res: Response) {
+    return this.scoresService.exportStudentScores(studentId, res);
+  }
+
 }

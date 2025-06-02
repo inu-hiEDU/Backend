@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Student } from '../students/student.entity';
 
 @Entity()
-export class Counsel {
+export class Feedback {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,9 +15,9 @@ export class Counsel {
   @Column({ type: 'date' })
   date: Date;
 
-  @Column({ type: 'text' })
-  title: string;
+  @Column()
+  subject: Number;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text' })
   content: string;
 }

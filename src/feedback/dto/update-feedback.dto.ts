@@ -1,6 +1,6 @@
 import { IsDateString, IsInt, IsOptional, IsString } from 'class-validator';
 
-export class UpdateCounselDto {
+export class UpdateFeedbackDto {
   @IsInt()
   @IsOptional()
   studentId?: number;
@@ -11,7 +11,7 @@ export class UpdateCounselDto {
 
   @IsString()
   @IsOptional()
-  title?: string;
+  subject?: string;
 
   @IsString()
   @IsOptional()
