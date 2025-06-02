@@ -16,6 +16,7 @@ import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { ParentModule } from './parents/parent.module';
 import { TeacherModule } from './teachers/teacher.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TeacherModule } from './teachers/teacher.module';
     ScoresModule,
     ParentModule,
     TeacherModule,
+    NotificationModule,
   ],
   controllers: [AppController, MainController],
   providers: [

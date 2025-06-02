@@ -82,7 +82,7 @@ export class AuthController {
       throw new Error('토큰 오류');
     }
 
-    const userId = payload.sub; // ✅ 여기 바뀜
+    const userId = payload.sub;
     const role = payload.role;
 
     if (!userId || !role) {

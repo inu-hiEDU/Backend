@@ -80,10 +80,16 @@ export class ScoresService {
     const saved = await this.scoresRepository.save(score);
 
     // 알림 전송: 학생의 userId가 있으면 알림
-    if (student.userId) {
-      this.notificationService.notifyScoreEntered(
-        student.userId.toString()
-      );
+    if(student.userId) {
+      if (isNew) {
+        this.notificationService.notifyScoreUpdated(
+          student.userId.toString()
+        );
+      } else {
+        this.notificationService.notifyScoreEntered(
+          student.userId.toString()
+        );
+      }
     }
 
     return {

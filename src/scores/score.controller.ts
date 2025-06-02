@@ -30,16 +30,6 @@ export class ScoresController {
     console.log(dto);
     const result = await this.scoresService.createScore(dto);
 
-    // 알림 전송
-    // studentId는 string으로 변환해서 전달
-    if (dto.studentId) {
-      if (result.message.includes('생성')) {
-        this.notificationService.notifyScoreEntered(dto.studentId.toString());
-      } else if (result.message.includes('업데이트')) {
-        this.notificationService.notifyScoreUpdated(dto.studentId.toString());
-      }
-    }
-
     return result;
   }
 
