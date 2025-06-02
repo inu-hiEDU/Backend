@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsDateString, IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateFeedbackDto {
   @ApiProperty({ description: '학생 id', example: '36' })
@@ -12,8 +12,8 @@ export class CreateFeedbackDto {
   @IsNotEmpty()
   date: string;
 
-  @ApiProperty({ description: '과목id', example: '제목' })
-  @IsString()
+  @ApiProperty({ description: '과목id', example: '01' })
+  @IsInt()
   @IsNotEmpty()
   subject: Number;
 
@@ -21,4 +21,9 @@ export class CreateFeedbackDto {
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @ApiProperty({ description: '공개여부', example: true })
+  @IsBoolean()
+  @IsNotEmpty()
+  release: boolean;
 }
