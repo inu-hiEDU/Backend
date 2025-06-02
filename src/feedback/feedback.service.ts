@@ -1,26 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CounselRepository } from './counsel.repository';
-import { CreateCounselDto } from './dto/create-counsel.dto';
-import { UpdateCounselDto } from './dto/update-counsel.dto';
+import { FeedbackRepository } from './feedback.repository';
+import { CreateFeedbackDto } from './dto/create-feedback.dto';
+import { UpdateFeedbackDto } from './dto/update-feedback.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from '../teachers/teacher.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class CounselService {
+export class FeedbackService {
   constructor(
-    private readonly counselRepository: CounselRepository,
+    private readonly feedbackRepository: FeedbackRepository,
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>,
   ) {}
 
-  async create(dto: CreateCounselDto, userId: number) {
+  async create(dto: CreateFeedbackDto, userId: number) {
     const teacher = await this.teacherRepository.findOne({ where: { userId } });
     if (!teacher) {
       throw new NotFoundException('해당 사용자에 연결된 교사를 찾을 수 없습니다.');
     }
 
-    return this.counselRepository.createCounsel({
+    return this.feedbackRepository.createFeedback({
       ...dto,
       student: { id: dto.studentId } as any,
       teacher: { id: teacher.id } as any,
@@ -29,14 +29,14 @@ export class CounselService {
   }
 
   findAll(studentId?: number, startDate?: string, endDate?: string) {
-    return this.counselRepository.findByFilter(studentId, startDate, endDate);
+    return this.feedbackRepository.findByFilter(studentId, startDate, endDate);
   }
 
   findOne(id: number) {
-    return this.counselRepository.findById(id);
+    return this.feedbackRepository.findById(id);
   }
 
-  update(id: number, dto: UpdateCounselDto) {
+  update(id: number, dto: UpdateFeedbackDto) {
     const data: any = { ...dto };
     if (dto.date) {
       data.date = new Date(dto.date);
@@ -45,10 +45,10 @@ export class CounselService {
       data.student = { id: dto.studentId } as any;
       delete data.studentId;
     }
-    return this.counselRepository.updateCounsel(id, data);
+    return this.feedbackRepository.updateFeedback(id, data);
   }
 
   remove(id: number) {
-    return this.counselRepository.deleteCounsel(id);
+    return this.feedbackRepository.deleteFeedback(id);
   }
 }

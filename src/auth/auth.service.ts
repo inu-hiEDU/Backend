@@ -35,9 +35,10 @@ export class AuthService {
 
   createTestToken(): string {
     const payload = {
-      sub: 'test-user-id',
+      sub: '13',
       email: 'test1@gmail.com',
       name: '박기석',
+      role: 'TEACHER'
     };
 
     const secret = this.configService.get('JWT_SECRET');

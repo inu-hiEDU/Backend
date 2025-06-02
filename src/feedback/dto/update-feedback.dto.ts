@@ -1,6 +1,6 @@
 import { IsDateString, IsInt, IsOptional, IsString } from 'class-validator';
 
-export class UpdateCounselDto {
+export class UpdateFeedbackDto {
   @IsInt()
   @IsOptional()
   studentId?: number;
