@@ -21,4 +21,10 @@ export class Teacher {
 
   @Column({ nullable: true })
   userId: number;
+
+  @Column({ nullable: true, default: 9999 })
+  subject: number;
+
+  @Column({ nullable: true, default: 9999 })
+  homeroom: number;
 }

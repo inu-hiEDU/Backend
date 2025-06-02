@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Attendance } from 'src/attendance/attendance.entity';
 import { Counsel } from 'src/counsel/counsel.entity';
-import { Feedback } from 'src/feedback/feedback.entity';
 import { Login } from 'src/login/login.entity';
 import { Parent } from 'src/parents/parent.entity';
 import { Scores } from 'src/scores/score.entity';
