@@ -9,8 +9,14 @@ export class Counsel {
   @ManyToOne(() => Student, { onDelete: 'CASCADE' })
   student: Student;
 
+  @Column()
+  teacher: string;
+
   @Column({ type: 'date' })
   date: Date;
+
+  @Column({ type: 'text' })
+  title: string;
 
   @Column({ type: 'text' })
   content: string;

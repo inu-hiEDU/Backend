@@ -9,6 +9,8 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
+  Req
 } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
@@ -22,6 +24,7 @@ import {
 import { CounselService } from './counsel.service';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 // import { Roles } from '../auth/roles.decorator';
 // import { UserRole } from '../user/user-role.enum';
@@ -33,9 +36,12 @@ export class CounselController {
 
   @Post()
   @ApiCreate('상담 정보 생성', CreateCounselDto)
+  @UseGuards(AuthGuard('jwt'))
   // @Roles(UserRole.TEACHER)
-  create(@Body() dto: CreateCounselDto) {
-    return this.counselService.create(dto);
+  create(@Body() dto: CreateCounselDto, @Req() req) {
+    const userId = req.user.userId;
+    console.log(req);
+    return this.counselService.create(dto, userId);
   }
 
   @Get()
