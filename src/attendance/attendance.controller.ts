@@ -38,10 +38,12 @@ export class AttendanceController {
   @ApiFind('출석 정보 필터링')
   findAll(
     @Query('studentId') studentId?: number,
+    @Query('grade') grade?: number,
+    @Query('classroom') classroom?: number,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
   ) {
-    return this.attendanceService.findAll(studentId, startDate, endDate);
+    return this.attendanceService.findAll(studentId, grade, classroom, startDate, endDate);
   }
 
   @Get(':id')
