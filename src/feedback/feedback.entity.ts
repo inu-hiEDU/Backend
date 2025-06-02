@@ -20,4 +20,7 @@ export class Feedback {
 
   @Column({ type: 'text' })
   content: string;
+
+  @Column()
+  release: boolean;
 }
