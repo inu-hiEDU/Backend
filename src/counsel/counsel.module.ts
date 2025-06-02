@@ -5,9 +5,10 @@ import { CounselController } from './counsel.controller';
 import { Counsel } from './counsel.entity';
 import { CounselRepository } from './counsel.repository';
 import { CounselService } from './counsel.service';
+import { Teacher } from 'src/teachers/teacher.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Counsel, Student])],
+  imports: [TypeOrmModule.forFeature([Counsel, Student, Teacher])],
   controllers: [CounselController],
   providers: [CounselService, CounselRepository],
 })

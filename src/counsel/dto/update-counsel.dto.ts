@@ -11,5 +11,9 @@ export class UpdateCounselDto {
 
   @IsString()
   @IsOptional()
+  title?: string;
+
+  @IsString()
+  @IsOptional()
   content?: string;
 }

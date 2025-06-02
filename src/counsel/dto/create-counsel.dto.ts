@@ -12,7 +12,12 @@ export class CreateCounselDto {
   @IsNotEmpty()
   date: string;
 
-  @ApiProperty({ description: '상담내용', example: '진로 상담' })
+  @ApiProperty({ description: '상담제목', example: '진로 상담' })
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @ApiProperty({ description: '상담내용', example: '진로에 대해 상담함' })
   @IsString()
   @IsNotEmpty()
   content: string;

@@ -1,16 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CounselRepository } from './counsel.repository';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Teacher } from '../teachers/teacher.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CounselService {
-  constructor(private readonly counselRepository: CounselRepository) {}
+  constructor(
+    private readonly counselRepository: CounselRepository,
+    @InjectRepository(Teacher)
+    private readonly teacherRepository: Repository<Teacher>,
+  ) {}
 
-  create(dto: CreateCounselDto) {
+  async create(dto: CreateCounselDto, userId: number) {
+    const teacher = await this.teacherRepository.findOne({ where: { userId } });
+    if (!teacher) {
+      throw new NotFoundException('해당 사용자에 연결된 교사를 찾을 수 없습니다.');
+    }
+
     return this.counselRepository.createCounsel({
       ...dto,
       student: { id: dto.studentId } as any,
+      teacher: { id: teacher.id } as any,
       date: new Date(dto.date),
     });
   }
