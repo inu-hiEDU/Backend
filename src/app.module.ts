@@ -16,6 +16,7 @@ import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { ParentModule } from './parents/parent.module';
 import { TeacherModule } from './teachers/teacher.module';
+import { NotificationModule } from './notification/notification.module';
 import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
@@ -34,6 +35,7 @@ import { FeedbackModule } from './feedback/feedback.module';
     ScoresModule,
     ParentModule,
     TeacherModule,
+    NotificationModule,
     FeedbackModule
   ],
   controllers: [AppController, MainController],

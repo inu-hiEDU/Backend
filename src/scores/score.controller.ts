@@ -14,19 +14,25 @@ import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { ScoresService } from './score.service';
+import { NotificationService } from '../notification/notification.service'; // 알림 서비스 import
 import { Response } from 'express';
 
 @ApiTags('성적')
 @Controller('api/scores')
 export class ScoresController {
-  constructor(private readonly scoresService: ScoresService) {}
+  constructor(
+    private readonly scoresService: ScoresService,
+    private readonly notificationService: NotificationService, // 알림 서비스 주입
+  ) {}
 
   // 과목별 성적 입력 (처음 생성 또는 업데이트)
   @Patch()
   @ApiOperation({ summary: '학생별 성적 생성 및 수정' })
   async createScore(@Body() dto: CreateScoreDto) {
     console.log(dto);
-    return this.scoresService.createScore(dto);
+    const result = await this.scoresService.createScore(dto);
+
+    return result;
   }
 
   // 개별 학생 성적 조회
