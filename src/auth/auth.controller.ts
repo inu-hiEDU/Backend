@@ -19,6 +19,9 @@ import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth-request.interface';
 import { error } from 'console';
 
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+
+@ApiTags('Auth')
 @Controller('api/auth')
 export class AuthController {
   constructor(
@@ -104,6 +107,7 @@ export class AuthController {
 
   @Get('userId')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   getCurrentUser(@Req() req: AuthRequest): { userId: string } {
     const user = req.user;
     return { userId: user.userId };

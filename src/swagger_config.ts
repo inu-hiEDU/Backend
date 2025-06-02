@@ -8,7 +8,7 @@ import {
   DocumentBuilder,
 } from '@nestjs/swagger';
 
-const TEST_TOKEN = '테스트용 토큰';
+const TEST_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iuuwleq4sOyEnSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzQ4ODY0MzU4LCJleHAiOjE3NTE0NTYzNTh9.wWno5O9Rd-I2FsxbDJfWHI09QPMbJ6zG97bOE8LmiMg';
 
 // 전체 Swagger 문서 설정
 export function swaggerConfig() {

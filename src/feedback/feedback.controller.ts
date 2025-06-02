@@ -13,7 +13,7 @@ import {
   Req
 } from '@nestjs/common';
 
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import {
   ApiCreate,
   ApiDelete,
@@ -35,6 +35,7 @@ export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
   @Post()
+  @ApiBearerAuth()
   @ApiCreate('피드백 정보 생성', CreateFeedbackDto)
   @UseGuards(AuthGuard('jwt'))
   // @Roles(UserRole.TEACHER)
