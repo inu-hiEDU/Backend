@@ -45,7 +45,9 @@ describe('CounselService', () => {
         {
           id: 1,
           student: { id: 1 } as any,
+          teacher: { id: 1 } as any,
           date: new Date('2023-04-25'),
+          title: '상담제목',
           content: '상담 내용',
         },
       ];
@@ -67,7 +69,9 @@ describe('CounselService', () => {
         {
           id: 1,
           student: { id: 1 } as any,
+          teacher: { id: 1 } as any,
           date: new Date('2023-04-25'),
+          title: '상담제목',
           content: '상담 내용',
         },
       ];

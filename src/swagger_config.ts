@@ -60,7 +60,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iuuwleq4sOyEnSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzQ4OTI0NDI0LCJleHAiOjE3NTE1MTY0MjR9.oiRCS73fU_CNrxa6wqJtHg4ZPAaKS82lvgDw1rIMHwE'
+          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOSIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iuuwleq4sOyEnSIsInJvbGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNzQ4OTg1MjY3LCJleHAiOjE3NTE1NzcyNjd9._iqrstIs5h_-0iSt8h4ALa--yyzb5niXDa_BAGYywDQ'
         },
         student: {
           name: 'Authorization',

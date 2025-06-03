@@ -53,16 +53,6 @@ export class FeedbackService {
     const feedback = await this.feedbackRepository.findByIdWithStudent(id); // student까지 join된 메서드 사용
     if (!feedback) throw new NotFoundException('피드백 없음');
 
-    const student = feedback.student;
-
-    // 학생의 현재 학년/반과 교사의 담임 정보 비교
-    if (
-      student.grade !== teacher.grade ||
-      student.classroom !== teacher.homeroom
-    ) {
-      throw new ForbiddenException('해당 학생의 담임만 피드백을 볼 수 있습니다');
-    }
-
     return feedback;
   }
 
@@ -73,13 +63,11 @@ export class FeedbackService {
     const feedback = await this.feedbackRepository.findByIdWithStudent(id);
     if (!feedback) throw new NotFoundException('피드백 없음');
 
-    const student = feedback.student;
     if (
-      student.grade !== teacher.grade ||
-      student.classroom !== teacher.homeroom
+      feedback.teacher == teacher
     ) {
       throw new ForbiddenException(
-        '해당 학생의 담임만 피드백을 수정할 수 있습니다',
+        '본인이 작성한 피드백만 수정할 수 있습니다',
       );
     }
 
@@ -102,11 +90,10 @@ export class FeedbackService {
 
     const student = feedback.student;
     if (
-      student.grade !== teacher.grade ||
-      student.classroom !== teacher.homeroom
+      feedback.teacher == teacher
     ) {
       throw new ForbiddenException(
-        '해당 학생의 담임만 피드백을 삭제할 수 있습니다',
+        '본인이 작성한 피드백만 삭제할 수 있습니다',
       );
     }
 

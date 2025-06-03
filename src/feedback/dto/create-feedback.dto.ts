@@ -22,7 +22,7 @@ export class CreateFeedbackDto {
   @IsNotEmpty()
   content: string;
 
-  @ApiProperty({ description: '피드백 내용', example: '진로에 대해 피드백함' })
+  @ApiProperty({ description: '공개여부', example: true })
   @IsBoolean()
   @IsNotEmpty()
   release: boolean;
