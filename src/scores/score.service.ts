@@ -43,6 +43,22 @@ export class ScoresService {
     return { total, average };
   }
 
+  private assignGrades(students: { averageScore: number }[]): string[] {
+    const sorted = [...students].sort(
+      (a, b) => b.averageScore - a.averageScore,
+    );
+    const total = sorted.length;
+    const gradeCutoffs = [0.2, 0.4, 0.6, 0.8].map((p) => Math.ceil(p * total));
+
+    return sorted.map((student, index) => {
+      if (index < gradeCutoffs[0]) return 'A';
+      if (index < gradeCutoffs[1]) return 'B';
+      if (index < gradeCutoffs[2]) return 'C';
+      if (index < gradeCutoffs[3]) return 'D';
+      return 'E';
+    });
+  }
+
   async createScore(dto: CreateScoreDto) {
     const { studentId, grade, semester, ...subjects } = dto;
 
@@ -229,12 +245,19 @@ export class ScoresService {
       });
     }
 
+    const grades = this.assignGrades(result);
+
+    const studentsWithGrades = result.map((student, index) => ({
+      ...student,
+      grade: grades[index],
+    }));
+
     return {
       message:
-        result.length > 0
+        studentsWithGrades.length > 0
           ? '학생의 성적 정보를 조회하였습니다.'
           : '해당 조건에 맞는 성적 정보가 없습니다.',
-      students: result,
+      students: studentsWithGrades,
     };
   }
 
