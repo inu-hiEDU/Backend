@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Attendance } from 'src/attendance/attendance.entity';
 import { Counsel } from 'src/counsel/counsel.entity';
+import { Feedback } from 'src/feedback/feedback.entity';
 import { Login } from 'src/login/login.entity';
 import { OfflineNotification } from 'src/notification/entities/offline-notification.entity';
 import { Parent } from 'src/parents/parent.entity';
@@ -36,6 +37,7 @@ export class DatabaseConfigService {
         Parent,
         Teacher,
         OfflineNotification,
+        Feedback
       ],
 
       // 서버용 설정

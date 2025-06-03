@@ -460,13 +460,14 @@ export class ScoresService {
     }
 
     const student = scores[0].student;
+    const decryptedName = this.scoreRepository.decrypt(student.name);
 
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('성적 보고서');
 
     worksheet.mergeCells('A1:L1');
     const titleCell = worksheet.getCell('A1');
-    titleCell.value = `학생 성적 보고서 - ${student.name}`;
+    titleCell.value = `학생 성적 보고서 - ${decryptedName}`;
     titleCell.font = { size: 16, bold: true };
     titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
@@ -479,14 +480,14 @@ export class ScoresService {
     worksheet.addRow([
       '학년',
       '학기',
-      '과목1',
-      '과목2',
-      '과목3',
-      '과목4',
-      '과목5',
-      '과목6',
-      '과목7',
-      '과목8',
+      '국어',
+      '수학',
+      '영어',
+      '사회',
+      '과학',
+      '미술',
+      '음악',
+      '체육',
       '총점',
       '평균',
     ]);
@@ -547,7 +548,7 @@ export class ScoresService {
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
-    const filename = `성적보고서_${student.name}.xlsx`;
+    const filename = `성적보고서_${decryptedName}.xlsx`;
     const encodedFilename = encodeURIComponent(filename);
 
     res.setHeader(
