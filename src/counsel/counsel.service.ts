@@ -21,19 +21,26 @@ export class CounselService {
   ) {}
 
   async create(dto: CreateCounselDto, userId: number) {
-    const teacher = await this.teacherRepository.findOne({ where: { userId } });
+    const teacher = await this.teacherRepository.findOne({
+      where: { userId },
+      relations: ['user'], // 여기에 user join
+    });
+
     if (!teacher) {
       throw new NotFoundException(
         '해당 사용자에 연결된 교사를 찾을 수 없습니다.',
       );
     }
 
+    const teacherName = teacher.user?.name;
+    if (!teacherName) throw new NotFoundException('교사 이름 없음');
+
     this.notificationService.notifyCounselingUpdated(dto.studentId.toString());
 
     return this.counselRepository.createCounsel({
       ...dto,
       student: { id: dto.studentId } as any,
-      teacher: { id: teacher.id } as any,
+      teacher: teacherName,
       date: new Date(dto.date),
     });
   }
