@@ -19,6 +19,10 @@ import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth-request.interface';
 import { error } from 'console';
 
+import { TeacherRepository } from '../teachers/teacher.repository';
+import { StudentRepository } from 'src/students/student.repository';
+import { ParentRepository } from 'src/parents/parent.repository';
+
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('Auth')
@@ -29,6 +33,9 @@ export class AuthController {
     private readonly configService: ConfigService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly teacherRepository: TeacherRepository,
+    private readonly studentRepository: StudentRepository,
+    private readonly parentRepository: ParentRepository,
   ) {}
 
   @Post('login')
@@ -108,8 +115,39 @@ export class AuthController {
   @Get('userId')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  getCurrentUser(@Req() req: AuthRequest): { userId: string } {
+  async getCurrentUser(@Req() req: AuthRequest): Promise<any> {
     const user = req.user;
-    return { userId: user.userId };
+
+    const userInfo = {
+      userId: user.userId,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+    };
+
+    const userId = Number(user.userId); // 모든 역할에서 사용하므로 공통 처리
+
+    if (user.role === 'TEACHER') {
+      const teacher = await this.teacherRepository.findByUserId(userId);
+      if (teacher) {
+        return { ...userInfo, teacherInfo: teacher };
+      }
+    }
+
+    if (user.role === 'STUDENT') {
+      const student = await this.studentRepository.findOneById(userId);
+      if (student) {
+        return { ...userInfo, studentInfo: student };
+      }
+    }
+
+    if (user.role === 'PARENT') {
+      const parent = await this.parentRepository.findByUserId(userId);
+      if (parent) {
+        return { ...userInfo, parentInfo: parent };
+      }
+    }
+
+    return userInfo;
   }
 }

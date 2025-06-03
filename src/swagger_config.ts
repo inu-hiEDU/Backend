@@ -8,7 +8,7 @@ import {
   DocumentBuilder,
 } from '@nestjs/swagger';
 
-const TEST_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iuuwleq4sOyEnSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzQ4ODY0MzU4LCJleHAiOjE3NTE0NTYzNTh9.wWno5O9Rd-I2FsxbDJfWHI09QPMbJ6zG97bOE8LmiMg';
+const TEST_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iuuwleq4sOyEnSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzQ4OTI0NDI0LCJleHAiOjE3NTE1MTY0MjR9.oiRCS73fU_CNrxa6wqJtHg4ZPAaKS82lvgDw1rIMHwE';
 
 // 전체 Swagger 문서 설정
 export function swaggerConfig() {

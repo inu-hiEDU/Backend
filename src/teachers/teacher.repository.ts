@@ -33,4 +33,7 @@ export class TeacherRepository {
 
     return this.teacherRepo.save(teacher);
   }
+  async findByUserId(userId: number): Promise<Teacher | null> {
+    return await this.teacherRepo.findOne({ where: { userId } });
+  }
 }

@@ -7,12 +7,18 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TeacherModule } from 'src/teachers/teacher.module';
+import { StudentModule } from 'src/students/student.module';
+import { ParentModule } from 'src/parents/parent.module';
 
 @Module({
   imports: [
     ConfigModule,
     PassportModule,
     UserModule,
+    TeacherModule,
+    StudentModule,
+    ParentModule,
     JwtModule.registerAsync({
       imports: [ConfigModule], 
       useFactory: async (configService: ConfigService) => ({
