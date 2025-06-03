@@ -5,6 +5,8 @@ import { UpdateFeedbackDto } from './dto/update-feedback.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from '../teachers/teacher.entity';
 import { Repository } from 'typeorm';
+import { NotificationService } from '../notification/notification.service';
+import { Student } from '../students/student.entity';
 
 @Injectable()
 export class FeedbackService {
@@ -12,19 +14,29 @@ export class FeedbackService {
     private readonly feedbackRepository: FeedbackRepository,
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(dto: CreateFeedbackDto, userId: number) {
     const teacher = await this.teacherRepository.findOne({ where: { userId } });
     if (!teacher) {
-      throw new NotFoundException('해당 사용자에 연결된 교사를 찾을 수 없습니다.');
+      throw new NotFoundException(
+        '해당 사용자에 연결된 교사를 찾을 수 없습니다.',
+      );
     }
 
+    void this.notificationService.notifyFeedbackEntered(
+      dto.studentId.toString(),
+      dto.subject.toString(),
+    );
+
     return this.feedbackRepository.createFeedback({
-      ...dto,
-      student: { id: dto.studentId } as any,
-      teacher: { id: teacher.id } as any,
+      student: { id: dto.studentId } as Student,
+      teacher: teacher.id.toString(),
       date: new Date(dto.date),
+      subject: +dto.subject,
+      content: dto.content,
+      release: !!dto.release,
     });
   }
 
@@ -37,13 +49,27 @@ export class FeedbackService {
   }
 
   update(id: number, dto: UpdateFeedbackDto) {
-    const data: any = { ...dto };
+    if (dto.studentId !== undefined) {
+      void this.notificationService.notifyFeedbackUpdated(
+        dto.studentId.toString(),
+        dto.subject?.toString() ?? '',
+      );
+    }
+    const data: Partial<import('./feedback.entity').Feedback> = {};
     if (dto.date) {
       data.date = new Date(dto.date);
     }
-    if (dto.studentId) {
-      data.student = { id: dto.studentId } as any;
-      delete data.studentId;
+    if (dto.subject !== undefined) {
+      data.subject = +dto.subject;
+    }
+    if (dto.studentId !== undefined) {
+      data.student = { id: dto.studentId } as Student;
+    }
+    if (dto.content !== undefined) {
+      data.content = dto.content;
+    }
+    if (dto.release !== undefined) {
+      data.release = !!dto.release;
     }
     return this.feedbackRepository.updateFeedback(id, data);
   }

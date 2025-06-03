@@ -10,7 +10,7 @@ import {
   Post,
   Query,
   UseGuards,
-  Req
+  Req,
 } from '@nestjs/common';
 
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
@@ -63,7 +63,10 @@ export class FeedbackController {
 
   @Patch(':id')
   @ApiUpdate('피드백 정보 수정', UpdateFeedbackDto)
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateFeedbackDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateFeedbackDto,
+  ) {
     return this.feedbackService.update(id, dto);
   }
 

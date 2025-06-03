@@ -7,7 +7,9 @@ import { CreateParentDto } from './dto/create-parent.dto';
 export class ParentService {
   constructor(private readonly parentRepository: ParentRepository) {}
 
-  async createParent(data: CreateParentDto & { userId: number }): Promise<Parent> {
+  async createParent(
+    data: CreateParentDto & { userId: number },
+  ): Promise<Parent> {
     return this.parentRepository.createParent(data);
   }
 }

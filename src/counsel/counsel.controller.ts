@@ -10,7 +10,7 @@ import {
   Post,
   Query,
   UseGuards,
-  Req
+  Req,
 } from '@nestjs/common';
 
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
@@ -57,20 +57,30 @@ export class CounselController {
 
   @Get(':id')
   @ApiGet('상담 정보 개별 조회')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.counselService.findOne(id);
+  @UseGuards(AuthGuard('jwt'))
+  findOne(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    const userId = Number(req.user.userId);
+    return this.counselService.findOne(id, userId);
   }
 
   @Patch(':id')
   @ApiUpdate('상담 정보 수정', UpdateCounselDto)
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCounselDto) {
-    return this.counselService.update(id, dto);
+  @UseGuards(AuthGuard('jwt'))
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateCounselDto,
+    @Req() req,
+  ) {
+    const userId = Number(req.user.userId);
+    return this.counselService.update(id, dto, userId);
   }
 
   @Delete(':id')
   @ApiDelete('상담 정보 삭제')
   @HttpCode(204)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.counselService.remove(id);
+  @UseGuards(AuthGuard('jwt'))
+  remove(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    const userId = Number(req.user.userId);
+    return this.counselService.remove(id, userId);
   }
 }

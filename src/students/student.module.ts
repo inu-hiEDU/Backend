@@ -6,7 +6,7 @@ import { StudentRepository } from './student.repository';
 import { StudentService } from './student.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Student, StudentRepository])], // 하나로 묶기
+  imports: [TypeOrmModule.forFeature([Student, StudentRepository])],
   controllers: [StudentController],
   providers: [StudentService, StudentRepository],
   exports: [TypeOrmModule, StudentService, StudentRepository],

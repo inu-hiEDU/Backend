@@ -23,13 +23,17 @@ export class ParentRepository {
     const { name, studentNum, phoneNum, userId } = data;
 
     // User 엔티티 조회
-    const user = await this.parentRepo.manager.findOne(User, { where: { id: userId } });
+    const user = await this.parentRepo.manager.findOne(User, {
+      where: { id: userId },
+    });
     if (!user) {
       throw new Error('User not found');
     }
 
     // Student 엔티티 조회
-    const student = await this.studentRepo.findOne({ where: { studentNum: parseInt(studentNum, 10) } });
+    const student = await this.studentRepo.findOne({
+      where: { studentNum: parseInt(studentNum, 10) },
+    });
     if (!student) {
       throw new Error('Student not found');
     }
@@ -44,7 +48,7 @@ export class ParentRepository {
 
     return this.parentRepo.save(parent);
   }
-
+  
   async findByUserId(userId: number): Promise<Parent | null> {
     return await this.parentRepo.findOne({
       where: { user: { id: userId } }

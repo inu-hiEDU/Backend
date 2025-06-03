@@ -6,9 +6,13 @@ import { Feedback } from './feedback.entity';
 import { FeedbackRepository } from './feedback.repository';
 import { FeedbackService } from './feedback.service';
 import { Teacher } from 'src/teachers/teacher.entity';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Feedback, Student, Teacher])],
+  imports: [
+    TypeOrmModule.forFeature([Feedback, Student, Teacher]),
+    NotificationModule,
+  ],
   controllers: [FeedbackController],
   providers: [FeedbackService, FeedbackRepository],
 })

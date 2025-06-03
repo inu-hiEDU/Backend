@@ -4,7 +4,7 @@ import { TeacherController } from './teacher.controller';
 import { TeacherService } from './teacher.service';
 import { TeacherRepository } from './teacher.repository';
 import { Teacher } from './teacher.entity';
-import { User } from '../user/user.entity'
+import { User } from '../user/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Teacher, User])],
