@@ -1,15 +1,16 @@
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
-  ForbiddenException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Student } from 'src/students/student.entity';
+import { Repository } from 'typeorm';
+import { NotificationService } from '../notification/notification.service';
+import { Teacher } from '../teachers/teacher.entity';
 import { CounselRepository } from './counsel.repository';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Teacher } from '../teachers/teacher.entity';
-import { Repository } from 'typeorm';
-import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class CounselService {
@@ -17,30 +18,35 @@ export class CounselService {
     private readonly counselRepository: CounselRepository,
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>,
+    @InjectRepository(Student)
+    private readonly studentRepository: Repository<Student>,
     private readonly notificationService: NotificationService,
   ) {}
 
   async create(dto: CreateCounselDto, userId: number) {
-    const teacher = await this.teacherRepository.findOne({
-      where: { userId },
-      relations: ['user'], // 여기에 user join
+    const teacher = await this.teacherRepository.findOne({ where: { userId } });
+    const student = await this.studentRepository.findOne({
+      where: { id: dto.studentId },
     });
-
     if (!teacher) {
       throw new NotFoundException(
         '해당 사용자에 연결된 교사를 찾을 수 없습니다.',
       );
     }
+    if (!student) {
+      throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
+    }
 
     const teacherName = teacher.user?.name;
     if (!teacherName) throw new NotFoundException('교사 이름 없음');
-
-    this.notificationService.notifyCounselingUpdated(dto.studentId.toString());
+    void this.notificationService.notifyCounselingUpdated(
+      dto.studentId.toString(),
+    );
 
     return this.counselRepository.createCounsel({
       ...dto,
-      student: { id: dto.studentId } as any,
-      teacher: teacherName,
+      student: student,
+      teacher: teacher, // 직접 Teacher 객체 넣기
       date: new Date(dto.date),
     });
   }

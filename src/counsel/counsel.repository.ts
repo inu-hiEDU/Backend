@@ -18,7 +18,8 @@ export class CounselRepository {
   async findByFilter(studentId?: number, startDate?: string, endDate?: string) {
     const qb = this.repo
       .createQueryBuilder('counsel')
-      .leftJoinAndSelect('counsel.student', 'student');
+      .leftJoinAndSelect('counsel.student', 'student')
+      .leftJoinAndSelect('counsel.teacher', 'teacher');
 
     if (studentId) {
       qb.andWhere('student.id = :studentId', { studentId });

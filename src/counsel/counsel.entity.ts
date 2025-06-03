@@ -17,15 +17,9 @@ export class Counsel {
   @JoinColumn({ name: 'studentId' })
   student: Student;
 
-  @Column()
-  studentId: number;
-
   @ManyToOne(() => Teacher, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'teacherId' })
-  teacher: string;
-
-  @Column()
-  teacherId: number;
+  teacher: Teacher;
 
   @Column({ type: 'date' })
   date: Date;
