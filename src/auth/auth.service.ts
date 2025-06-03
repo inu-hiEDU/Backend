@@ -38,10 +38,10 @@ export class AuthService {
 
   createTestToken(): string {
     const payload = {
-      sub: '9',
+      sub: '19',
       email: 'test1@gmail.com',
       name: '박기석',
-      role: 'TEACHER',
+      role: 'teacher',
     };
 
     const secret = this.configService.get('JWT_SECRET');
@@ -51,10 +51,10 @@ export class AuthService {
   }
   createTestTokenTeacher(): string {
     const payload = {
-      sub: '13',
+      sub: '19',
       email: 'teacher1@gmail.com',
       name: '김선생',
-      role: 'TEACHER',
+      role: 'teacher',
     };
 
     const secret = this.configService.get('JWT_SECRET');

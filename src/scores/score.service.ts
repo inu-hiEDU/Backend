@@ -460,13 +460,14 @@ export class ScoresService {
     }
 
     const student = scores[0].student;
+    const decryptedName = this.scoreRepository.decrypt(student.name);
 
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('성적 보고서');
 
     worksheet.mergeCells('A1:L1');
     const titleCell = worksheet.getCell('A1');
-    titleCell.value = `학생 성적 보고서 - ${student.name}`;
+    titleCell.value = `학생 성적 보고서 - ${decryptedName}`;
     titleCell.font = { size: 16, bold: true };
     titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
@@ -547,7 +548,7 @@ export class ScoresService {
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
-    const filename = `성적보고서_${student.name}.xlsx`;
+    const filename = `성적보고서_${decryptedName}.xlsx`;
     const encodedFilename = encodeURIComponent(filename);
 
     res.setHeader(
