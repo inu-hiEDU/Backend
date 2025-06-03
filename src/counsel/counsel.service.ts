@@ -25,21 +25,27 @@ export class CounselService {
 
   async create(dto: CreateCounselDto, userId: number) {
     const teacher = await this.teacherRepository.findOne({ where: { userId } });
-    const student = await this.studentRepository.findOne({ where: { id: dto.studentId } });
+    const student = await this.studentRepository.findOne({
+      where: { id: dto.studentId },
+    });
     if (!teacher) {
-      throw new NotFoundException('해당 사용자에 연결된 교사를 찾을 수 없습니다.');
+      throw new NotFoundException(
+        '해당 사용자에 연결된 교사를 찾을 수 없습니다.',
+      );
     }
     if (!student) {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
 
     // 알림 전송
-    void this.notificationService.notifyCounselingUpdated(dto.studentId.toString());
+    void this.notificationService.notifyCounselingUpdated(
+      dto.studentId.toString(),
+    );
 
     return this.counselRepository.createCounsel({
       ...dto,
       student: student,
-      teacher: teacher,  // 직접 Teacher 객체 넣기
+      teacher: teacher, // 직접 Teacher 객체 넣기
       date: new Date(dto.date),
     });
   }

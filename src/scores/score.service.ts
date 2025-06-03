@@ -42,35 +42,35 @@ export class ScoresService {
     return {
       subject1: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject1 || 0,
+        score: Number(s.subject1) || 0,
       })),
       subject2: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject2 || 0,
+        score: Number(s.subject2) || 0,
       })),
       subject3: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject3 || 0,
+        score: Number(s.subject3) || 0,
       })),
       subject4: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject4 || 0,
+        score: Number(s.subject4) || 0,
       })),
       subject5: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject5 || 0,
+        score: Number(s.subject5) || 0,
       })),
       subject6: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject6 || 0,
+        score: Number(s.subject6) || 0,
       })),
       subject7: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject7 || 0,
+        score: Number(s.subject7) || 0,
       })),
       subject8: scores.map((s) => ({
         studentId: s.student.id,
-        score: s.subject8 || 0,
+        score: Number(s.subject8) || 0,
       })),
     };
   }
@@ -93,7 +93,7 @@ export class ScoresService {
   private calculateAverageGrades(scores: Scores[]) {
     const averageScores = scores.map((s) => ({
       studentId: s.student.id,
-      score: s.averageScore,
+      score: Number(s.averageScore),
     }));
     return this.assignGrades(averageScores);
   }
@@ -184,22 +184,38 @@ export class ScoresService {
     const isNew = !score;
 
     if (!score) {
-      score = this.scoreRepository.createScoreEntity({
+      score = await this.scoreRepository.saveScore({
         student,
         grade,
         semester,
         createdAt: now,
         updatedAt: now,
-        ...subjects,
+        ...Object.fromEntries(
+          Object.entries(subjects).map(([k, v]) => [
+            k,
+            v !== undefined ? v.toString() : undefined,
+          ]),
+        ),
       });
     } else {
-      Object.assign(score, subjects);
+      Object.assign(
+        score,
+        Object.fromEntries(
+          Object.entries(subjects).map(([k, v]) => [
+            k,
+            v !== undefined ? v.toString() : undefined,
+          ]),
+        ),
+      );
       score.updatedAt = now;
     }
 
-    const { total, average } = this.calculateTotalAndAverage(score);
-    score.totalScore = total;
-    score.averageScore = average;
+    const { total, average } = this.calculateTotalAndAverage(subjects);
+    if (!score) {
+      throw new NotFoundException('성적 정보를 저장할 수 없습니다.');
+    }
+    score.totalScore = this.scoreRepository.encrypt(total.toString());
+    score.averageScore = this.scoreRepository.encrypt(average.toString());
 
     const saved = await this.scoreRepository.saveScore(score);
 
