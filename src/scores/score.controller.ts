@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Delete,
+  Post,
+  Param,
   Get,
   HttpCode,
   ParseIntPipe,
@@ -76,5 +78,32 @@ export class ScoresController {
     @Res() res: Response,
   ) {
     return this.scoresService.exportStudentScores(studentId, res);
+  }
+
+  // 성적을 한 번에 입력
+  @Post('bulk/:studentId')
+  async createBulkScore(
+    @Param('studentId') studentId: number,
+    @Body()
+    body: {
+      scores: {
+        grade: number;
+        semester: number;
+        subject1?: number;
+        subject2?: number;
+        subject3?: number;
+        subject4?: number;
+        subject5?: number;
+        subject6?: number;
+        subject7?: number;
+        subject8?: number;
+      }[];
+    },
+  ) {
+    const scoresWithStudentId = body.scores.map((score) => ({
+      ...score,
+      studentId,
+    }));
+    return this.scoresService.createBulkScore(studentId, scoresWithStudentId);
   }
 }
