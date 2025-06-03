@@ -129,21 +129,21 @@ export class AuthController {
 
     const userId = Number(user.userId); // 모든 역할에서 사용하므로 공통 처리
 
-    if (user.role === 'TEACHER') {
+    if (user.role === 'teacher') {
       const teacher = await this.teacherRepository.findByUserId(userId);
       if (teacher) {
         return { ...userInfo, teacherInfo: teacher };
       }
     }
 
-    if (user.role === 'STUDENT') {
+    if (user.role === 'student') {
       const student = await this.studentRepository.findByUserId(userId);
       if (student) {
         return { ...userInfo, studentInfo: student };
       }
     }
 
-    if (user.role === 'PARENT') {
+    if (user.role === 'parent') {
       const parent = await this.parentRepository.findByUserId(userId);
       if (parent) {
         return { ...userInfo, parentInfo: parent };
