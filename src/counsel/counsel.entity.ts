@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Student } from '../students/student.entity';
+import { Teacher } from '../teachers/teacher.entity';
 
 @Entity()
 export class Counsel {
@@ -19,8 +20,12 @@ export class Counsel {
   @Column()
   studentId: number;
 
+  @ManyToOne(() => Teacher, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'teacherId' })
+  teacher: Teacher;
+
   @Column()
-  teacher: string;
+  teacherId: number;
 
   @Column({ type: 'date' })
   date: Date;

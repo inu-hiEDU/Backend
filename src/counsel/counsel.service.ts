@@ -35,7 +35,9 @@ export class CounselService {
     const teacherName = teacher.user?.name;
     if (!teacherName) throw new NotFoundException('교사 이름 없음');
 
-    this.notificationService.notifyCounselingUpdated(dto.studentId.toString());
+    void this.notificationService.notifyCounselingUpdated(
+      dto.studentId.toString(),
+    );
 
     return this.counselRepository.createCounsel({
       ...dto,
