@@ -19,9 +19,7 @@ export class AuthService {
     const user = await this.userService.findUserByEmail(email);
     const isPasswordValid = await bcrypt.compare(password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException(
-        '이메일이 올바르지 않습니다.',
-      );
+      throw new UnauthorizedException('이메일이 올바르지 않습니다.');
     }
 
     // JWT 생성
@@ -38,7 +36,7 @@ export class AuthService {
       sub: '13',
       email: 'test1@gmail.com',
       name: '박기석',
-      role: 'TEACHER'
+      role: 'TEACHER',
     };
 
     const secret = this.configService.get('JWT_SECRET');
