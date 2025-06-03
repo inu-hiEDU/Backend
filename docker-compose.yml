@@ -38,6 +38,27 @@ services:
     networks:
       - monitoring
 
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=k6
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+    networks:
+      - monitoring
+
+  k6:
+    image: grafana/k6
+    container_name: k6
+    depends_on:
+      - influxdb
+    volumes:
+      - ./scripts:/scripts
+    networks:
+      - monitoring
+
 networks:
   monitoring:
     driver: bridge
