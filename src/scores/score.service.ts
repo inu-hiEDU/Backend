@@ -285,9 +285,10 @@ export class ScoresService {
 
     // 각 과목별 등급 계산
     const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
-    
+
     // 각 과목별 석차 및 평균 계산 추가
-    const subjectRanksAndAverages = this.calculateRanksAndAverages(subjectScores);
+    const subjectRanksAndAverages =
+      this.calculateRanksAndAverages(subjectScores);
 
     // 평균 점수로 전체 등급 계산
     const averageGrades = this.calculateAverageGrades(classmates);
@@ -315,7 +316,12 @@ export class ScoresService {
         studentId,
         grade,
         semester,
-        subjects: this.buildSubjectsWithGrades(saved, subjectGrades, subjectRanksAndAverages, studentId),
+        subjects: this.buildSubjectsWithGrades(
+          saved,
+          subjectGrades,
+          subjectRanksAndAverages,
+          studentId,
+        ),
         total: saved.totalScore,
         average: saved.averageScore,
         scoreGrade,
@@ -348,7 +354,8 @@ export class ScoresService {
 
         const subjectScores = this.extractSubjectScores(classmates);
         const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
-        const subjectRanksAndAverages = this.calculateRanksAndAverages(subjectScores);
+        const subjectRanksAndAverages =
+          this.calculateRanksAndAverages(subjectScores);
         const averageGrades = this.calculateAverageGrades(classmates);
 
         const scoreGrade = averageGrades[studentId] || 'E';
@@ -359,7 +366,7 @@ export class ScoresService {
           subjects: this.buildSubjectsWithGrades(
             score,
             subjectGrades,
-            subjectRanksAndAverages,  // ★ 여기에 추가
+            subjectRanksAndAverages, // ★ 여기에 추가
             studentId,
           ),
           totalScore: score.totalScore,
@@ -404,8 +411,9 @@ export class ScoresService {
     const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
 
     // 각 과목별 석차 및 평균 계산 추가
-    const subjectRanksAndAverages = this.calculateRanksAndAverages(subjectScores);
-    
+    const subjectRanksAndAverages =
+      this.calculateRanksAndAverages(subjectScores);
+
     // 평균 점수로 전체 등급 계산
     const averageGrades = this.calculateAverageGrades(scores);
 

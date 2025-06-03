@@ -22,7 +22,11 @@ async function bootstrap() {
 
   // CORS 설정
   app.enableCors({
-    origin: ['http://localhost:3012', 'https://hiedu.site'], // 허용할 도메인
+    origin: [
+      'http://localhost:3012',
+      'https://hiedu.site',
+      'https://hiedu-frontend.vercel.app',
+    ], // 허용할 도메인
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // 쿠키를 포함한 요청 허용
   });

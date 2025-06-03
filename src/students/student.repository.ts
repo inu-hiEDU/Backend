@@ -146,8 +146,7 @@ export class StudentRepository {
 
   async findByUserId(userId: number): Promise<Student | null> {
     return await this.studentRepo.findOne({
-      where: { userId }
+      where: { userId },
     });
   }
-
 }
