@@ -1,8 +1,28 @@
+import * as crypto from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Student } from './student.entity';
 import { User } from '../user/user.entity';
+
+// 암호화/복호화 설정
+const algorithm = 'aes-256-cbc';
+const key = Buffer.from(process.env.CRYPTO_KEY!, 'hex'); // 32 bytes
+const iv = Buffer.from(process.env.CRYPTO_IV!, 'hex');   // 16 bytes
+
+function encrypt(text: string) {
+  const cipher = crypto.createCipheriv(algorithm, key, iv);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
+
+function decrypt(encrypted: string) {
+  const decipher = crypto.createDecipheriv(algorithm, key, iv);
+  let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
 
 @Injectable()
 export class StudentRepository {
@@ -12,20 +32,55 @@ export class StudentRepository {
   ) {}
 
   async findAll(): Promise<Student[]> {
-    return this.studentRepo.find();
+    const students = await this.studentRepo.find();
+    // 복호화
+    return students.map((student) => ({
+      ...student,
+      name: student.name ? decrypt(student.name) : undefined,
+      phoneNum: student.phoneNum ? decrypt(student.phoneNum) : undefined,
+      birthday: student.birthday ? decrypt(student.birthday) : undefined,
+    }));
   }
 
   async findOneById(id: number): Promise<Student> {
-    return this.studentRepo.findOneByOrFail({ id });
+    const student = await this.studentRepo.findOneByOrFail({ id });
+    // 복호화
+    if (student) {
+      student.name = student.name ? decrypt(student.name) : undefined;
+      student.phoneNum = student.phoneNum ? decrypt(student.phoneNum) : undefined;
+      student.birthday = student.birthday ? decrypt(student.birthday) : undefined;
+    }
+    return student;
   }
 
   async createStudent(dto: Partial<Student>): Promise<Student> {
-    const student = this.studentRepo.create(dto);
-    return this.studentRepo.save(student);
+    // 암호화
+    const encryptedDto = {
+      ...dto,
+      name: dto.name ? encrypt(dto.name) : undefined,
+      phoneNum: dto.phoneNum ? encrypt(dto.phoneNum) : undefined,
+      birthday: dto.birthday ? encrypt(dto.birthday) : undefined,
+    };
+    const student = this.studentRepo.create(encryptedDto);
+    const saved = await this.studentRepo.save(student);
+    // 복호화 후 반환
+    return {
+      ...saved,
+      name: saved.name ? decrypt(saved.name) : undefined,
+      phoneNum: saved.phoneNum ? decrypt(saved.phoneNum) : undefined,
+      birthday: saved.birthday ? decrypt(saved.birthday) : undefined,
+    } as Student;
   }
 
   async updateStudent(id: number, dto: Partial<Student>): Promise<Student> {
-    await this.studentRepo.update(id, dto);
+    // 암호화
+    const encryptedDto = {
+      ...dto,
+      name: dto.name ? encrypt(dto.name) : undefined,
+      phoneNum: dto.phoneNum ? encrypt(dto.phoneNum) : undefined,
+      birthday: dto.birthday ? encrypt(dto.birthday) : undefined,
+    };
+    await this.studentRepo.update(id, encryptedDto);
     return this.findOneById(id);
   }
 
@@ -43,7 +98,13 @@ export class StudentRepository {
       .andWhere('student.classroom = :classroom', { classroom })
       .getMany();
 
-    return students;
+    // 복호화
+    return students.map((student) => ({
+      ...student,
+      name: student.name ? decrypt(student.name) : undefined,
+      phoneNum: student.phoneNum ? decrypt(student.phoneNum) : undefined,
+      birthday: student.birthday ? decrypt(student.birthday) : undefined,
+    }));
   }
 
   async createStudentFromHakbeon(data: {
@@ -68,17 +129,30 @@ export class StudentRepository {
       throw new Error('User not found');
     }
 
+    // 암호화
+    const encryptedName = name ? encrypt(name) : undefined;
+    const encryptedPhoneNum = phoneNum ? encrypt(phoneNum) : undefined;
+    const encryptedBirthday = birthday ? encrypt(birthday) : undefined;
+
     // 새로운 학생 생성
     const student = this.studentRepo.create({
       grade,
       classroom,
       studentNum,
-      name,
-      phoneNum,
-      birthday,
+      name: encryptedName,
+      phoneNum: encryptedPhoneNum,
+      birthday: encryptedBirthday,
       user,
     });
 
-    return this.studentRepo.save(student);
+    const saved = await this.studentRepo.save(student);
+
+    // 복호화 후 반환
+    return {
+      ...saved,
+      name: saved.name ? decrypt(saved.name) : undefined,
+      phoneNum: saved.phoneNum ? decrypt(saved.phoneNum) : undefined,
+      birthday: saved.birthday ? decrypt(saved.birthday) : undefined,
+    } as Student;
   }
 }
