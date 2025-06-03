@@ -18,7 +18,8 @@ export class FeedbackRepository {
   async findByFilter(studentId?: number, startDate?: string, endDate?: string) {
     const qb = this.repo
       .createQueryBuilder('feedback')
-      .leftJoinAndSelect('feedback.student', 'student');
+      .leftJoinAndSelect('feedback.student', 'student')
+      .leftJoinAndSelect('feedback.teacher', 'teacher');
 
     if (studentId) {
       qb.andWhere('student.id = :studentId', { studentId });
@@ -40,6 +41,14 @@ export class FeedbackRepository {
 
   async findById(id: number) {
     return this.repo.findOne({ where: { id }, relations: ['student'] });
+  }
+
+  async findByIdWithStudent(id: number) {
+    return this.repo
+      .createQueryBuilder('feedback')
+      .leftJoinAndSelect('feedback.student', 'student')
+      .where('feedback.id = :id', { id })
+      .getOne();
   }
 
   async updateFeedback(id: number, data: Partial<Feedback>) {

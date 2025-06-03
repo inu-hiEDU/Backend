@@ -11,7 +11,11 @@ import {
   Query,
   UseGuards,
   Req,
+  Res,
+  NotFoundException
 } from '@nestjs/common';
+
+import { Response } from 'express';
 
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import {
@@ -57,23 +61,46 @@ export class FeedbackController {
 
   @Get(':id')
   @ApiGet('피드백 정보 개별 조회')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.feedbackService.findOne(id);
+  @UseGuards(AuthGuard('jwt'))
+  findOne(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    const userId = Number(req.user.userId);
+    return this.feedbackService.findOne(id, userId);
   }
 
   @Patch(':id')
   @ApiUpdate('피드백 정보 수정', UpdateFeedbackDto)
+  @UseGuards(AuthGuard('jwt'))
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateFeedbackDto,
+    @Req() req,
   ) {
-    return this.feedbackService.update(id, dto);
+    const userId = Number(req.user.userId);
+    return this.feedbackService.update(id, dto, userId);
   }
 
   @Delete(':id')
   @ApiDelete('피드백 정보 삭제')
   @HttpCode(204)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.feedbackService.remove(id);
+  @UseGuards(AuthGuard('jwt'))
+  remove(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    const userId = Number(req.user.userId);
+    return this.feedbackService.remove(id, userId);
+  }
+
+  @Get('export/:studentId')
+  async exportFeedbackReport(
+    @Param('studentId', ParseIntPipe) studentId: number,
+    @Res() res: Response,
+  ) {
+    try {
+      await this.feedbackService.exportFeedbackReport(studentId, res);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: '서버 에러가 발생했습니다.' });
+      }
+    }
   }
 }

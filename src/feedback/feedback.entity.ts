@@ -1,5 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Student } from '../students/student.entity';
+import { Teacher } from '../teachers/teacher.entity';
 
 @Entity()
 export class Feedback {
@@ -7,20 +14,22 @@ export class Feedback {
   id: number;
 
   @ManyToOne(() => Student, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'studentId' })
   student: Student;
 
-  @Column()
-  teacher: string;
+  @ManyToOne(() => Teacher, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'teacherId' })
+  teacher: Teacher;
 
   @Column({ type: 'date' })
   date: Date;
 
-  @Column()
-  subject: number;
-
   @Column({ type: 'text' })
+  subject: string;
+
+  @Column({ type: 'text', nullable: true })
   content: string;
 
-  @Column()
+  @Column({ type: 'text' })
   release: boolean;
 }

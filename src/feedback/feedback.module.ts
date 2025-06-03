@@ -7,6 +7,7 @@ import { FeedbackRepository } from './feedback.repository';
 import { FeedbackService } from './feedback.service';
 import { Teacher } from 'src/teachers/teacher.entity';
 import { NotificationModule } from '../notification/notification.module';
+import { StudentRepository } from 'src/students/student.repository';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { NotificationModule } from '../notification/notification.module';
     NotificationModule,
   ],
   controllers: [FeedbackController],
-  providers: [FeedbackService, FeedbackRepository],
+  providers: [FeedbackService, FeedbackRepository, StudentRepository],
 })
 export class FeedbackModule {}
