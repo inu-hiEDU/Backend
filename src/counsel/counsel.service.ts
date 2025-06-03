@@ -46,11 +46,17 @@ export class CounselService {
     const teacher = await this.teacherRepository.findOneBy({ userId });
     if (!teacher) throw new ForbiddenException('교사 정보 없음');
 
-    const counsel = await this.counselRepository.findById(id);
+    const counsel = await this.counselRepository.findByIdWithStudent(id); // student까지 join된 메서드 사용
     if (!counsel) throw new NotFoundException('상담 없음');
 
-    if (counsel.subject !== teacher.subject) {
-      throw new ForbiddenException('본인 담당 과목 상담이 아닙니다');
+    const student = counsel.student;
+
+    // 학생의 현재 학년/반과 교사의 담임 정보 비교
+    if (
+      student.grade !== teacher.grade ||
+      student.classroom !== teacher.homeroom
+    ) {
+      throw new ForbiddenException('해당 학생의 담임만 상담을 볼 수 있습니다');
     }
 
     return counsel;
@@ -60,11 +66,17 @@ export class CounselService {
     const teacher = await this.teacherRepository.findOneBy({ userId });
     if (!teacher) throw new ForbiddenException('교사 정보 없음');
 
-    const counsel = await this.counselRepository.findById(id);
+    const counsel = await this.counselRepository.findByIdWithStudent(id);
     if (!counsel) throw new NotFoundException('상담 없음');
 
-    if (counsel.subject !== teacher.subject) {
-      throw new ForbiddenException('수정 권한 없음');
+    const student = counsel.student;
+    if (
+      student.grade !== teacher.grade ||
+      student.classroom !== teacher.homeroom
+    ) {
+      throw new ForbiddenException(
+        '해당 학생의 담임만 상담을 수정할 수 있습니다',
+      );
     }
 
     const data: any = { ...dto };
@@ -81,11 +93,17 @@ export class CounselService {
     const teacher = await this.teacherRepository.findOneBy({ userId });
     if (!teacher) throw new ForbiddenException('교사 정보 없음');
 
-    const counsel = await this.counselRepository.findById(id);
+    const counsel = await this.counselRepository.findByIdWithStudent(id);
     if (!counsel) throw new NotFoundException('상담 없음');
 
-    if (counsel.subject !== teacher.subject) {
-      throw new ForbiddenException('삭제 권한 없음');
+    const student = counsel.student;
+    if (
+      student.grade !== teacher.grade ||
+      student.classroom !== teacher.homeroom
+    ) {
+      throw new ForbiddenException(
+        '해당 학생의 담임만 상담을 삭제할 수 있습니다',
+      );
     }
 
     return this.counselRepository.deleteCounsel(id);

@@ -65,14 +65,22 @@ export class CounselController {
 
   @Patch(':id')
   @ApiUpdate('상담 정보 수정', UpdateCounselDto)
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCounselDto) {
-    return this.counselService.update(id, dto);
+  @UseGuards(AuthGuard('jwt'))
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateCounselDto,
+    @Req() req,
+  ) {
+    const userId = Number(req.user.userId);
+    return this.counselService.update(id, dto, userId);
   }
 
   @Delete(':id')
   @ApiDelete('상담 정보 삭제')
   @HttpCode(204)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.counselService.remove(id);
+  @UseGuards(AuthGuard('jwt'))
+  remove(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    const userId = Number(req.user.userId);
+    return this.counselService.remove(id, userId);
   }
 }

@@ -32,6 +32,9 @@ export class Teacher {
   @Column({ nullable: true })
   subject: number;
 
+  @Column()
+  grade: number;
+
   @Column({ nullable: true })
   homeroom: number;
 }

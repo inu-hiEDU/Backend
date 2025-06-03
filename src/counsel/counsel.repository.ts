@@ -42,6 +42,14 @@ export class CounselRepository {
     return this.repo.findOne({ where: { id }, relations: ['student'] });
   }
 
+  async findByIdWithStudent(id: number) {
+    return this.repo
+      .createQueryBuilder('counsel')
+      .leftJoinAndSelect('counsel.student', 'student')
+      .where('counsel.id = :id', { id })
+      .getOne();
+  }
+
   async updateCounsel(id: number, data: Partial<Counsel>) {
     await this.repo.update(id, data);
     return this.findById(id);
