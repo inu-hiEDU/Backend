@@ -58,20 +58,34 @@ export class StudentRepository {
   }
 
   async createStudent(dto: Partial<Student>): Promise<Student> {
-    const encryptedDto = {
-      ...dto,
+    let parsedStudentNum: number | undefined;
+
+    if (dto.studentNum) {
+      parsedStudentNum = parseInt(String(dto.studentNum).slice(-2), 10);
+    }
+
+    const encryptedDto: Partial<Student> = {
+      studentNum: parsedStudentNum,
+      grade: dto.grade,
+      // 👇 중요: 실제 entity 필드 이름에 맞춰서 넣어야 함
+      classroom: dto.classroom,
       name: dto.name ? this.encrypt(dto.name) : '',
       phoneNum: dto.phoneNum ? this.encrypt(dto.phoneNum) : '',
       birthday: dto.birthday ? this.encrypt(dto.birthday) : '',
+      user: dto.user,
+      userId: dto.userId,
+      picture: dto.picture,
     };
+
     const student = this.studentRepo.create(encryptedDto);
     const saved = await this.studentRepo.save(student);
+
     return {
       ...saved,
       name: saved.name ? this.decrypt(saved.name) : '',
       phoneNum: saved.phoneNum ? this.decrypt(saved.phoneNum) : '',
       birthday: saved.birthday ? this.decrypt(saved.birthday) : '',
-    } as Student;
+    };
   }
 
   async updateStudent(id: number, dto: Partial<Student>): Promise<Student> {
