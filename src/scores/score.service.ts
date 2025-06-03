@@ -43,6 +43,77 @@ export class ScoresService {
     return { total, average };
   }
 
+  private extractSubjectScores(scores: Scores[]) {
+    return {
+      subject1: scores.map((s) => ({ studentId: s.student.id, score: s.subject1 || 0 })),
+      subject2: scores.map((s) => ({ studentId: s.student.id, score: s.subject2 || 0 })),
+      subject3: scores.map((s) => ({ studentId: s.student.id, score: s.subject3 || 0 })),
+      subject4: scores.map((s) => ({ studentId: s.student.id, score: s.subject4 || 0 })),
+      subject5: scores.map((s) => ({ studentId: s.student.id, score: s.subject5 || 0 })),
+      subject6: scores.map((s) => ({ studentId: s.student.id, score: s.subject6 || 0 })),
+      subject7: scores.map((s) => ({ studentId: s.student.id, score: s.subject7 || 0 })),
+      subject8: scores.map((s) => ({ studentId: s.student.id, score: s.subject8 || 0 })),
+    };
+  }
+
+  private calculateAllSubjectGrades(subjectScores: ReturnType<typeof this.extractSubjectScores>) {
+    return {
+      subject1: this.assignGrades(subjectScores.subject1),
+      subject2: this.assignGrades(subjectScores.subject2),
+      subject3: this.assignGrades(subjectScores.subject3),
+      subject4: this.assignGrades(subjectScores.subject4),
+      subject5: this.assignGrades(subjectScores.subject5),
+      subject6: this.assignGrades(subjectScores.subject6),
+      subject7: this.assignGrades(subjectScores.subject7),
+      subject8: this.assignGrades(subjectScores.subject8),
+    };
+  }
+
+  private calculateAverageGrades(scores: Scores[]) {
+    const averageScores = scores.map((s) => ({
+      studentId: s.student.id,
+      score: s.averageScore,
+    }));
+    return this.assignGrades(averageScores);
+  }
+
+  private buildSubjectsWithGrades(score: Scores, subjectGrades: ReturnType<typeof this.calculateAllSubjectGrades>, studentId: number) {
+    return {
+      subject1: {
+        score: score.subject1,
+        grade: subjectGrades.subject1[studentId] || 'E',
+      },
+      subject2: {
+        score: score.subject2,
+        grade: subjectGrades.subject2[studentId] || 'E',
+      },
+      subject3: {
+        score: score.subject3,
+        grade: subjectGrades.subject3[studentId] || 'E',
+      },
+      subject4: {
+        score: score.subject4,
+        grade: subjectGrades.subject4[studentId] || 'E',
+      },
+      subject5: {
+        score: score.subject5,
+        grade: subjectGrades.subject5[studentId] || 'E',
+      },
+      subject6: {
+        score: score.subject6,
+        grade: subjectGrades.subject6[studentId] || 'E',
+      },
+      subject7: {
+        score: score.subject7,
+        grade: subjectGrades.subject7[studentId] || 'E',
+      },
+      subject8: {
+        score: score.subject8,
+        grade: subjectGrades.subject8[studentId] || 'E',
+      },
+    };
+  }
+
   private assignGrades(students: { studentId: number; score: number }[]): { [studentId: number]: string } {
     const scoresWithIndex = students.map((student) => ({
       studentId: student.studentId,
@@ -119,33 +190,13 @@ export class ScoresService {
     });
 
     // 각 과목별 점수 추출
-    const subjectScores = {
-      subject1: classmates.map((s) => ({ studentId: s.student.id, score: s.subject1 || 0 })),
-      subject2: classmates.map((s) => ({ studentId: s.student.id, score: s.subject2 || 0 })),
-      subject3: classmates.map((s) => ({ studentId: s.student.id, score: s.subject3 || 0 })),
-      subject4: classmates.map((s) => ({ studentId: s.student.id, score: s.subject4 || 0 })),
-      subject5: classmates.map((s) => ({ studentId: s.student.id, score: s.subject5 || 0 })),
-      subject6: classmates.map((s) => ({ studentId: s.student.id, score: s.subject6 || 0 })),
-      subject7: classmates.map((s) => ({ studentId: s.student.id, score: s.subject7 || 0 })),
-      subject8: classmates.map((s) => ({ studentId: s.student.id, score: s.subject8 || 0 })),
-    };
+    const subjectScores = this.extractSubjectScores(classmates);
 
     // 각 과목별 등급 계산
-    const subjectGrades = {
-      subject1: this.assignGrades(subjectScores.subject1),
-      subject2: this.assignGrades(subjectScores.subject2),
-      subject3: this.assignGrades(subjectScores.subject3),
-      subject4: this.assignGrades(subjectScores.subject4),
-      subject5: this.assignGrades(subjectScores.subject5),
-      subject6: this.assignGrades(subjectScores.subject6),
-      subject7: this.assignGrades(subjectScores.subject7),
-      subject8: this.assignGrades(subjectScores.subject8),
-    };
+    const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
 
     // 평균 점수로 전체 등급 계산
-    const averageGrades = this.assignGrades(
-      classmates.map((s) => ({ studentId: s.student.id, score: s.averageScore })),
-    );
+    const averageGrades = this.calculateAverageGrades(classmates);
     const scoreGrade = averageGrades[studentId] || 'E';
 
     // 알림 전송: 학생의 userId가 있으면 알림
@@ -170,40 +221,7 @@ export class ScoresService {
         studentId,
         grade,
         semester,
-        subjects: {
-          subject1: {
-            score: saved.subject1,
-            grade: subjectGrades.subject1[studentId] || 'E',
-          },
-          subject2: {
-            score: saved.subject2,
-            grade: subjectGrades.subject2[studentId] || 'E',
-          },
-          subject3: {
-            score: saved.subject3,
-            grade: subjectGrades.subject3[studentId] || 'E',
-          },
-          subject4: {
-            score: saved.subject4,
-            grade: subjectGrades.subject4[studentId] || 'E',
-          },
-          subject5: {
-            score: saved.subject5,
-            grade: subjectGrades.subject5[studentId] || 'E',
-          },
-          subject6: {
-            score: saved.subject6,
-            grade: subjectGrades.subject6[studentId] || 'E',
-          },
-          subject7: {
-            score: saved.subject7,
-            grade: subjectGrades.subject7[studentId] || 'E',
-          },
-          subject8: {
-            score: saved.subject8,
-            grade: subjectGrades.subject8[studentId] || 'E',
-          },
-        },
+        subjects: this.buildSubjectsWithGrades(saved, subjectGrades, studentId),
         total: saved.totalScore,
         average: saved.averageScore,
         scoreGrade,
@@ -246,34 +264,14 @@ export class ScoresService {
           relations: ['student'],
         });
 
-        // 각 과목별 등급 계산
-        const subjectScores = {
-          subject1: classmates.map((s) => ({ studentId: s.student.id, score: s.subject1 || 0 })),
-          subject2: classmates.map((s) => ({ studentId: s.student.id, score: s.subject2 || 0 })),
-          subject3: classmates.map((s) => ({ studentId: s.student.id, score: s.subject3 || 0 })),
-          subject4: classmates.map((s) => ({ studentId: s.student.id, score: s.subject4 || 0 })),
-          subject5: classmates.map((s) => ({ studentId: s.student.id, score: s.subject5 || 0 })),
-          subject6: classmates.map((s) => ({ studentId: s.student.id, score: s.subject6 || 0 })),
-          subject7: classmates.map((s) => ({ studentId: s.student.id, score: s.subject7 || 0 })),
-          subject8: classmates.map((s) => ({ studentId: s.student.id, score: s.subject8 || 0 })),
-        };
+        // 각 과목별 점수 추출
+        const subjectScores = this.extractSubjectScores(classmates);
 
         // 각 과목별 등급 계산
-        const subjectGrades = {
-          subject1: this.assignGrades(subjectScores.subject1),
-          subject2: this.assignGrades(subjectScores.subject2),
-          subject3: this.assignGrades(subjectScores.subject3),
-          subject4: this.assignGrades(subjectScores.subject4),
-          subject5: this.assignGrades(subjectScores.subject5),
-          subject6: this.assignGrades(subjectScores.subject6),
-          subject7: this.assignGrades(subjectScores.subject7),
-          subject8: this.assignGrades(subjectScores.subject8),
-        };
+        const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
 
         // 평균 점수로 전체 등급 계산
-        const averageGrades = this.assignGrades(
-          classmates.map((s) => ({ studentId: s.student.id, score: s.averageScore })),
-        );
+        const averageGrades = this.calculateAverageGrades(classmates);
         const studentIndex = classmates.findIndex(
           (s) => s.student.id === studentId,
         );
@@ -282,40 +280,7 @@ export class ScoresService {
         return {
           semester: score.semester,
           grade: score.grade,
-          subjects: {
-            subject1: {
-              score: score.subject1,
-              grade: subjectGrades.subject1[studentId] || 'E',
-            },
-            subject2: {
-              score: score.subject2,
-              grade: subjectGrades.subject2[studentId] || 'E',
-            },
-            subject3: {
-              score: score.subject3,
-              grade: subjectGrades.subject3[studentId] || 'E',
-            },
-            subject4: {
-              score: score.subject4,
-              grade: subjectGrades.subject4[studentId] || 'E',
-            },
-            subject5: {
-              score: score.subject5,
-              grade: subjectGrades.subject5[studentId] || 'E',
-            },
-            subject6: {
-              score: score.subject6,
-              grade: subjectGrades.subject6[studentId] || 'E',
-            },
-            subject7: {
-              score: score.subject7,
-              grade: subjectGrades.subject7[studentId] || 'E',
-            },
-            subject8: {
-              score: score.subject8,
-              grade: subjectGrades.subject8[studentId] || 'E',
-            },
-          },
+          subjects: this.buildSubjectsWithGrades(score, subjectGrades, studentId),
           totalScore: score.totalScore,
           averageScore: score.averageScore,
           scoreGrade,
@@ -356,38 +321,16 @@ export class ScoresService {
     }
 
     // 각 과목별 점수 추출
-    const subjectScores = {
-      subject1: scores.map((s) => ({ studentId: s.student.id, score: s.subject1 || 0 })),
-      subject2: scores.map((s) => ({ studentId: s.student.id, score: s.subject2 || 0 })),
-      subject3: scores.map((s) => ({ studentId: s.student.id, score: s.subject3 || 0 })),
-      subject4: scores.map((s) => ({ studentId: s.student.id, score: s.subject4 || 0 })),
-      subject5: scores.map((s) => ({ studentId: s.student.id, score: s.subject5 || 0 })),
-      subject6: scores.map((s) => ({ studentId: s.student.id, score: s.subject6 || 0 })),
-      subject7: scores.map((s) => ({ studentId: s.student.id, score: s.subject7 || 0 })),
-      subject8: scores.map((s) => ({ studentId: s.student.id, score: s.subject8 || 0 })),
-    };
+    const subjectScores = this.extractSubjectScores(scores);
 
     // 각 과목별 등급 계산
-    const subjectGrades = {
-      subject1: this.assignGrades(subjectScores.subject1),
-      subject2: this.assignGrades(subjectScores.subject2),
-      subject3: this.assignGrades(subjectScores.subject3),
-      subject4: this.assignGrades(subjectScores.subject4),
-      subject5: this.assignGrades(subjectScores.subject5),
-      subject6: this.assignGrades(subjectScores.subject6),
-      subject7: this.assignGrades(subjectScores.subject7),
-      subject8: this.assignGrades(subjectScores.subject8),
-    };
+    const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
 
     // 평균 점수로 전체 등급 계산
-    const averageScores = scores.map((s) => ({
-      studentId: s.student.id,
-      score: s.averageScore,
-    }));
-    const averageGrades = this.assignGrades(averageScores);
+    const averageGrades = this.calculateAverageGrades(scores);
 
     // 결과 매핑
-    const studentsWithGrades = scores.map((score, index) => {
+    const studentsWithGrades = scores.map((score) => {
       const student = score.student;
       return {
         studentId: student.id,
@@ -395,40 +338,7 @@ export class ScoresService {
         grade: student.grade,
         class: student.classroom,
         semester: score.semester,
-        subjects: {
-          subject1: {
-            score: score.subject1,
-            grade: subjectGrades.subject1[student.id] || 'E',
-          },
-          subject2: {
-            score: score.subject2,
-            grade: subjectGrades.subject2[student.id] || 'E',
-          },
-          subject3: {
-            score: score.subject3,
-            grade: subjectGrades.subject3[student.id] || 'E',
-          },
-          subject4: {
-            score: score.subject4,
-            grade: subjectGrades.subject4[student.id] || 'E',
-          },
-          subject5: {
-            score: score.subject5,
-            grade: subjectGrades.subject5[student.id] || 'E',
-          },
-          subject6: {
-            score: score.subject6,
-            grade: subjectGrades.subject6[student.id] || 'E',
-          },
-          subject7: {
-            score: score.subject7,
-            grade: subjectGrades.subject7[student.id] || 'E',
-          },
-          subject8: {
-            score: score.subject8,
-            grade: subjectGrades.subject8[student.id] || 'E',
-          },
-        },
+        subjects: this.buildSubjectsWithGrades(score, subjectGrades, student.id),
         totalScore: score.totalScore,
         averageScore: score.averageScore,
         scoreGrade: averageGrades[student.id] || 'E',
