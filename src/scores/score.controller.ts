@@ -10,12 +10,12 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
+import { NotificationService } from '../notification/notification.service'; // 알림 서비스 import
 import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { ScoresService } from './score.service';
-import { NotificationService } from '../notification/notification.service'; // 알림 서비스 import
-import { Response } from 'express';
 
 @ApiTags('성적')
 @Controller('api/scores')
