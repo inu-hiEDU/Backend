@@ -9,7 +9,6 @@ import { RolesGuard } from './auth/roles.guard';
 import { DatabaseConfigService } from './config/database.config';
 import { CounselModule } from './counsel/counsel.module';
 import { FeedbackModule } from './feedback/feedback.module';
-import { LoginModule } from './login/login.module';
 import { MainController } from './main.controller';
 import { NotificationModule } from './notification/notification.module';
 import { ParentModule } from './parents/parent.module';
@@ -28,7 +27,6 @@ import { AdminModule } from './admin/admin.module';
     }),
     UserModule,
     AuthModule,
-    LoginModule,
     UploadModule,
     StudentModule,
     AttendanceModule,
