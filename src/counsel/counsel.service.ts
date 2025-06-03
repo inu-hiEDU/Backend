@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { CounselRepository } from './counsel.repository';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
@@ -38,23 +42,52 @@ export class CounselService {
     return this.counselRepository.findByFilter(studentId, startDate, endDate);
   }
 
-  findOne(id: number) {
-    return this.counselRepository.findById(id);
+  async findOne(id: number, userId: number) {
+    const teacher = await this.teacherRepository.findOneBy({ userId });
+    if (!teacher) throw new ForbiddenException('교사 정보 없음');
+
+    const counsel = await this.counselRepository.findById(id);
+    if (!counsel) throw new NotFoundException('상담 없음');
+
+    if (counsel.subject !== teacher.subject) {
+      throw new ForbiddenException('본인 담당 과목 상담이 아닙니다');
+    }
+
+    return counsel;
   }
 
-  update(id: number, dto: UpdateCounselDto) {
-    const data: any = { ...dto };
-    if (dto.date) {
-      data.date = new Date(dto.date);
+  async update(id: number, dto: UpdateCounselDto, userId: number) {
+    const teacher = await this.teacherRepository.findOneBy({ userId });
+    if (!teacher) throw new ForbiddenException('교사 정보 없음');
+
+    const counsel = await this.counselRepository.findById(id);
+    if (!counsel) throw new NotFoundException('상담 없음');
+
+    if (counsel.subject !== teacher.subject) {
+      throw new ForbiddenException('수정 권한 없음');
     }
+
+    const data: any = { ...dto };
+    if (dto.date) data.date = new Date(dto.date);
     if (dto.studentId) {
       data.student = { id: dto.studentId } as any;
       delete data.studentId;
     }
+
     return this.counselRepository.updateCounsel(id, data);
   }
 
-  remove(id: number) {
+  async remove(id: number, userId: number) {
+    const teacher = await this.teacherRepository.findOneBy({ userId });
+    if (!teacher) throw new ForbiddenException('교사 정보 없음');
+
+    const counsel = await this.counselRepository.findById(id);
+    if (!counsel) throw new NotFoundException('상담 없음');
+
+    if (counsel.subject !== teacher.subject) {
+      throw new ForbiddenException('삭제 권한 없음');
+    }
+
     return this.counselRepository.deleteCounsel(id);
   }
 }

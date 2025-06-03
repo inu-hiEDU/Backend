@@ -57,8 +57,10 @@ export class CounselController {
 
   @Get(':id')
   @ApiGet('상담 정보 개별 조회')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.counselService.findOne(id);
+  @UseGuards(AuthGuard('jwt'))
+  findOne(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    const userId = Number(req.user.userId);
+    return this.counselService.findOne(id, userId);
   }
 
   @Patch(':id')
