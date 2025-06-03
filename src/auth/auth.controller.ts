@@ -6,24 +6,22 @@ import {
   Req,
   Res,
   UseGuards,
-  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthGuard } from '@nestjs/passport';
-import { LoginDto } from '../login/login.dto';
-import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { JwtAuthGuard } from './jwt.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { Request, Response } from 'express';
+import { LoginDto } from '../login/login.dto';
 import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth-request.interface';
-import { error } from 'console';
+import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './jwt.guard';
 
-import { TeacherRepository } from '../teachers/teacher.repository';
-import { StudentRepository } from 'src/students/student.repository';
 import { ParentRepository } from 'src/parents/parent.repository';
+import { StudentRepository } from 'src/students/student.repository';
+import { TeacherRepository } from '../teachers/teacher.repository';
 
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')
 @Controller('api/auth')
@@ -49,7 +47,10 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleLoginCallback(@Req() req: Request, @Res() res: Response): Promise<void> {
+  async googleLoginCallback(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
     const redirectUrl = this.configService.get<string>('GOOGLE_REDIRECT');
     const failUrl = this.configService.get<string>('GOOGLE_FAIL');
     const jwt: string = (req.user as any)?.jwt || ''; // JWT 확인
@@ -125,7 +126,7 @@ export class AuthController {
       role: user.role,
     };
 
-    console.log(userInfo)
+    console.log(userInfo);
 
     const userId = Number(user.userId); // 모든 역할에서 사용하므로 공통 처리
 

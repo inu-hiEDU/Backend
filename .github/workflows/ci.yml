@@ -10,48 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      #       - name: Set up Node
-      #         uses: actions/setup-node@v4
-      #         with:
-      #           node-version: '18'
-
-      #       - name: Install Dependencies
-      #         run: |
-      #           npm install
-
-      #       # - name: Run Tests and Generate Coverage
-      #       #   run: |
-      #       #       npm run test:cov
-
-      #       # - name: Upload coverage to Codecov
-      #       #   uses: codecov/codecov-action@v4
-      #       #   with:
-      #       #       token: ${{ secrets.CODECOV_TOKEN }}
-      #       #       flags: unittests # optional
-      #       #       name: codecov-coverage
-
-      # - name: Set up Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-
-      # - name: Install Dependencies
-      #   run: |
-      #     npm ci
-      #     npm install -g newman
-
-      # - name: Build App
-      #   run: npm run build
-
-      # - name: Start App (background)
-      #   run: |
-      #     node dist/main.js &  # 빌드된 파일 실행
-      #     npx wait-on http://localhost:3000
-
-      # - name: Run Postman Tests with Newman
-      #   run: |
-      #     newman run newman.json --reporters cli,json \
-      #     --reporter-json-export newman-report.json
 
       - name: Show build number
         run: |
