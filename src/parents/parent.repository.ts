@@ -48,7 +48,7 @@ export class ParentRepository {
 
     return this.parentRepo.save(parent);
   }
-  
+
   async findByUserId(userId: number): Promise<Parent | null> {
     return await this.parentRepo.findOne({
       where: { userId }

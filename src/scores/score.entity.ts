@@ -24,35 +24,35 @@ export class Scores {
   @Column()
   semester: number;
 
-  @Column({ nullable: true })
-  subject1: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject1: string;
 
-  @Column({ nullable: true })
-  subject2: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject2: string;
 
-  @Column({ nullable: true })
-  subject3: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject3: string;
 
-  @Column({ nullable: true })
-  subject4: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject4: string;
 
-  @Column({ nullable: true })
-  subject5: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject5: string;
 
-  @Column({ nullable: true })
-  subject6: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject6: string;
 
-  @Column({ nullable: true })
-  subject7: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject7: string;
 
-  @Column({ nullable: true })
-  subject8: number;
+  @Column({ type: 'varchar', nullable: true })
+  subject8: string;
 
-  @Column({ default: 0 })
-  totalScore: number;
+  @Column({ type: 'varchar', default: '0' })
+  totalScore: string;
 
-  @Column('float', { default: 0 })
-  averageScore: number;
+  @Column({ type: 'varchar', default: '0' })
+  averageScore: string;
 
   @CreateDateColumn()
   createdAt: Date;
