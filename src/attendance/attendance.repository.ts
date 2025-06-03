@@ -20,7 +20,7 @@ export class AttendanceRepository {
     grade?: number,
     classroom?: number,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
   ) {
     const qb = this.repo
       .createQueryBuilder('attendance')

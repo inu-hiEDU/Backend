@@ -16,7 +16,13 @@ export class AttendanceService {
     });
   }
 
-  findAll(studentId?: number, grade?: number, classroom?: number, startDate?: string, endDate?: string) {
+  findAll(
+    studentId?: number,
+    grade?: number,
+    classroom?: number,
+    startDate?: string,
+    endDate?: string,
+  ) {
     return this.attendanceRepository.findByFilter(
       studentId,
       grade,

@@ -74,7 +74,13 @@ export class AttendanceController {
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
   ) {
-    return this.attendanceService.findAll(studentId, grade, classroom, startDate, endDate);
+    return this.attendanceService.findAll(
+      studentId,
+      grade,
+      classroom,
+      startDate,
+      endDate,
+    );
   }
 
   @Get(':id')

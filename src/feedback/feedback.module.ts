@@ -9,7 +9,10 @@ import { Teacher } from 'src/teachers/teacher.entity';
 import { NotificationModule } from '../notification/notification.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Feedback, Student, Teacher]), NotificationModule],
+  imports: [
+    TypeOrmModule.forFeature([Feedback, Student, Teacher]),
+    NotificationModule,
+  ],
   controllers: [FeedbackController],
   providers: [FeedbackService, FeedbackRepository],
 })

@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -22,8 +29,11 @@ export class Teacher {
   @Column({ nullable: true })
   userId: number;
 
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   subject: number;
+
+  @Column()
+  grade: number;
 
   @Column({ nullable: true })
   homeroom: number;

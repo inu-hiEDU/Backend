@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Student } from '../students/student.entity';
 
 @Entity()
@@ -7,7 +13,11 @@ export class Counsel {
   id: number;
 
   @ManyToOne(() => Student, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'studentId' })
   student: Student;
+
+  @Column()
+  studentId: number;
 
   @Column()
   teacher: string;

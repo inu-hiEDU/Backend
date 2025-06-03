@@ -17,19 +17,27 @@ export class NotificationService {
 
   // 성적 입력 알림
   async notifyScoreEntered(userId: string) {
-    await this.gateway.sendToUser(userId, { message: '성적이 입력 되었습니다.' });
+    await this.gateway.sendToUser(userId, {
+      message: '성적이 입력 되었습니다.',
+    });
     const parentUserId = await this.getParentUserIdByStudentUserId(userId);
     if (parentUserId) {
-      await this.gateway.sendToUser(parentUserId, { message: '성적이 입력 되었습니다.' });
+      await this.gateway.sendToUser(parentUserId, {
+        message: '성적이 입력 되었습니다.',
+      });
     }
   }
 
   // 성적 수정 알림
   async notifyScoreUpdated(userId: string) {
-    await this.gateway.sendToUser(userId, { message: '성적이 수정되었습니다.' });
+    await this.gateway.sendToUser(userId, {
+      message: '성적이 수정되었습니다.',
+    });
     const parentUserId = await this.getParentUserIdByStudentUserId(userId);
     if (parentUserId) {
-      await this.gateway.sendToUser(parentUserId, { message: '성적이 수정되었습니다.' });
+      await this.gateway.sendToUser(parentUserId, {
+        message: '성적이 수정되었습니다.',
+      });
     }
   }
 
@@ -64,10 +72,16 @@ export class NotificationService {
   }
 
   // 학생 userId로 학부모 userId 찾기
-  private async getParentUserIdByStudentUserId(studentUserId: string): Promise<string | null> {
-    const student = await this.studentRepo.findOne({ where: { userId: Number(studentUserId) } });
+  private async getParentUserIdByStudentUserId(
+    studentUserId: string,
+  ): Promise<string | null> {
+    const student = await this.studentRepo.findOne({
+      where: { userId: Number(studentUserId) },
+    });
     if (!student) return null;
-    const parent = await this.parentRepo.findOne({ where: { studentId: student.id } });
+    const parent = await this.parentRepo.findOne({
+      where: { studentId: student.id },
+    });
     if (!parent) return null;
     return parent.userId ? parent.userId.toString() : null;
   }
