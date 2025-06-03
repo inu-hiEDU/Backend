@@ -1,10 +1,11 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards, Patch, Param, ParseIntPipe } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { Teacher } from './teacher.entity';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { AuthRequest } from '../auth/auth-request.interface';
+import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 @ApiTags('선생님')
 @Controller('api/teachers')
@@ -27,5 +28,13 @@ export class TeacherController {
 
     // userId를 CreateTeacherDto에 추가
     return this.teacherService.createTeacher({ ...data, userId });
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTeacherDto,
+  ) {
+    return this.teacherService.updateTeacher(id, dto);
   }
 }
