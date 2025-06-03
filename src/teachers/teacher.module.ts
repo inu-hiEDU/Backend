@@ -10,5 +10,6 @@ import { User } from '../user/user.entity';
   imports: [TypeOrmModule.forFeature([Teacher, User])],
   controllers: [TeacherController],
   providers: [TeacherService, TeacherRepository],
+  exports: [TeacherRepository]
 })
 export class TeacherModule {}

@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     // JWT 생성
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { sub: user.id, email: user.email, name: user.name, role: user.role };
     const token = jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: '1h',
     });
@@ -38,20 +38,7 @@ export class AuthService {
       sub: '13',
       email: 'test1@gmail.com',
       name: '박기석',
-      role: 'TEACHER'
-    };
-
-    const secret = this.configService.get('JWT_SECRET');
-    const options = { expiresIn: '30d' as const }; // 30일 유효기간
-
-    return jwt.sign(payload, secret, options);
-  }
-  createTestTokenTeacher(): string {
-    const payload = {
-      sub: '13',
-      email: 'teacher1@gmail.com',
-      name: '김선생',
-      role: 'TEACHER',
+      role: 'teacherS'
     };
 
     const secret = this.configService.get('JWT_SECRET');
