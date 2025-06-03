@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Param } from '@nestjs/common';
 import { NotificationGateway } from './notification.gateway';
 
-@Controller('notifications')
+@Controller('/api/notifications')
 export class NotificationController {
   constructor(private readonly gateway: NotificationGateway) {}
 
