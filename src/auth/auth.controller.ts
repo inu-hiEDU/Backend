@@ -49,7 +49,10 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleLoginCallback(@Req() req: Request, @Res() res: Response): Promise<void> {
+  async googleLoginCallback(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<void> {
     const redirectUrl = this.configService.get<string>('GOOGLE_REDIRECT');
     const failUrl = this.configService.get<string>('GOOGLE_FAIL');
     const jwt: string = (req.user as any)?.jwt || ''; // JWT 확인
@@ -125,7 +128,7 @@ export class AuthController {
       role: user.role,
     };
 
-    console.log(userInfo)
+    console.log(userInfo);
 
     const userId = Number(user.userId); // 모든 역할에서 사용하므로 공통 처리
 

@@ -18,6 +18,7 @@ import { StudentModule } from './students/student.module';
 import { TeacherModule } from './teachers/teacher.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module';
     TeacherModule,
     NotificationModule,
     FeedbackModule,
+    AdminModule,
   ],
   controllers: [AppController, MainController],
   providers: [
