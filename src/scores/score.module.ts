@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OfflineNotification } from '../notification/entities/offline-notification.entity';
+import { ScoreRepository } from './score.repository';
+import { StudentRepository } from '../students/student.repository';
 import { NotificationGateway } from '../notification/notification.gateway';
 import { NotificationService } from '../notification/notification.service';
 import { Parent } from '../parents/parent.entity';
@@ -16,6 +18,12 @@ import { ScoresService } from './score.service';
     ParentModule,
   ],
   controllers: [ScoresController],
-  providers: [ScoresService, NotificationService, NotificationGateway],
+  providers: [
+    ScoresService,
+    ScoreRepository,
+    StudentRepository,
+    NotificationService,
+    NotificationGateway,
+  ],
 })
 export class ScoresModule {}

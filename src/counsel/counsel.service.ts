@@ -1,16 +1,16 @@
 import {
-  ForbiddenException,
   Injectable,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Student } from 'src/students/student.entity';
-import { Repository } from 'typeorm';
-import { NotificationService } from '../notification/notification.service';
-import { Teacher } from '../teachers/teacher.entity';
 import { CounselRepository } from './counsel.repository';
 import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Teacher } from '../teachers/teacher.entity';
+import { Student } from 'src/students/student.entity';
+import { Repository } from 'typeorm';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class CounselService {
@@ -25,28 +25,21 @@ export class CounselService {
 
   async create(dto: CreateCounselDto, userId: number) {
     const teacher = await this.teacherRepository.findOne({ where: { userId } });
-    const student = await this.studentRepository.findOne({
-      where: { id: dto.studentId },
-    });
+    const student = await this.studentRepository.findOne({ where: { id: dto.studentId } });
     if (!teacher) {
-      throw new NotFoundException(
-        '해당 사용자에 연결된 교사를 찾을 수 없습니다.',
-      );
+      throw new NotFoundException('해당 사용자에 연결된 교사를 찾을 수 없습니다.');
     }
     if (!student) {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
 
-    const teacherName = teacher.user?.name;
-    if (!teacherName) throw new NotFoundException('교사 이름 없음');
-    void this.notificationService.notifyCounselingUpdated(
-      dto.studentId.toString(),
-    );
+    // 알림 전송
+    void this.notificationService.notifyCounselingUpdated(dto.studentId.toString());
 
     return this.counselRepository.createCounsel({
       ...dto,
       student: student,
-      teacher: teacher, // 직접 Teacher 객체 넣기
+      teacher: teacher,  // 직접 Teacher 객체 넣기
       date: new Date(dto.date),
     });
   }
