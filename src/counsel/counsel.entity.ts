@@ -22,7 +22,7 @@ export class Counsel {
 
   @ManyToOne(() => Teacher, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'teacherId' })
-  teacher: Teacher;
+  teacher: string;
 
   @Column()
   teacherId: number;
