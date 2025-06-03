@@ -7,7 +7,6 @@ import { Teacher } from '../teachers/teacher.entity';
 import { Repository } from 'typeorm';
 import { NotificationService } from '../notification/notification.service';
 
-
 @Injectable()
 export class CounselService {
   constructor(
@@ -20,12 +19,12 @@ export class CounselService {
   async create(dto: CreateCounselDto, userId: number) {
     const teacher = await this.teacherRepository.findOne({ where: { userId } });
     if (!teacher) {
-      throw new NotFoundException('해당 사용자에 연결된 교사를 찾을 수 없습니다.');
+      throw new NotFoundException(
+        '해당 사용자에 연결된 교사를 찾을 수 없습니다.',
+      );
     }
 
-    this.notificationService.notifyCounselingUpdated(
-      dto.studentId.toString(),
-    );
+    this.notificationService.notifyCounselingUpdated(dto.studentId.toString());
 
     return this.counselRepository.createCounsel({
       ...dto,

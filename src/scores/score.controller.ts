@@ -7,7 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Query,
-  Res
+  Res,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateScoreDto } from './dto/create-score.dto';
@@ -71,8 +71,10 @@ export class ScoresController {
   }
 
   @Get('export')
-  async exportStudentScores(@Query('studentId') studentId: number, @Res() res: Response) {
+  async exportStudentScores(
+    @Query('studentId') studentId: number,
+    @Res() res: Response,
+  ) {
     return this.scoresService.exportStudentScores(studentId, res);
   }
-
 }

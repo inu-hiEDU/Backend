@@ -72,7 +72,7 @@ export class NotificationGateway implements OnGatewayConnection {
   }
 
   async deleteAllNotificationsByUserId(userId: string) {
-      console.warn('전체 삭제 알림 : ', userId);
+    console.warn('전체 삭제 알림 : ', userId);
     await this.offlineRepo.delete({ userId });
   }
 

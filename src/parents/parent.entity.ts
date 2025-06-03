@@ -27,7 +27,7 @@ export class Parent {
   user: User;
 
   @Column()
-  userId: number; 
+  userId: number;
 
   @ManyToOne(() => Student, { onDelete: 'CASCADE', eager: true })
   @JoinColumn({ name: 'studentId' })

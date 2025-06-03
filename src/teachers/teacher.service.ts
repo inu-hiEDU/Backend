@@ -13,7 +13,7 @@ export class TeacherService {
     private readonly teacherRepository: Repository<Teacher>,
 
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>, // ✅ 추가
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async createTeacher(data: CreateTeacherDto): Promise<Teacher> {

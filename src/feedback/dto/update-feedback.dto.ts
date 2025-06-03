@@ -1,4 +1,10 @@
-import { IsDateString, IsInt, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsInt,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateFeedbackDto {
   @IsInt()
@@ -16,4 +22,8 @@ export class UpdateFeedbackDto {
   @IsString()
   @IsOptional()
   content?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  release?: boolean;
 }

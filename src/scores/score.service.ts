@@ -35,7 +35,7 @@ export class ScoresService {
     ];
 
     const validScores = subjects.filter(
-      (subject): subject is number => typeof subject === 'number'
+      (subject): subject is number => typeof subject === 'number',
     );
     const total = validScores.reduce((sum, subject) => sum + subject, 0);
     const average = validScores.length > 0 ? total / validScores.length : 0;
@@ -82,14 +82,14 @@ export class ScoresService {
     const saved = await this.scoresRepository.save(score);
 
     // 알림 전송: 학생의 userId가 있으면 알림
-    if(student.userId) {
+    if (student.userId) {
       if (isNew) {
-        this.notificationService.notifyScoreUpdated(
-          student.userId.toString()
+        void this.notificationService.notifyScoreUpdated(
+          student.userId.toString(),
         );
       } else {
-        this.notificationService.notifyScoreEntered(
-          student.userId.toString()
+        void this.notificationService.notifyScoreEntered(
+          student.userId.toString(),
         );
       }
     }
@@ -286,8 +286,18 @@ export class ScoresService {
 
     // ✅ 3. 표 헤더 정의
     worksheet.addRow([
-      '학년', '학기', '과목1', '과목2', '과목3', '과목4',
-      '과목5', '과목6', '과목7', '과목8', '총점', '평균'
+      '학년',
+      '학기',
+      '과목1',
+      '과목2',
+      '과목3',
+      '과목4',
+      '과목5',
+      '과목6',
+      '과목7',
+      '과목8',
+      '총점',
+      '평균',
     ]);
 
     const headerRow = worksheet.getRow(3);
@@ -310,10 +320,18 @@ export class ScoresService {
     // ✅ 4. 본문 데이터
     scores.forEach((s) => {
       worksheet.addRow([
-        s.grade, s.semester,
-        s.subject1 ?? '', s.subject2 ?? '', s.subject3 ?? '', s.subject4 ?? '',
-        s.subject5 ?? '', s.subject6 ?? '', s.subject7 ?? '', s.subject8 ?? '',
-        s.totalScore, s.averageScore,
+        s.grade,
+        s.semester,
+        s.subject1 ?? '',
+        s.subject2 ?? '',
+        s.subject3 ?? '',
+        s.subject4 ?? '',
+        s.subject5 ?? '',
+        s.subject6 ?? '',
+        s.subject7 ?? '',
+        s.subject8 ?? '',
+        s.totalScore,
+        s.averageScore,
       ]);
     });
 
@@ -338,11 +356,17 @@ export class ScoresService {
     });
 
     // ✅ 7. 다운로드 전송
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
     const filename = `성적보고서_${student.name}.xlsx`;
     const encodedFilename = encodeURIComponent(filename);
 
-    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodedFilename}`);
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename*=UTF-8''${encodedFilename}`,
+    );
     await workbook.xlsx.write(res);
     res.end();
   }

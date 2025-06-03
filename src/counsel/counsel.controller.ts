@@ -10,7 +10,7 @@ import {
   Post,
   Query,
   UseGuards,
-  Req
+  Req,
 } from '@nestjs/common';
 
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';

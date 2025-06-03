@@ -61,7 +61,9 @@ export class StudentRepository {
     const studentNum = parseInt(hakbeon.slice(3), 10);
 
     // User 엔티티
-    const user = await this.studentRepo.manager.findOne(User, { where: { id: userId } });
+    const user = await this.studentRepo.manager.findOne(User, {
+      where: { id: userId },
+    });
     if (!user) {
       throw new Error('User not found');
     }

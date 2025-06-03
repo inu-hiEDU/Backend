@@ -19,7 +19,9 @@ export class TeacherRepository {
   }): Promise<Teacher> {
     const { name, phoneNum, birthday, userId } = data;
 
-    const user = await this.teacherRepo.manager.findOne(User, { where: { id: userId } });
+    const user = await this.teacherRepo.manager.findOne(User, {
+      where: { id: userId },
+    });
     if (!user) {
       throw new Error('User not found');
     }

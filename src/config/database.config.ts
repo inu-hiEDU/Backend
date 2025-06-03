@@ -26,50 +26,58 @@ export class DatabaseConfigService {
       database: this.configService.get<string>('DB_DATABASE'),
       synchronize: true, // 개발 환경에서만 true로 설정
       logging: true, // 로그 확인용
-      entities: [Student, Login, Attendance, Counsel, Scores,
-        User, Parent, Teacher, OfflineNotification],
-      
+      entities: [
+        Student,
+        Login,
+        Attendance,
+        Counsel,
+        Scores,
+        User,
+        Parent,
+        Teacher,
+        OfflineNotification,
+      ],
+
       // 서버용 설정
-    //   replication: {
-    //     master: {
-    //       host: this.configService.get<string>('DB_HOST_PRIMARY'),
-    //       port: 3306,
-    //       username: this.configService.get<string>('DB_USERNAME'),
-    //       password: this.configService.get<string>('DB_PASSWORD'),
-    //       database: this.configService.get<string>('DB_DATABASE'),
-    //     },
-    //     slaves: [
-    //       {
-    //         host: this.configService.get<string>('DB_HOST_REPLICA1'),
-    //         port: 3306,
-    //         username: this.configService.get<string>('DB_USERNAME'),
-    //         password: this.configService.get<string>('DB_PASSWORD'),
-    //         database: this.configService.get<string>('DB_DATABASE'),
-    //       },
-    //       {
-    //         host: this.configService.get<string>('DB_HOST_REPLICA2'),
-    //         port: 3306,
-    //         username: this.configService.get<string>('DB_USERNAME'),
-    //         password: this.configService.get<string>('DB_PASSWORD'),
-    //         database: this.configService.get<string>('DB_DATABASE'),
-    //       },
-    //     ],
-    //   },
-    //   synchronize: false, // 운영 환경에서는 false
-    //   logging: true,
-    //   entities: [
-    //     Student,
-    //     Login,
-    //     Attendance,
-    //     Counsel,
-    //     Scores,
-    //     User,
-    //     Parent,
-    //     Teacher,
-    //     Feedback,
-    //     OfflineNotification
-    //   ],
-    
+      //   replication: {
+      //     master: {
+      //       host: this.configService.get<string>('DB_HOST_PRIMARY'),
+      //       port: 3306,
+      //       username: this.configService.get<string>('DB_USERNAME'),
+      //       password: this.configService.get<string>('DB_PASSWORD'),
+      //       database: this.configService.get<string>('DB_DATABASE'),
+      //     },
+      //     slaves: [
+      //       {
+      //         host: this.configService.get<string>('DB_HOST_REPLICA1'),
+      //         port: 3306,
+      //         username: this.configService.get<string>('DB_USERNAME'),
+      //         password: this.configService.get<string>('DB_PASSWORD'),
+      //         database: this.configService.get<string>('DB_DATABASE'),
+      //       },
+      //       {
+      //         host: this.configService.get<string>('DB_HOST_REPLICA2'),
+      //         port: 3306,
+      //         username: this.configService.get<string>('DB_USERNAME'),
+      //         password: this.configService.get<string>('DB_PASSWORD'),
+      //         database: this.configService.get<string>('DB_DATABASE'),
+      //       },
+      //     ],
+      //   },
+      //   synchronize: false, // 운영 환경에서는 false
+      //   logging: true,
+      //   entities: [
+      //     Student,
+      //     Login,
+      //     Attendance,
+      //     Counsel,
+      //     Scores,
+      //     User,
+      //     Parent,
+      //     Teacher,
+      //     Feedback,
+      //     OfflineNotification
+      //   ],
     };
   }
 }
