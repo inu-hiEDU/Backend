@@ -32,7 +32,7 @@ export class StudentRepository {
     return encrypted;
   }
 
-  private decrypt(encrypted: string): string {
+  public decrypt(encrypted: string): string {
     const decipher = crypto.createDecipheriv(algorithm, this.key, this.iv);
     let decrypted = decipher.update(encrypted, 'hex', 'utf8');
     decrypted += decipher.final('utf8');

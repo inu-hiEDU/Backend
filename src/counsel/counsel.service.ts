@@ -8,9 +8,11 @@ import { CreateCounselDto } from './dto/create-counsel.dto';
 import { UpdateCounselDto } from './dto/update-counsel.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Teacher } from '../teachers/teacher.entity';
-import { Student } from 'src/students/student.entity';
+import { StudentRepository } from 'src/students/student.repository';
 import { Repository } from 'typeorm';
 import { NotificationService } from '../notification/notification.service';
+import * as ExcelJS from 'exceljs';
+import { Response } from 'express';
 
 @Injectable()
 export class CounselService {
@@ -18,16 +20,13 @@ export class CounselService {
     private readonly counselRepository: CounselRepository,
     @InjectRepository(Teacher)
     private readonly teacherRepository: Repository<Teacher>,
-    @InjectRepository(Student)
-    private readonly studentRepository: Repository<Student>,
+    private readonly studentRepository: StudentRepository,
     private readonly notificationService: NotificationService,
   ) {}
 
   async create(dto: CreateCounselDto, userId: number) {
     const teacher = await this.teacherRepository.findOne({ where: { userId } });
-    const student = await this.studentRepository.findOne({
-      where: { id: dto.studentId },
-    });
+    const student = await this.studentRepository.findOneById(dto.studentId);
     if (!teacher) {
       throw new NotFoundException(
         '해당 사용자에 연결된 교사를 찾을 수 없습니다.',
@@ -120,4 +119,73 @@ export class CounselService {
 
     return this.counselRepository.deleteCounsel(id);
   }
+
+  async exportCounselReport(studentId: number, res: Response) {
+    const counsels = await this.counselRepository.findByFilter(studentId);
+
+    if (!counsels.length) {
+      throw new NotFoundException('해당 학생의 상담 기록이 없습니다.');
+    }
+
+    // 학생 이름 복호화 (첫 상담의 학생 정보로)
+    const student = counsels[0].student;
+    console.log(student)
+    const decryptedName = this.studentRepository.decrypt
+      ? this.studentRepository.decrypt(student.name)
+      : student.name; // 복호화 함수 확인 필요
+    console.log(decryptedName)
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('상담 기록');
+
+    worksheet.mergeCells('A1:D1');
+    const titleCell = worksheet.getCell('A1');
+    titleCell.value = `상담 기록 보고서 - ${decryptedName}`;
+    titleCell.font = { size: 16, bold: true };
+    titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+
+    worksheet.mergeCells('A2:D2');
+    const dateCell = worksheet.getCell('A2');
+    dateCell.value = `출력일: ${new Date().toLocaleDateString('ko-KR')}`;
+    dateCell.font = { size: 10, italic: true, color: { argb: '777777' } };
+    dateCell.alignment = { horizontal: 'left' };
+    
+    worksheet.addRow(['일자', '교사', '상담 내용', '비고']);
+    const headerRow = worksheet.getRow(3);
+    headerRow.font = { bold: true };
+    headerRow.alignment = { horizontal: 'center' };
+
+    counsels.forEach((counsel) => {
+      const dateValue = counsel.date
+        ? (counsel.date instanceof Date
+            ? counsel.date.toLocaleDateString('ko-KR')
+            : new Date(counsel.date).toLocaleDateString('ko-KR'))
+        : '';
+
+      worksheet.addRow([
+        dateValue,
+        counsel.teacher?.name ?? '',
+        counsel.title ?? '',
+        counsel.content ?? '',
+      ]);
+    });
+
+    worksheet.columns.forEach((col) => {
+      col.width = 20;
+    });
+
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    const filename = `상담보고서_${decryptedName}.xlsx`;
+    const encodedFilename = encodeURIComponent(filename);
+
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename*=UTF-8''${encodedFilename}`,
+    );
+    await workbook.xlsx.write(res);
+    res.end();
+  }
+
 }

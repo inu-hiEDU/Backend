@@ -11,7 +11,11 @@ import {
   Query,
   UseGuards,
   Req,
+  Res,
+  NotFoundException
 } from '@nestjs/common';
+
+import { Response } from 'express';
 
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import {
@@ -82,5 +86,21 @@ export class CounselController {
   remove(@Param('id', ParseIntPipe) id: number, @Req() req) {
     const userId = Number(req.user.userId);
     return this.counselService.remove(id, userId);
+  }
+
+  @Get('export/:studentId')
+  async exportCounselReport(
+    @Param('studentId', ParseIntPipe) studentId: number,
+    @Res() res: Response,
+  ) {
+    try {
+      await this.counselService.exportCounselReport(studentId, res);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: '서버 에러가 발생했습니다.' });
+      }
+    }
   }
 }

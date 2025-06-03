@@ -26,6 +26,7 @@ async function bootstrap() {
       'http://localhost:3012',
       'https://hiedu.site',
       'https://hiedu-frontend.vercel.app',
+      'https://hiedu.vercel.app',
     ], // 허용할 도메인
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // 쿠키를 포함한 요청 허용
