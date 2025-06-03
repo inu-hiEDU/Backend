@@ -35,7 +35,7 @@ export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
   @Post()
-  @ApiBearerAuth()
+  @ApiBearerAuth('teacher')
   @ApiCreate('피드백 정보 생성', CreateFeedbackDto)
   @UseGuards(AuthGuard('jwt'))
   // @Roles(UserRole.TEACHER)

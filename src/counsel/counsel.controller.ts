@@ -35,7 +35,7 @@ export class CounselController {
   constructor(private readonly counselService: CounselService) {}
 
   @Post()
-  @ApiBearerAuth()
+  @ApiBearerAuth('teacher')
   @ApiCreate('상담 정보 생성', CreateCounselDto)
   @UseGuards(AuthGuard('jwt'))
   // @Roles(UserRole.TEACHER)
