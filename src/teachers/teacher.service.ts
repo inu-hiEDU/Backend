@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Teacher } from './teacher.entity';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { User } from '../user/user.entity';
 import { UserRole } from '../user/user-role.enum';
+import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 @Injectable()
 export class TeacherService {
@@ -27,5 +28,16 @@ export class TeacherService {
     await this.userRepository.update(userId, { role: UserRole.TEACHER });
 
     return savedTeacher;
+  }
+
+  async updateTeacher(id: number, dto: UpdateTeacherDto): Promise<Teacher> {
+    const teacher = await this.teacherRepository.findOneBy({ id });
+    if (!teacher) {
+      throw new NotFoundException('해당 교사를 찾을 수 없습니다.');
+    }
+
+    // DTO 필드를 교사 엔티티에 덮어쓰기
+    Object.assign(teacher, dto);
+    return this.teacherRepository.save(teacher);
   }
 }

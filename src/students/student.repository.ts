@@ -143,4 +143,11 @@ export class StudentRepository {
       birthday: saved.birthday ? this.decrypt(saved.birthday) : '',
     } as Student;
   }
+
+  async findByUserId(userId: number): Promise<Student | null> {
+    return await this.studentRepo.findOne({
+      where: { userId }
+    });
+  }
+
 }

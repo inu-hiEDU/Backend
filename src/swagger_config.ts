@@ -60,7 +60,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTc0NjA5NDExOCwiZXhwIjoxNzQ4Njg2MTE4fQ.dodBCcmVND3QRpAhFxVdAP--rTzSDMwBE5Cyz_F7rb8'
+          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iuuwleq4sOyEnSIsInJvbGUiOiJURUFDSEVSIiwiaWF0IjoxNzQ4OTI0NDI0LCJleHAiOjE3NTE1MTY0MjR9.oiRCS73fU_CNrxa6wqJtHg4ZPAaKS82lvgDw1rIMHwE'
         },
         student: {
           name: 'Authorization',
@@ -70,7 +70,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTc0NjA5MDAxNiwiZXhwIjoxNzQ4NjgyMDE2fQ.geJk1I48M6T8SsCziDpckhT4Lhv9YMDQsu5VeCe0aI4',
+          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNiIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iu2VmeyDnSIsInJvbGUiOiJTVFVERU5UIiwiaWF0IjoxNzQ4OTM0MjA1LCJleHAiOjE3NTE1MjYyMDV9.wm4OGojR34XoDFAjYkIXkqS_nEbz0j6DyhP7QBgCwpE',
         },
         parent: {
           name: 'Authorization',
@@ -80,7 +80,7 @@ export function swaggerConfig() {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXItaWQiLCJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIm5hbWUiOiLrsJXquLDshJ0iLCJyb2xlIjoicGFyZW50IiwiaWF0IjoxNzQ2MDkwMDczLCJleHAiOjE3NDg2ODIwNzN9.Nfm3vRb2AzkGmrs79pgoupBhZvidXoq-ioPWU31WI8w',
+          value: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MCIsImVtYWlsIjoidGVzdDFAZ21haWwuY29tIiwibmFtZSI6Iu2Vmeu2gOuqqCIsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE3NDg5MzQyNjMsImV4cCI6MTc1MTUyNjI2M30.cNQFaHnrJLBvzvI4L9menmiacWRHwMwMZlJYUKUt0Mg',
         },
       },
     },
