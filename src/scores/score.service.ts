@@ -487,4 +487,17 @@ export class ScoresService {
     await workbook.xlsx.write(res);
     res.end();
   }
+
+  async createBulkScore(studentId: number, scores: CreateScoreDto[]) {
+    const results = await Promise.all(
+      scores.map((score) => {
+        const { studentId: _omit, ...rest } = score;
+        return this.createScore({ studentId, ...rest });
+      }),
+    );
+    return {
+      message: '모든 성적이 성공적으로 등록되었습니다.',
+      results,
+    };
+  }
 }
