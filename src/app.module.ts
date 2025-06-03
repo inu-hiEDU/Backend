@@ -36,7 +36,7 @@ import { FeedbackModule } from './feedback/feedback.module';
     ParentModule,
     TeacherModule,
     NotificationModule,
-    FeedbackModule
+    FeedbackModule,
   ],
   controllers: [AppController, MainController],
   providers: [

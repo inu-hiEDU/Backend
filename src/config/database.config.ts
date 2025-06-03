@@ -4,11 +4,11 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Attendance } from 'src/attendance/attendance.entity';
 import { Counsel } from 'src/counsel/counsel.entity';
 import { Login } from 'src/login/login.entity';
+import { OfflineNotification } from 'src/notification/entities/offline-notification.entity';
 import { Parent } from 'src/parents/parent.entity';
 import { Scores } from 'src/scores/score.entity';
 import { Student } from 'src/students/student.entity';
 import { Teacher } from 'src/teachers/teacher.entity';
-import { OfflineNotification } from 'src/notification/entities/offline-notification.entity';
 import { User } from 'src/user/user.entity';
 
 @Injectable()

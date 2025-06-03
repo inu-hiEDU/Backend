@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Scores } from './score.entity';
 import { Student } from '../students/student.entity';
-import { CreateScoreDto } from './dto/create-score.dto';
 
 @Injectable()
 export class ScoreRepository {
@@ -21,7 +20,11 @@ export class ScoreRepository {
     });
   }
 
-  async findOneByStudentGradeSemester(studentId: number, grade: number, semester: number) {
+  async findOneByStudentGradeSemester(
+    studentId: number,
+    grade: number,
+    semester: number,
+  ) {
     return this.scoresRepository.findOne({
       where: { student: { id: studentId }, grade, semester },
       relations: ['student'],
@@ -32,7 +35,7 @@ export class ScoreRepository {
     return this.scoresRepository.save(score);
   }
 
-  async createScoreEntity(data: Partial<Scores>) {
+  createScoreEntity(data: Partial<Scores>) {
     return this.scoresRepository.create(data);
   }
 
@@ -48,5 +51,31 @@ export class ScoreRepository {
     return this.studentRepository.find({
       where: { grade, classroom },
     });
+  }
+  async findScoresByGradeSemesterClassroom(
+    grade: number,
+    semester: number,
+    classroom: number,
+  ) {
+    return this.scoresRepository.find({
+      where: {
+        grade,
+        semester,
+        student: {
+          classroom,
+        },
+      },
+      relations: ['student'],
+    });
+  }
+
+  async findStudentOrFail(studentId: number) {
+    const student = await this.studentRepository.findOne({
+      where: { id: studentId },
+    });
+    if (!student) {
+      throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
+    }
+    return student;
   }
 }

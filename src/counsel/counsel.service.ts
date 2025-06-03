@@ -28,7 +28,9 @@ export class CounselService {
       );
     }
 
-    this.notificationService.notifyCounselingUpdated(dto.studentId.toString());
+    void this.notificationService.notifyCounselingUpdated(
+      dto.studentId.toString(),
+    );
 
     return this.counselRepository.createCounsel({
       ...dto,

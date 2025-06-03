@@ -59,7 +59,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         throw new Error('❌ JWT_SECRET이 설정되지 않음');
       }
 
-      const payload = { sub: user.id, email: user.email, role: user.role };
+      const payload = { sub: user.id, email: user.email, name: user.name, role: user.role };
       const token = jwt.sign(payload, secret, { expiresIn: '1h' });
 
       console.log('✅ JWT payload:', payload);
