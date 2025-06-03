@@ -68,6 +68,7 @@ export class FeedbackController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('teacher')
   @ApiUpdate('피드백 정보 수정', UpdateFeedbackDto)
   @UseGuards(AuthGuard('jwt'))
   update(
@@ -80,6 +81,7 @@ export class FeedbackController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('teacher')
   @ApiDelete('피드백 정보 삭제')
   @HttpCode(204)
   @UseGuards(AuthGuard('jwt'))
