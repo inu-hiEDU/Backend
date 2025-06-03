@@ -101,42 +101,95 @@ export class ScoresService {
   private buildSubjectsWithGrades(
     score: Scores,
     subjectGrades: ReturnType<typeof this.calculateAllSubjectGrades>,
+    subjectRanksAndAverages: ReturnType<typeof this.calculateRanksAndAverages>,
     studentId: number,
   ) {
-    return {
-      subject1: {
-        score: score.subject1,
-        grade: subjectGrades.subject1[studentId] || 'E',
-      },
-      subject2: {
-        score: score.subject2,
-        grade: subjectGrades.subject2[studentId] || 'E',
-      },
-      subject3: {
-        score: score.subject3,
-        grade: subjectGrades.subject3[studentId] || 'E',
-      },
-      subject4: {
-        score: score.subject4,
-        grade: subjectGrades.subject4[studentId] || 'E',
-      },
-      subject5: {
-        score: score.subject5,
-        grade: subjectGrades.subject5[studentId] || 'E',
-      },
-      subject6: {
-        score: score.subject6,
-        grade: subjectGrades.subject6[studentId] || 'E',
-      },
-      subject7: {
-        score: score.subject7,
-        grade: subjectGrades.subject7[studentId] || 'E',
-      },
-      subject8: {
-        score: score.subject8,
-        grade: subjectGrades.subject8[studentId] || 'E',
-      },
-    };
+    const subjects = [
+      'subject1',
+      'subject2',
+      'subject3',
+      'subject4',
+      'subject5',
+      'subject6',
+      'subject7',
+      'subject8',
+    ] as const;
+
+    const result: Record<
+      string,
+      {
+        score: number | null | undefined;
+        grade: string;
+        rank: number;
+        totalCount: number;
+        average: number;
+      }
+    > = {};
+
+    for (const subject of subjects) {
+      const rawScore = score[subject];
+      const scoreValue =
+        rawScore !== null && rawScore !== undefined && rawScore !== ''
+          ? Number(rawScore)
+          : null;
+
+      const grades = subjectGrades[subject];
+      const ranksAndAverages = subjectRanksAndAverages[subject];
+
+      result[subject] = {
+        score: scoreValue,
+        grade: grades[studentId] || 'E',
+        rank: ranksAndAverages.rankMap[studentId] || 0,
+        totalCount: ranksAndAverages.totalCount,
+        average: ranksAndAverages.average,
+      };
+    }
+
+    return result;
+  }
+
+  private calculateRanksAndAverages(
+    subjectScores: ReturnType<typeof this.extractSubjectScores>,
+  ) {
+    // 과목별로 rank, count, average 계산
+    const results: Record<
+      string,
+      {
+        rankMap: { [studentId: number]: number };
+        totalCount: number;
+        average: number;
+      }
+    > = {};
+
+    for (const subjectKey of Object.keys(subjectScores)) {
+      const scores = subjectScores[subjectKey as keyof typeof subjectScores];
+      const sorted = [...scores].sort((a, b) => b.score - a.score);
+      const totalCount = sorted.length;
+      const average =
+        totalCount > 0
+          ? sorted.reduce((sum, s) => sum + s.score, 0) / totalCount
+          : 0;
+
+      const rankMap: { [studentId: number]: number } = {};
+      let currentRank = 1;
+      let prevScore: number | null = null;
+      let sameRankCount = 0;
+
+      sorted.forEach((student, index) => {
+        if (student.score !== prevScore) {
+          currentRank = index + 1;
+          sameRankCount = 1;
+        } else {
+          sameRankCount++;
+        }
+        rankMap[student.studentId] = currentRank;
+        prevScore = student.score;
+      });
+
+      results[subjectKey] = { rankMap, totalCount, average };
+    }
+
+    return results;
   }
 
   private assignGrades(students: { studentId: number; score: number }[]): {
@@ -232,6 +285,9 @@ export class ScoresService {
 
     // 각 과목별 등급 계산
     const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
+    
+    // 각 과목별 석차 및 평균 계산 추가
+    const subjectRanksAndAverages = this.calculateRanksAndAverages(subjectScores);
 
     // 평균 점수로 전체 등급 계산
     const averageGrades = this.calculateAverageGrades(classmates);
@@ -259,7 +315,7 @@ export class ScoresService {
         studentId,
         grade,
         semester,
-        subjects: this.buildSubjectsWithGrades(saved, subjectGrades, studentId),
+        subjects: this.buildSubjectsWithGrades(saved, subjectGrades, subjectRanksAndAverages, studentId),
         total: saved.totalScore,
         average: saved.averageScore,
         scoreGrade,
@@ -283,7 +339,6 @@ export class ScoresService {
 
     const response = await Promise.all(
       scores.map(async (score) => {
-        // 각 학기별로 같은 반 학생들의 성적을 가져와서 등급 계산
         const classmates =
           await this.scoreRepository.findScoresByGradeSemesterClassroom(
             score.grade,
@@ -291,18 +346,12 @@ export class ScoresService {
             student.classroom,
           );
 
-        // 각 과목별 점수 추출
         const subjectScores = this.extractSubjectScores(classmates);
-
-        // 각 과목별 등급 계산
         const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
-
-        // 평균 점수로 전체 등급 계산
+        const subjectRanksAndAverages = this.calculateRanksAndAverages(subjectScores);
         const averageGrades = this.calculateAverageGrades(classmates);
-        const studentIndex = classmates.findIndex(
-          (s) => s.student.id === studentId,
-        );
-        const scoreGrade = studentIndex !== -1 ? averageGrades[studentId] : 'E';
+
+        const scoreGrade = averageGrades[studentId] || 'E';
 
         return {
           semester: score.semester,
@@ -310,6 +359,7 @@ export class ScoresService {
           subjects: this.buildSubjectsWithGrades(
             score,
             subjectGrades,
+            subjectRanksAndAverages,  // ★ 여기에 추가
             studentId,
           ),
           totalScore: score.totalScore,
@@ -353,6 +403,9 @@ export class ScoresService {
     // 각 과목별 등급 계산
     const subjectGrades = this.calculateAllSubjectGrades(subjectScores);
 
+    // 각 과목별 석차 및 평균 계산 추가
+    const subjectRanksAndAverages = this.calculateRanksAndAverages(subjectScores);
+    
     // 평균 점수로 전체 등급 계산
     const averageGrades = this.calculateAverageGrades(scores);
 
@@ -368,6 +421,7 @@ export class ScoresService {
         subjects: this.buildSubjectsWithGrades(
           score,
           subjectGrades,
+          subjectRanksAndAverages,
           student.id,
         ),
         totalScore: score.totalScore,
