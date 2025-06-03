@@ -2,12 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import * as ExcelJS from 'exceljs';
 import { Response } from 'express';
 import { NotificationService } from '../notification/notification.service';
-import { ScoreRepository } from './score.repository';
 import { StudentRepository } from '../students/student.repository';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
 import { Scores } from './score.entity';
+import { ScoreRepository } from './score.repository';
 
 @Injectable()
 export class ScoresService {

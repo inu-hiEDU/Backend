@@ -1,5 +1,5 @@
 # Node.js 베이스 이미지 (경량 버전)
-FROM node:20.11.1-alpine
+FROM node:20.11.1
 
 # 컨테이너 안의 작업 디렉토리 설정
 WORKDIR /app
