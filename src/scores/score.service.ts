@@ -43,20 +43,29 @@ export class ScoresService {
     return { total, average };
   }
 
-  private assignGrades(students: { averageScore: number }[]): string[] {
-    const sorted = [...students].sort(
-      (a, b) => b.averageScore - a.averageScore,
-    );
+  private assignGrades(students: { studentId: number; score: number }[]): { [studentId: number]: string } {
+    const scoresWithIndex = students.map((student) => ({
+      studentId: student.studentId,
+      score: student.score,
+    }));
+  
+    // 점수 기준으로 내림차순 정렬
+    const sorted = [...scoresWithIndex].sort((a, b) => b.score - a.score);
     const total = sorted.length;
     const gradeCutoffs = [0.2, 0.4, 0.6, 0.8].map((p) => Math.ceil(p * total));
-
-    return sorted.map((student, index) => {
-      if (index < gradeCutoffs[0]) return 'A';
-      if (index < gradeCutoffs[1]) return 'B';
-      if (index < gradeCutoffs[2]) return 'C';
-      if (index < gradeCutoffs[3]) return 'D';
-      return 'E';
+  
+    const studentGrades: { [studentId: number]: string } = {};
+    sorted.forEach((student, index) => {
+      let grade: string;
+      if (index < gradeCutoffs[0]) grade = 'A';
+      else if (index < gradeCutoffs[1]) grade = 'B';
+      else if (index < gradeCutoffs[2]) grade = 'C';
+      else if (index < gradeCutoffs[3]) grade = 'D';
+      else grade = 'E';
+      studentGrades[student.studentId] = grade;
     });
+
+    return studentGrades;
   }
 
   async createScore(dto: CreateScoreDto) {
@@ -97,6 +106,48 @@ export class ScoresService {
 
     const saved = await this.scoresRepository.save(score);
 
+    // 같은 반 학생들의 성적을 가져와서 등급 계산
+    const classmates = await this.scoresRepository.find({
+      where: {
+        grade,
+        semester,
+        student: {
+          classroom: student.classroom,
+        },
+      },
+      relations: ['student'],
+    });
+
+    // 각 과목별 점수 추출
+    const subjectScores = {
+      subject1: classmates.map((s) => ({ studentId: s.student.id, score: s.subject1 || 0 })),
+      subject2: classmates.map((s) => ({ studentId: s.student.id, score: s.subject2 || 0 })),
+      subject3: classmates.map((s) => ({ studentId: s.student.id, score: s.subject3 || 0 })),
+      subject4: classmates.map((s) => ({ studentId: s.student.id, score: s.subject4 || 0 })),
+      subject5: classmates.map((s) => ({ studentId: s.student.id, score: s.subject5 || 0 })),
+      subject6: classmates.map((s) => ({ studentId: s.student.id, score: s.subject6 || 0 })),
+      subject7: classmates.map((s) => ({ studentId: s.student.id, score: s.subject7 || 0 })),
+      subject8: classmates.map((s) => ({ studentId: s.student.id, score: s.subject8 || 0 })),
+    };
+
+    // 각 과목별 등급 계산
+    const subjectGrades = {
+      subject1: this.assignGrades(subjectScores.subject1),
+      subject2: this.assignGrades(subjectScores.subject2),
+      subject3: this.assignGrades(subjectScores.subject3),
+      subject4: this.assignGrades(subjectScores.subject4),
+      subject5: this.assignGrades(subjectScores.subject5),
+      subject6: this.assignGrades(subjectScores.subject6),
+      subject7: this.assignGrades(subjectScores.subject7),
+      subject8: this.assignGrades(subjectScores.subject8),
+    };
+
+    // 평균 점수로 전체 등급 계산
+    const averageGrades = this.assignGrades(
+      classmates.map((s) => ({ studentId: s.student.id, score: s.averageScore })),
+    );
+    const scoreGrade = averageGrades[studentId] || 'E';
+
     // 알림 전송: 학생의 userId가 있으면 알림
     if (student.userId) {
       if (isNew) {
@@ -115,22 +166,47 @@ export class ScoresService {
         ? '성적 정보가 성공적으로 생성되었습니다.'
         : '성적 정보가 성공적으로 업데이트되었습니다.',
       updatedScore: {
-        id: saved.id, // ← 성적 ID 포함
+        id: saved.id,
         studentId,
         grade,
         semester,
         subjects: {
-          subject1: saved.subject1,
-          subject2: saved.subject2,
-          subject3: saved.subject3,
-          subject4: saved.subject4,
-          subject5: saved.subject5,
-          subject6: saved.subject6,
-          subject7: saved.subject7,
-          subject8: saved.subject8,
+          subject1: {
+            score: saved.subject1,
+            grade: subjectGrades.subject1[studentId] || 'E',
+          },
+          subject2: {
+            score: saved.subject2,
+            grade: subjectGrades.subject2[studentId] || 'E',
+          },
+          subject3: {
+            score: saved.subject3,
+            grade: subjectGrades.subject3[studentId] || 'E',
+          },
+          subject4: {
+            score: saved.subject4,
+            grade: subjectGrades.subject4[studentId] || 'E',
+          },
+          subject5: {
+            score: saved.subject5,
+            grade: subjectGrades.subject5[studentId] || 'E',
+          },
+          subject6: {
+            score: saved.subject6,
+            grade: subjectGrades.subject6[studentId] || 'E',
+          },
+          subject7: {
+            score: saved.subject7,
+            grade: subjectGrades.subject7[studentId] || 'E',
+          },
+          subject8: {
+            score: saved.subject8,
+            grade: subjectGrades.subject8[studentId] || 'E',
+          },
         },
         total: saved.totalScore,
         average: saved.averageScore,
+        scoreGrade,
       },
     };
   }
@@ -145,33 +221,107 @@ export class ScoresService {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
 
-    const score = await this.scoresRepository.find({
+    const scores = await this.scoresRepository.find({
       where: {
         student: { id: studentId },
       },
       relations: ['student'],
     });
 
-    if (!score || score.length === 0) {
+    if (!scores || scores.length === 0) {
       throw new NotFoundException('해당 학생의 성적 정보를 찾을 수 없습니다.');
     }
 
-    const response = score.map((score) => ({
-      semester: score.semester,
-      grade: score.grade,
-      subjects: {
-        subject1: score.subject1,
-        subject2: score.subject2,
-        subject3: score.subject3,
-        subject4: score.subject4,
-        subject5: score.subject5,
-        subject6: score.subject6,
-        subject7: score.subject7,
-        subject8: score.subject8,
-      },
-      totalScore: score.totalScore,
-      averageScore: score.averageScore,
-    }));
+    const response = await Promise.all(
+      scores.map(async (score) => {
+        // 각 학기별로 같은 반 학생들의 성적을 가져와서 등급 계산
+        const classmates = await this.scoresRepository.find({
+          where: {
+            grade: score.grade,
+            semester: score.semester,
+            student: {
+              classroom: student.classroom,
+            },
+          },
+          relations: ['student'],
+        });
+
+        // 각 과목별 등급 계산
+        const subjectScores = {
+          subject1: classmates.map((s) => ({ studentId: s.student.id, score: s.subject1 || 0 })),
+          subject2: classmates.map((s) => ({ studentId: s.student.id, score: s.subject2 || 0 })),
+          subject3: classmates.map((s) => ({ studentId: s.student.id, score: s.subject3 || 0 })),
+          subject4: classmates.map((s) => ({ studentId: s.student.id, score: s.subject4 || 0 })),
+          subject5: classmates.map((s) => ({ studentId: s.student.id, score: s.subject5 || 0 })),
+          subject6: classmates.map((s) => ({ studentId: s.student.id, score: s.subject6 || 0 })),
+          subject7: classmates.map((s) => ({ studentId: s.student.id, score: s.subject7 || 0 })),
+          subject8: classmates.map((s) => ({ studentId: s.student.id, score: s.subject8 || 0 })),
+        };
+
+        // 각 과목별 등급 계산
+        const subjectGrades = {
+          subject1: this.assignGrades(subjectScores.subject1),
+          subject2: this.assignGrades(subjectScores.subject2),
+          subject3: this.assignGrades(subjectScores.subject3),
+          subject4: this.assignGrades(subjectScores.subject4),
+          subject5: this.assignGrades(subjectScores.subject5),
+          subject6: this.assignGrades(subjectScores.subject6),
+          subject7: this.assignGrades(subjectScores.subject7),
+          subject8: this.assignGrades(subjectScores.subject8),
+        };
+
+        // 평균 점수로 전체 등급 계산
+        const averageGrades = this.assignGrades(
+          classmates.map((s) => ({ studentId: s.student.id, score: s.averageScore })),
+        );
+        const studentIndex = classmates.findIndex(
+          (s) => s.student.id === studentId,
+        );
+        const scoreGrade = studentIndex !== -1 ? averageGrades[studentId] : 'E';
+
+        return {
+          semester: score.semester,
+          grade: score.grade,
+          subjects: {
+            subject1: {
+              score: score.subject1,
+              grade: subjectGrades.subject1[studentId] || 'E',
+            },
+            subject2: {
+              score: score.subject2,
+              grade: subjectGrades.subject2[studentId] || 'E',
+            },
+            subject3: {
+              score: score.subject3,
+              grade: subjectGrades.subject3[studentId] || 'E',
+            },
+            subject4: {
+              score: score.subject4,
+              grade: subjectGrades.subject4[studentId] || 'E',
+            },
+            subject5: {
+              score: score.subject5,
+              grade: subjectGrades.subject5[studentId] || 'E',
+            },
+            subject6: {
+              score: score.subject6,
+              grade: subjectGrades.subject6[studentId] || 'E',
+            },
+            subject7: {
+              score: score.subject7,
+              grade: subjectGrades.subject7[studentId] || 'E',
+            },
+            subject8: {
+              score: score.subject8,
+              grade: subjectGrades.subject8[studentId] || 'E',
+            },
+          },
+          totalScore: score.totalScore,
+          averageScore: score.averageScore,
+          scoreGrade,
+        };
+      }),
+    );
 
     return {
       message: '학생의 성적 정보를 조회하였습니다.',
@@ -186,77 +336,107 @@ export class ScoresService {
   async getClassScore(query: GetClassScoreDto) {
     const { grade, semester, classroom } = query;
 
-    const students = await this.studentRepository.find({
-      where: { grade, classroom },
+    // 해당 반의 모든 학생 성적을 한 번에 가져옴
+    const scores = await this.scoresRepository.find({
+      where: {
+        grade,
+        semester,
+        student: {
+          classroom,
+        },
+      },
+      relations: ["student"],
     });
 
-    const result: {
-      studentId: number;
-      name: string;
-      grade: number;
-      class: number;
-      semester: number;
-      subjects: {
-        subject1: number;
-        subject2: number;
-        subject3: number;
-        subject4: number;
-        subject5: number;
-        subject6: number;
-        subject7: number;
-        subject8: number;
+    if (!scores || scores.length === 0) {
+      return {
+        message: "해당 조건에 맞는 성적 정보가 없습니다.",
+        students: [],
       };
-      totalScore: number;
-      averageScore: number;
-    }[] = [];
+    }
 
-    for (const student of students) {
-      const score = await this.scoresRepository.findOne({
-        where: {
-          student: {
-            id: student.id,
-          },
-          grade,
-          semester,
-        },
-        relations: ['student'],
-      });
+    // 각 과목별 점수 추출
+    const subjectScores = {
+      subject1: scores.map((s) => ({ studentId: s.student.id, score: s.subject1 || 0 })),
+      subject2: scores.map((s) => ({ studentId: s.student.id, score: s.subject2 || 0 })),
+      subject3: scores.map((s) => ({ studentId: s.student.id, score: s.subject3 || 0 })),
+      subject4: scores.map((s) => ({ studentId: s.student.id, score: s.subject4 || 0 })),
+      subject5: scores.map((s) => ({ studentId: s.student.id, score: s.subject5 || 0 })),
+      subject6: scores.map((s) => ({ studentId: s.student.id, score: s.subject6 || 0 })),
+      subject7: scores.map((s) => ({ studentId: s.student.id, score: s.subject7 || 0 })),
+      subject8: scores.map((s) => ({ studentId: s.student.id, score: s.subject8 || 0 })),
+    };
 
-      if (!score) continue;
+    // 각 과목별 등급 계산
+    const subjectGrades = {
+      subject1: this.assignGrades(subjectScores.subject1),
+      subject2: this.assignGrades(subjectScores.subject2),
+      subject3: this.assignGrades(subjectScores.subject3),
+      subject4: this.assignGrades(subjectScores.subject4),
+      subject5: this.assignGrades(subjectScores.subject5),
+      subject6: this.assignGrades(subjectScores.subject6),
+      subject7: this.assignGrades(subjectScores.subject7),
+      subject8: this.assignGrades(subjectScores.subject8),
+    };
 
-      result.push({
+    // 평균 점수로 전체 등급 계산
+    const averageScores = scores.map((s) => ({
+      studentId: s.student.id,
+      score: s.averageScore,
+    }));
+    const averageGrades = this.assignGrades(averageScores);
+
+    // 결과 매핑
+    const studentsWithGrades = scores.map((score, index) => {
+      const student = score.student;
+      return {
         studentId: student.id,
         name: student.name,
         grade: student.grade,
         class: student.classroom,
         semester: score.semester,
         subjects: {
-          subject1: score.subject1,
-          subject2: score.subject2,
-          subject3: score.subject3,
-          subject4: score.subject4,
-          subject5: score.subject5,
-          subject6: score.subject6,
-          subject7: score.subject7,
-          subject8: score.subject8,
+          subject1: {
+            score: score.subject1,
+            grade: subjectGrades.subject1[student.id] || 'E',
+          },
+          subject2: {
+            score: score.subject2,
+            grade: subjectGrades.subject2[student.id] || 'E',
+          },
+          subject3: {
+            score: score.subject3,
+            grade: subjectGrades.subject3[student.id] || 'E',
+          },
+          subject4: {
+            score: score.subject4,
+            grade: subjectGrades.subject4[student.id] || 'E',
+          },
+          subject5: {
+            score: score.subject5,
+            grade: subjectGrades.subject5[student.id] || 'E',
+          },
+          subject6: {
+            score: score.subject6,
+            grade: subjectGrades.subject6[student.id] || 'E',
+          },
+          subject7: {
+            score: score.subject7,
+            grade: subjectGrades.subject7[student.id] || 'E',
+          },
+          subject8: {
+            score: score.subject8,
+            grade: subjectGrades.subject8[student.id] || 'E',
+          },
         },
         totalScore: score.totalScore,
         averageScore: score.averageScore,
-      });
-    }
-
-    const grades = this.assignGrades(result);
-
-    const studentsWithGrades = result.map((student, index) => ({
-      ...student,
-      grade: grades[index],
-    }));
+        scoreGrade: averageGrades[student.id] || 'E',
+      };
+    });
 
     return {
-      message:
-        studentsWithGrades.length > 0
-          ? '학생의 성적 정보를 조회하였습니다.'
-          : '해당 조건에 맞는 성적 정보가 없습니다.',
+      message: "학생의 성적 정보를 조회하였습니다.",
       students: studentsWithGrades,
     };
   }
