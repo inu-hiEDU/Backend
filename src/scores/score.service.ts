@@ -1,11 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Student } from '../students/student.entity';
+import { ScoreRepository } from './score.repository';
 import { CreateScoreDto } from './dto/create-score.dto';
 import { GetClassScoreDto } from './dto/get-class-score.dto';
 import { GetScoreDto } from './dto/get-score.dto';
-import { Scores } from './score.entity';
 import { NotificationService } from '../notification/notification.service';
 import * as ExcelJS from 'exceljs';
 import { Response } from 'express';
@@ -13,16 +10,11 @@ import { Response } from 'express';
 @Injectable()
 export class ScoresService {
   constructor(
-    @InjectRepository(Scores)
-    private scoresRepository: Repository<Scores>,
-
-    @InjectRepository(Student)
-    private studentRepository: Repository<Student>,
-
+    private readonly scoreRepository: ScoreRepository,
     private readonly notificationService: NotificationService,
   ) {}
 
-  private calculateTotalAndAverage(score: Partial<Scores>) {
+  private calculateTotalAndAverage(score: Partial<any>) {
     const subjects = [
       score.subject1,
       score.subject2,
@@ -46,23 +38,20 @@ export class ScoresService {
   async createScore(dto: CreateScoreDto) {
     const { studentId, grade, semester, ...subjects } = dto;
 
-    const student = await this.studentRepository.findOne({
+    const student = await this.scoreRepository.studentRepository.findOne({
       where: { id: studentId },
     });
     if (!student) {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
 
-    let score = await this.scoresRepository.findOne({
-      where: { student: { id: studentId }, grade, semester },
-      relations: ['student'],
-    });
+    let score = await this.scoreRepository.findOneByStudentGradeSemester(studentId, grade, semester);
 
     const now = new Date();
     const isNew = !score;
 
     if (!score) {
-      score = this.scoresRepository.create({
+      score = await this.scoreRepository.createScoreEntity({
         student,
         grade,
         semester,
@@ -79,7 +68,7 @@ export class ScoresService {
     score.totalScore = total;
     score.averageScore = average;
 
-    const saved = await this.scoresRepository.save(score);
+    const saved = await this.scoreRepository.saveScore(score);
 
     // 알림 전송: 학생의 userId가 있으면 알림
     if (student.userId) {
@@ -99,7 +88,7 @@ export class ScoresService {
         ? '성적 정보가 성공적으로 생성되었습니다.'
         : '성적 정보가 성공적으로 업데이트되었습니다.',
       updatedScore: {
-        id: saved.id, // ← 성적 ID 포함
+        id: saved.id,
         studentId,
         grade,
         semester,
@@ -122,19 +111,14 @@ export class ScoresService {
   async getStudentScore(query: GetScoreDto) {
     const { studentId } = query;
 
-    const student = await this.studentRepository.findOne({
+    const student = await this.scoreRepository.studentRepository.findOne({
       where: { id: studentId },
     });
     if (!student) {
       throw new NotFoundException('해당 학생을 찾을 수 없습니다.');
     }
 
-    const score = await this.scoresRepository.find({
-      where: {
-        student: { id: studentId },
-      },
-      relations: ['student'],
-    });
+    const score = await this.scoreRepository.findByStudent(studentId);
 
     if (!score || score.length === 0) {
       throw new NotFoundException('해당 학생의 성적 정보를 찾을 수 없습니다.');
@@ -170,9 +154,7 @@ export class ScoresService {
   async getClassScore(query: GetClassScoreDto) {
     const { grade, semester, classroom } = query;
 
-    const students = await this.studentRepository.find({
-      where: { grade, classroom },
-    });
+    const students = await this.scoreRepository.findStudentsByGradeAndClassroom(grade, classroom);
 
     const result: {
       studentId: number;
@@ -195,16 +177,7 @@ export class ScoresService {
     }[] = [];
 
     for (const student of students) {
-      const score = await this.scoresRepository.findOne({
-        where: {
-          student: {
-            id: student.id,
-          },
-          grade,
-          semester,
-        },
-        relations: ['student'],
-      });
+      const score = await this.scoreRepository.findOneByStudentGradeSemester(student.id, grade, semester);
 
       if (!score) continue;
 
@@ -239,11 +212,7 @@ export class ScoresService {
   }
 
   async deleteScore(studentId: number, grade: number, semester: number) {
-    const deletedScore = await this.scoresRepository.delete({
-      student: { id: studentId },
-      grade,
-      semester,
-    });
+    const deletedScore = await this.scoreRepository.deleteScore(studentId, grade, semester);
 
     if (deletedScore.affected === 0) {
       throw new NotFoundException('해당 성적 정보를 찾을 수 없습니다.');
@@ -255,11 +224,7 @@ export class ScoresService {
   }
 
   async exportStudentScores(studentId: number, res: Response) {
-    const scores = await this.scoresRepository.find({
-      where: { student: { id: studentId } },
-      relations: ['student'],
-      order: { semester: 'ASC' },
-    });
+    const scores = await this.scoreRepository.findByStudent(studentId);
 
     if (!scores.length) {
       throw new NotFoundException('해당 학생의 성적 정보가 없습니다.');
@@ -270,21 +235,18 @@ export class ScoresService {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('성적 보고서');
 
-    // ✅ 1. 제목
     worksheet.mergeCells('A1:L1');
     const titleCell = worksheet.getCell('A1');
     titleCell.value = `학생 성적 보고서 - ${student.name}`;
     titleCell.font = { size: 16, bold: true };
     titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
-    // ✅ 2. 날짜 라벨
     worksheet.mergeCells('A2:L2');
     const dateCell = worksheet.getCell('A2');
     dateCell.value = `출력일: ${new Date().toLocaleDateString('ko-KR')}`;
     dateCell.font = { size: 10, italic: true, color: { argb: '777777' } };
     dateCell.alignment = { horizontal: 'left' };
 
-    // ✅ 3. 표 헤더 정의
     worksheet.addRow([
       '학년',
       '학기',
@@ -307,7 +269,7 @@ export class ScoresService {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '2F5597' }, // 진한 파랑
+        fgColor: { argb: '2F5597' },
       };
       cell.border = {
         top: { style: 'thin' },
@@ -317,7 +279,6 @@ export class ScoresService {
       };
     });
 
-    // ✅ 4. 본문 데이터
     scores.forEach((s) => {
       worksheet.addRow([
         s.grade,
@@ -335,7 +296,6 @@ export class ScoresService {
       ]);
     });
 
-    // ✅ 5. 전체 테두리 및 정렬 적용
     worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
       if (rowNumber >= 4) {
         row.alignment = { horizontal: 'center' };
@@ -350,12 +310,10 @@ export class ScoresService {
       }
     });
 
-    // ✅ 6. 열 너비 자동 조절
     worksheet.columns.forEach((col) => {
       col.width = 10;
     });
 
-    // ✅ 7. 다운로드 전송
     res.setHeader(
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
