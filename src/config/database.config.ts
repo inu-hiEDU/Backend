@@ -66,7 +66,7 @@ export class DatabaseConfigService {
           },
         ],
       },
-      synchronize: false, // 운영 환경에서는 false
+      synchronize: true,
       logging: true,
       entities: [
         Student,
