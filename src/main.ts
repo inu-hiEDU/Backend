@@ -7,19 +7,6 @@ import { swaggerConfig } from './swagger_config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Swagger 인증을 환경변수 기반으로 처리
-  if (process.env.SWAGGER_USER && process.env.SWAGGER_PASS) {
-    app.use(
-      ['/api/swagger', '/api/swagger-json'],
-      basicAuth({
-        challenge: true,
-        users: {
-          [process.env.SWAGGER_USER]: process.env.SWAGGER_PASS,
-        },
-      }),
-    );
-  }
-
   // CORS 설정
   app.enableCors({
     origin: [
@@ -31,6 +18,19 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // 쿠키를 포함한 요청 허용
   });
+
+  // Swagger 인증 환경변수 기반 처리
+  if (process.env.SWAGGER_USER && process.env.SWAGGER_PASS) {
+    app.use(
+      ['/api/swagger', '/api/swagger-json'],
+      basicAuth({
+        challenge: true,
+        users: {
+          [process.env.SWAGGER_USER]: process.env.SWAGGER_PASS,
+        },
+      }),
+    );
+  }
 
   const { documentConfig, swaggerOptions } = swaggerConfig();
   const document = SwaggerModule.createDocument(app, documentConfig);
