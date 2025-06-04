@@ -21,4 +21,7 @@ export class CreateStudentDto {
 
   @ApiProperty({ description: '사진 URL', example: 'https://...' })
   picture?: string;
+
+  @ApiProperty({ description: '유저아이디', example: '12' })
+  userId: number;
 }

@@ -19,9 +19,6 @@ export class Parent {
   @Column()
   phoneNum: string;
 
-  @Column()
-  birthday: string;
-
   @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn({ name: 'userId' })
   user: User;

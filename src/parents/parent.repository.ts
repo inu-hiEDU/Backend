@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Parent } from './parent.entity';
-import { User } from '../user/user.entity';
 import { Student } from '../students/student.entity';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class ParentRepository {
@@ -14,6 +14,9 @@ export class ParentRepository {
     private readonly studentRepo: Repository<Student>,
   ) {}
 
+  /**
+   * 학부모 생성
+   */
   async createParent(data: {
     name: string;
     studentNum: string;
@@ -22,37 +25,71 @@ export class ParentRepository {
   }): Promise<Parent> {
     const { name, studentNum, phoneNum, userId } = data;
 
-    // User 엔티티 조회
     const user = await this.parentRepo.manager.findOne(User, {
       where: { id: userId },
     });
-    if (!user) {
-      throw new Error('User not found');
-    }
+    if (!user) throw new Error('User not found');
 
-    // Student 엔티티 조회
     const student = await this.studentRepo.findOne({
       where: { studentNum: parseInt(studentNum, 10) },
     });
-    if (!student) {
-      throw new Error('Student not found');
-    }
+    if (!student) throw new Error('Student not found');
 
-    // Parent 엔티티 생성
     const parent = this.parentRepo.create({
       name,
       phoneNum,
       user,
-      student, // Student와 관계 설정
+      student,
     });
 
     return this.parentRepo.save(parent);
   }
 
-  async findByUserId(userId: number): Promise<Parent | null> {
-    return await this.parentRepo.findOne({
-      where: { userId }
+  /**
+   * 전체 학부모 조회
+   */
+  async findAll(): Promise<Parent[]> {
+    return this.parentRepo.find({
+      relations: ['student', 'user'],
     });
   }
 
+  /**
+   * ID로 학부모 조회
+   */
+  async findOneById(id: number): Promise<Parent | null> {
+    return this.parentRepo.findOne({
+      where: { id },
+      relations: ['student', 'user'],
+    });
+  }
+
+  /**
+   * 학부모 수정
+   */
+  async updateParent(id: number, data: Partial<Parent>): Promise<Parent> {
+    const parent = await this.findOneById(id);
+    if (!parent) throw new Error('Parent not found');
+
+    Object.assign(parent, data);
+    return this.parentRepo.save(parent);
+  }
+
+  /**
+   * 학부모 삭제
+   */
+  async deleteParent(id: number): Promise<{ deleted: boolean }> {
+    const result = await this.parentRepo.delete(id);
+    return { deleted: (result.affected ?? 0) > 0 };
+  }
+
+  /**
+   * 유저 ID로 학부모 조회
+   */
+  async findByUserId(userId: number): Promise<Parent | null> {
+    return await this.parentRepo.findOne({
+      where: { user: { id: userId } },
+      relations: ['student', 'user'],
+    });
+  }
 }
