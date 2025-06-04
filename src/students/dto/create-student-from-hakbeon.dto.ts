@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateStudentFromHakbeonDto {
   @IsNotEmpty()
   @IsNumber()
-  studentNum: number;
+  studentNum: number; // studentNum
 
   @IsNotEmpty()
   @IsString()
