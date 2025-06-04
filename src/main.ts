@@ -7,6 +7,18 @@ import { swaggerConfig } from './swagger_config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // CORS 설정
+  app.enableCors({
+    origin: [
+      'http://localhost:3012',
+      'https://hiedu.site',
+      'https://hiedu-frontend.vercel.app',
+      'https://hiedu.vercel.app',
+    ], // 허용할 도메인
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // 쿠키를 포함한 요청 허용
+  });
+
   // Swagger 인증을 환경변수 기반으로 처리
   if (process.env.SWAGGER_USER && process.env.SWAGGER_PASS) {
     app.use(
@@ -19,18 +31,6 @@ async function bootstrap() {
       }),
     );
   }
-
-  // CORS 설정
-  app.enableCors({
-    origin: [
-      'http://localhost:3012',
-      'https://hiedu.site',
-      'https://hiedu-frontend.vercel.app',
-      'https://hiedu.vercel.app',
-    ], // 허용할 도메인
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // 쿠키를 포함한 요청 허용
-  });
 
   const { documentConfig, swaggerOptions } = swaggerConfig();
   const document = SwaggerModule.createDocument(app, documentConfig);

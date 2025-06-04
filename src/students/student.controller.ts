@@ -44,7 +44,6 @@ export class StudentController {
     type: String,
     description: '반',
   })
-  // @Roles(UserRole.TEACHER)
   async getStudents(
     @Query('grade') grade?: number,
     @Query('classroom') classroom?: number,
