@@ -16,8 +16,8 @@ export class StudentService {
     return this.studentRepository.findOneById(id);
   }
 
-  async createStudent(dto: CreateStudentDto): Promise<Student> {
-    return this.studentRepository.createStudent(dto);
+  async createStudent(dto: CreateStudentDto, userId: number): Promise<Student> {
+    return this.studentRepository.createStudent(dto, userId);
   }
 
   async updateStudent(id: number, dto: UpdateStudentDto): Promise<Student> {

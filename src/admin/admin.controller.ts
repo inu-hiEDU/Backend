@@ -59,8 +59,8 @@ export class AdminController {
 
   // 학생 등록
   @Post('students')
-  createStudent(@Body() dto: CreateStudentDto): Promise<Student> {
-    return this.studentService.createStudent(dto);
+  createStudent(dto: CreateStudentDto): Promise<Student> {
+    return this.studentService.createStudent(dto, 999);
   }
 
   // 학생 수정
@@ -76,6 +76,7 @@ export class AdminController {
       classroom: data.classroom!,
       phoneNum: data.phoneNum!,
       birthday: data.birthday!,
+      userId: data.userId!,
     };
     return this.studentService.updateStudent(id, dto);
   }
