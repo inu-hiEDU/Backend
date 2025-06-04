@@ -58,14 +58,8 @@ export class StudentRepository {
   }
 
   async createStudent(dto: Partial<Student>): Promise<Student> {
-    let parsedStudentNum: number | undefined;
-
-    if (dto.studentNum) {
-      parsedStudentNum = parseInt(String(dto.studentNum).slice(-2), 10);
-    }
-
     const encryptedDto: Partial<Student> = {
-      studentNum: parsedStudentNum,
+      studentNum: dto.studentNum,
       grade: dto.grade,
       // 👇 중요: 실제 entity 필드 이름에 맞춰서 넣어야 함
       classroom: dto.classroom,

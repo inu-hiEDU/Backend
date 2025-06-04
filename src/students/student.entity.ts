@@ -21,7 +21,7 @@ export class Student {
   @Column()
   grade: number;
 
-  @Column({ name: 'class' }) // DB 필드는 class, 코드에서는 classroom
+  @Column({ name: 'class' })
   classroom: number;
 
   @Column()
