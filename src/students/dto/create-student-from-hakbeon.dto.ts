@@ -1,6 +1,10 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateStudentFromHakbeonDto {
+  @IsNotEmpty()
+  @IsNumber()
+  studentNum: number; // studentNum
+
   @IsNotEmpty()
   @IsString()
   hakbeon: string;
