@@ -57,7 +57,7 @@ export class StudentRepository {
     return student;
   }
 
-  async createStudent(dto: Partial<Student>): Promise<Student> {
+  async createStudent(dto: Partial<Student>, userId: number): Promise<Student> {
     const encryptedDto: Partial<Student> = {
       studentNum: dto.studentNum,
       grade: dto.grade,
@@ -67,7 +67,7 @@ export class StudentRepository {
       phoneNum: dto.phoneNum ? this.encrypt(dto.phoneNum) : '',
       birthday: dto.birthday ? this.encrypt(dto.birthday) : '',
       user: dto.user,
-      userId: dto.userId,
+      userId,
       picture: dto.picture,
     };
 

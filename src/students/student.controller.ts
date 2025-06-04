@@ -9,6 +9,8 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -17,6 +19,8 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Student } from './student.entity';
 import { StudentService } from './student.service';
+import { JwtAuthGuard } from '../auth/jwt.guard';
+import { AuthRequest } from '../auth/auth-request.interface';
 
 @ApiTags('학생')
 @Controller('api/students')
@@ -24,9 +28,18 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard) // JWT 인증 활성화
   @ApiCreate('학생 정보 생성', CreateStudentDto)
-  async createStudent(@Body() dto: CreateStudentDto) {
-    return this.studentService.createStudent(dto);
+  async createStudent(
+    @Body() dto: CreateStudentDto,
+    @Req() req: AuthRequest,
+  ): Promise<Student> {
+    const userId = Number(req.user.userId);
+    if (isNaN(userId)) {
+      throw new Error('Invalid userId');
+    }
+
+    return this.studentService.createStudent(dto, userId);
   }
 
   @Get()
