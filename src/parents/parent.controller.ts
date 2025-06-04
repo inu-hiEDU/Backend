@@ -16,6 +16,8 @@ import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
 import { CreateParentDto } from './dto/create-parent.dto';
 import { UpdateParentDto } from './dto/update-parent.dto';
 import { AuthRequest } from '../auth/auth-request.interface';
+import { JwtAuthGuard } from '../auth/jwt.guard';
+import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 
 @ApiTags('학부모')
 @Controller('api/parents')
@@ -24,6 +26,7 @@ export class ParentController {
 
   @ApiOperation({ summary: '학부모 등록' })
   @ApiBody({ type: CreateParentDto })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createParent(
     @Body() data: CreateParentDto,
