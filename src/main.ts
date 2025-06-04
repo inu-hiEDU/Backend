@@ -19,7 +19,7 @@ async function bootstrap() {
     credentials: true, // 쿠키를 포함한 요청 허용
   });
 
-  // Swagger 인증을 환경변수 기반으로 처리
+  // Swagger 인증 환경변수 기반 처리
   if (process.env.SWAGGER_USER && process.env.SWAGGER_PASS) {
     app.use(
       ['/api/swagger', '/api/swagger-json'],
